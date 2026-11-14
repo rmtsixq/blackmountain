@@ -1,0 +1,180 @@
+{
+  "size": 512,
+  "extent_km": 61.955,
+  "rasters": {
+    "lst_day": {
+      "file": "lst_day.bin",
+      "min": 21.35,
+      "max": 33.603,
+      "mean": 28.818,
+      "valid": 1.0,
+      "unit": "\u00b0C",
+      "source": "VIIRS S-NPP monthly LST (VNP21), NASA GIBS",
+      "date": "2026-10",
+      "resolution_m": 1000
+    },
+    "lst_night": {
+      "file": "lst_night.bin",
+      "min": 4.55,
+      "max": 12.95,
+      "mean": 10.108,
+      "valid": 1.0,
+      "unit": "\u00b0C",
+      "source": "VIIRS S-NPP monthly LST (VNP21), NASA GIBS",
+      "date": "2026-10",
+      "resolution_m": 1000
+    },
+    "lst_swing": {
+      "file": "lst_swing.bin",
+      "min": 15.0,
+      "max": 24.0,
+      "mean": 18.711,
+      "valid": 1.0,
+      "unit": "K",
+      "source": "VIIRS S-NPP monthly LST (VNP21), NASA GIBS",
+      "date": "2026-10",
+      "resolution_m": 1000
+    },
+    "s1_vv": {
+      "file": "s1_vv.bin",
+      "min": -22.467,
+      "max": 11.547,
+      "mean": -8.898,
+      "valid": 1.0,
+      "unit": "dB",
+      "source": "Sentinel-1 C-band VV gamma0, Sep-Nov median (Copernicus / Earth Big Data, AWS Open Data)",
+      "resolution_m": 90
+    },
+    "arsia": {
+      "file": "arsia.bin",
+      "min": 8790.0,
+      "max": 12870.0,
+      "mean": 10535.896,
+      "valid": 1.0,
+      "unit": "m",
+      "body": "Mars",
+      "lat": -6.3,
+      "lon": 240.0,
+      "resolution_m": 200,
+      "source": "MGS MOLA + Mars Express HRSC blended DEM v2 (USGS Astrogeology)"
+    },
+    "tranq": {
+      "file": "tranq.bin",
+      "min": -1688.0,
+      "max": -628.0,
+      "mean": -798.908,
+      "valid": 1.0,
+      "unit": "m",
+      "body": "Moon",
+      "lat": 8.335,
+      "lon": 33.222,
+      "resolution_m": 118,
+      "source": "LRO LOLA global DEM 118 m (USGS Astrogeology)"
+    },
+    "shackleton": {
+      "file": "shackleton.bin",
+      "min": -2980.579,
+      "max": 1956.651,
+      "mean": -506.95,
+      "valid": 1.0,
+      "unit": "m",
+      "body": "Moon",
+      "lat": -89.45,
+      "lon": 222.69,
+      "resolution_m": 20,
+      "source": "LRO LOLA south pole DEM 20 m (NASA PGDA, Barker et al. 2021)"
+    }
+  },
+  "lst_series": [
+    {
+      "month": "2025-11",
+      "field_day": 24.75,
+      "summit_day": 20.75,
+      "field_night": 4.95,
+      "summit_night": 1.55
+    },
+    {
+      "month": "2025-12",
+      "field_day": 13.35,
+      "summit_day": 6.35,
+      "field_night": 0.48,
+      "summit_night": -5.05
+    },
+    {
+      "month": "2026-01",
+      "field_day": 0.55,
+      "summit_day": -4.45,
+      "field_night": -8.05,
+      "summit_night": -11.65
+    },
+    {
+      "month": "2026-02",
+      "field_day": 17.55,
+      "summit_day": 11.75,
+      "field_night": 0.55,
+      "summit_night": -3.85
+    },
+    {
+      "month": "2026-03",
+      "field_day": 17.08,
+      "summit_day": 5.15,
+      "field_night": -0.25,
+      "summit_night": -5.65
+    },
+    {
+      "month": "2026-04",
+      "field_day": 25.75,
+      "summit_day": 18.95,
+      "field_night": 4.95,
+      "summit_night": -0.85
+    },
+    {
+      "month": "2026-05",
+      "field_day": 33.42,
+      "summit_day": 29.75,
+      "field_night": 11.02,
+      "summit_night": 4.55
+    },
+    {
+      "month": "2026-06",
+      "field_day": 50.15,
+      "summit_day": 40.55,
+      "field_night": 19.62,
+      "summit_night": 11.15
+    },
+    {
+      "month": "2026-07",
+      "field_day": 54.48,
+      "summit_day": 47.15,
+      "field_night": 23.88,
+      "summit_night": 15.35
+    },
+    {
+      "month": "2026-08",
+      "field_day": 52.35,
+      "summit_day": 44.75,
+      "field_night": 23.08,
+      "summit_night": 15.35
+    },
+    {
+      "month": "2026-09",
+      "field_day": 46.75,
+      "summit_day": 38.75,
+      "field_night": 18.95,
+      "summit_night": 11.15
+    },
+    {
+      "month": "2026-10",
+      "field_day": 28.62,
+      "summit_day": 22.55,
+      "field_night": 10.42,
+      "summit_night": 4.55
+    }
+  ],
+  "lst_annual": {
+    "field_day": 30.4,
+    "field_night": 9.13,
+    "summit_day": 23.5,
+    "summit_night": 3.05
+  }
+}
