@@ -1,18 +1,13 @@
 import { Canvas } from '@react-three/fiber'
-import type { Dem } from '../lib/dem'
-import type { Fields } from '../lib/layers'
 import { HOME_POSITION } from '../lib/camera'
+import type { World } from '../lib/layers'
+import { Animator } from './Animator'
 import { CameraRig } from './CameraRig'
 import { StationMarkers } from './StationMarkers'
 import { SunLight } from './SunLight'
 import { TerrainMesh } from './TerrainMesh'
 
-interface Props {
-  dem: Dem
-  fields: Fields
-}
-
-export function Scene3D({ dem, fields }: Props) {
+export function Scene3D({ world }: { world: World }) {
   return (
     <Canvas
       shadows
@@ -21,10 +16,11 @@ export function Scene3D({ dem, fields }: Props) {
     >
       <color attach="background" args={['#050506']} />
       <hemisphereLight args={['#aab4c8', '#050506', 0.3]} />
+      <Animator />
       <SunLight />
-      <TerrainMesh dem={dem} fields={fields} />
-      <StationMarkers dem={dem} />
-      <CameraRig dem={dem} />
+      <TerrainMesh world={world} />
+      <StationMarkers world={world} />
+      <CameraRig dem={world.earth.dem} />
     </Canvas>
   )
 }

@@ -1,13 +1,14 @@
-import { STATIONS, TUBE_STATS } from '../data/field'
-import { EXTENT_KM, type Dem } from '../lib/dem'
+import { EXTENT_KM } from '../lib/dem'
+import type { World } from '../lib/layers'
 
 /** The scene in one line of facts. */
-export function StatTiles({ dem }: { dem: Dem | null }) {
+export function StatTiles({ world }: { world: World }) {
+  const { dem } = world.earth
   const facts: [string, string][] = [
-    [dem ? `${dem.min.toFixed(0)}–${dem.max.toFixed(0)} m` : '…', 'elevation'],
+    [`${dem.min.toFixed(0)}–${dem.max.toFixed(0)} m`, 'elevation'],
     [`${EXTENT_KM.toFixed(0)} km`, 'across'],
-    [String(STATIONS.length), 'stations'],
-    [`${(TUBE_STATS.damping * 100).toFixed(0)}%†`, 'swing damped in tube'],
+    ['11', 'elevation models'],
+    ['12', 'months of VIIRS'],
   ]
 
   return (

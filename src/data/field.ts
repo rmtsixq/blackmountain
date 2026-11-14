@@ -121,13 +121,3 @@ export const ROCK_CURVE: RockPoint[] = DIAMETERS.map((d, i) => ({
   fresh: +(rockModel(0.25, d) * (1 + Math.sin(i * 2.1) * 0.09)).toFixed(3),
   weathered: +(rockModel(0.075, d) * (1 + Math.cos(i * 1.6) * 0.12)).toFixed(3),
 }))
-
-// ── Low-sun rock-detection test ──────────────────────────────────────────────
-
-export const LIGHT_TEST = [
-  { elevation: 33, label: 'Noon', recall: 94, shadow: 6 },
-  { elevation: 20, label: '15:00', recall: 91, shadow: 11 },
-  { elevation: 10, label: '16:10', recall: 79, shadow: 24 },
-  { elevation: 5, label: '16:35', recall: 62, shadow: 41 },
-  { elevation: 2, label: '16:50', recall: 43, shadow: 63 },
-]

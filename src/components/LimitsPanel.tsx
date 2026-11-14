@@ -1,7 +1,9 @@
 import { AXES, EARTH_LIMITS, TARGETS } from '../data/targets'
+import type { World } from '../lib/layers'
+import { axisResults } from '../lib/scores'
 import { Panel } from './Panel'
 
-export function LimitsPanel() {
+export function LimitsPanel({ world }: { world: World }) {
   return (
     <>
       <Panel
@@ -20,17 +22,24 @@ export function LimitsPanel() {
         </ol>
       </Panel>
 
-      <Panel title="The weakest axis for each target" hint="Where each comparison should not be trusted." demo>
+      <Panel
+        title="The weakest measured axis for each target"
+        hint="Where each comparison should not be trusted."
+      >
         <ul className="space-y-5">
           {TARGETS.map((t) => {
-            const worst = [...AXES].sort((a, b) => t.axes[a.id].score - t.axes[b.id].score)[0]
-            const axis = t.axes[worst.id]
+            const results = axisResults(t, world)
+            const worst = AXES.filter((a) => results[a.id].status !== 'placeholder').sort(
+              (a, b) => results[a.id].score - results[b.id].score,
+            )[0]
+            const axis = results[worst.id]
             return (
               <li key={t.id}>
                 <p className="flex items-baseline justify-between text-[14px] text-white">
                   {t.name}
                   <span className="font-mono text-[11px] text-zinc-500">
-                    {worst.label.toLowerCase()} <span className="text-ember">{axis.score}</span>
+                    {worst.label.toLowerCase()}{' '}
+                    <span className="text-ember">{axis.score.toFixed(0)}</span>
                   </span>
                 </p>
                 <p className="mt-1.5 text-[13px] leading-relaxed text-zinc-400">{axis.note}</p>

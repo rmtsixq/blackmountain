@@ -1,12 +1,14 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import type { Dem } from '../lib/dem'
 import { useStore, type SidebarTab } from '../store'
 import { AxisList } from './AxisList'
 import { FingerprintRadar } from './FingerprintRadar'
-import { LightTestChart } from './LightTestChart'
+import { Leaderboard } from './Leaderboard'
 import { LimitsPanel } from './LimitsPanel'
+import { LstYearChart } from './LstYearChart'
 import { RockAbundanceChart } from './RockAbundanceChart'
 import { ScoreHeader } from './ScoreHeader'
+import { ShadowChart } from './ShadowChart'
+import { SlopeChart } from './SlopeChart'
 import { StatTiles } from './StatTiles'
 import { StationDetail } from './StationDetail'
 import { TargetSelector } from './TargetSelector'
@@ -19,19 +21,34 @@ const TABS: { id: SidebarTab; label: string }[] = [
 ]
 
 /** The reading column: one answer at the top, the evidence below. */
-export function Sidebar({ dem }: { dem: Dem | null }) {
+export function Sidebar() {
+  const world = useStore((s) => s.world)
   const tab = useStore((s) => s.tab)
   const setTab = useStore((s) => s.setTab)
+  const shell =
+    'w-full shrink-0 border-t border-white/10 px-5 lg:w-[430px] lg:overflow-y-auto lg:border-l lg:border-t-0 lg:px-7'
+
+  if (!world) {
+    return (
+      <aside className={shell}>
+        <div className="animate-pulse space-y-4 py-8">
+          <div className="h-24 w-32 bg-white/5" />
+          <div className="h-4 w-3/4 bg-white/5" />
+          <div className="h-4 w-2/3 bg-white/5" />
+        </div>
+      </aside>
+    )
+  }
 
   return (
-    <aside className="w-full shrink-0 border-t border-white/10 px-5 lg:w-[430px] lg:overflow-y-auto lg:border-l lg:border-t-0 lg:px-7">
+    <aside className={shell}>
       <div className="pb-7 pt-6">
-        <ScoreHeader />
+        <ScoreHeader world={world} />
         <div className="mt-7 border-t border-white/10">
-          <TargetSelector />
+          <TargetSelector world={world} />
         </div>
         <div className="mt-5">
-          <StatTiles dem={dem} />
+          <StatTiles world={world} />
         </div>
       </div>
 
@@ -70,26 +87,30 @@ export function Sidebar({ dem }: { dem: Dem | null }) {
         >
           {tab === 'fingerprint' && (
             <>
-              <FingerprintRadar />
-              <AxisList />
+              <Leaderboard world={world} />
+              <SlopeChart world={world} />
+              <ShadowChart world={world} />
+              <FingerprintRadar world={world} />
+              <AxisList world={world} />
             </>
           )}
           {tab === 'field' && (
             <>
+              <LstYearChart world={world} />
               <StationDetail />
               <TubeProfileChart />
               <RockAbundanceChart />
-              <LightTestChart />
             </>
           )}
-          {tab === 'limits' && <LimitsPanel />}
+          {tab === 'limits' && <LimitsPanel world={world} />}
         </motion.div>
       </AnimatePresence>
 
       <p className="border-t border-white/10 py-6 text-[12px] leading-relaxed text-zinc-600">
-        † Placeholder values. Elevation, slope and the sun's position are computed from real data;
-        temperature, radar, scores and station readings are simulated until the field and
-        satellite data are loaded.
+        Elevation (Earth, Moon, Mars), VIIRS surface temperature, Sentinel-1 radar and the sun's
+        position are real data; every terrain and light score is computed from them in the
+        browser. † marks what is still a placeholder: radar and rock scores for the targets,
+        and the station readings, tube profile and rock counts awaiting the field campaign.
       </p>
     </aside>
   )

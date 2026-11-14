@@ -1,11 +1,11 @@
 # Project brief
 
 ## Project (fill this in)
-- **Idea:** BlackMountain — a twin-sensor "analog fingerprint" that scores the Karacadağ lava field (Ovabağ lava tubes) against Moon and Mars targets, for the NASA Space Apps 2026 analog challenge.
-- **Demo flow:** 3D terrain with data layers → pick a target (Arsia Mons / Tranquillitatis pit / Shackleton ridge) and read the fingerprint → Field tab: lava-tube thermal profile and rock counts → sun timeline to grazing light, then Limits.
+- **Idea:** BlackMountain — scores the Karacadağ lava field (SE Türkiye) as a Moon / Mars analog from real elevation, temperature and radar data, and ranks it against the analog sites NASA already uses. NASA Space Apps 2026.
+- **Demo flow:** press "play the 40 s tour" (sun sweep → VIIRS → Sentinel-1 → morph into Arsia Mons and the Shackleton ridge → terrain-match map). Then: space bar to morph, pick a target, read the leaderboard, Field tab, Limits tab.
 - **Judging criteria:** impact, creativity, validity, relevance, presentation.
-- **Data:** elevation is real; thermal, radar, scores and field readings are placeholders (marked † in the UI) until the team supplies data. See README "Data status".
-- **Design:** monochrome, no boxed cards, no badges or decorative icons; type and hairlines only, one accent (`ember`).
+- **Data:** everything drawn on the terrain is real (`scripts/ingest.py` → `public/data`). Terrain and light scores are computed in `src/lib/analysis.ts`. Still placeholders, marked † in the UI: radar and rock scores for the targets (`src/data/targets.ts`) and station readings, tube profile and rock counts (`src/data/field.ts`).
+- **Design:** monochrome, no boxed cards, no badges or decorative icons; type and hairlines only, one accent (`ember`). Never present a placeholder as measured.
 
 ## Stack
 Vite + React + TypeScript + Tailwind CSS v4 (already scaffolded and installed).

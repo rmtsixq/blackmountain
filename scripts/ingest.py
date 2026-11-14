@@ -303,7 +303,54 @@ def step_twins(manifest):
          source="LRO LOLA south pole DEM 20 m (NASA PGDA, Barker et al. 2021)")
 
 
-STEPS = {"lst": step_lst, "s1": step_s1, "twins": step_twins}
+# ── Established Earth analog sites, for benchmarking ─────────────────────────
+
+SITES = [
+    ("craters", "Craters of the Moon", "Idaho, USA", 43.2, -113.5, "NASA BASALT and FINESSE field site"),
+    ("maunaloa", "Mauna Loa", "Hawaiʻi, USA", 19.55, -155.55, "HI-SEAS habitat, BASALT field site"),
+    ("askja", "Askja", "Iceland", 65.05, -16.75, "Apollo and Artemis geology training"),
+    ("sfvf", "San Francisco Volcanic Field", "Arizona, USA", 35.45, -111.6, "Apollo training, Desert RATS"),
+    ("atacama", "Atacama, Yungay", "Chile", -24.08, -69.92, "Mars rover and life-detection trials"),
+    ("haughton", "Haughton Crater", "Devon Island, Canada", 75.38, -89.67, "Haughton-Mars Project"),
+    ("deathvalley", "Death Valley", "California, USA", 36.4, -116.9, "Mars instrument testing"),
+]
+TERRARIUM = "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
+
+
+def terrarium_square(lat, lon):
+    """A 62 km square of Earth elevation around (lat, lon), N x N."""
+    z = 11 if abs(lat) < 60 else 10
+    scale = 256 * 2**z
+    px_m = 40075016.7 * math.cos(math.radians(lat)) / scale
+    half = HALF_M / px_m
+    cx = (lon + 180) / 360 * scale
+    cy = (1 - math.asinh(math.tan(math.radians(lat))) / math.pi) / 2 * scale
+    x0, x1 = int((cx - half) // 256), int((cx + half) // 256)
+    y0, y1 = int((cy - half) // 256), int((cy + half) // 256)
+    mosaic = np.zeros(((y1 - y0 + 1) * 256, (x1 - x0 + 1) * 256), dtype=np.float32)
+    for ty in range(y0, y1 + 1):
+        for tx in range(x0, x1 + 1):
+            rgb = np.asarray(Image.open(io.BytesIO(fetch(TERRARIUM.format(z=z, x=tx, y=ty)))).convert("RGB"), dtype=np.float32)
+            mosaic[(ty - y0) * 256 : (ty - y0 + 1) * 256, (tx - x0) * 256 : (tx - x0 + 1) * 256] = (
+                rgb[..., 0] * 256 + rgb[..., 1] + rgb[..., 2] / 256 - 32768
+            )
+    box = (cx - half - x0 * 256, cy - half - y0 * 256, cx + half - x0 * 256, cy + half - y0 * 256)
+    # PIL widens the filter when shrinking, so this averages rather than point-samples
+    out = Image.fromarray(mosaic, mode="F").resize((N, N), Image.BILINEAR, box=box)
+    return np.asarray(out, dtype=np.float32), px_m
+
+
+def step_sites(manifest):
+    print("Benchmark analog sites (AWS Terrain Tiles)")
+    manifest["sites"] = []
+    for sid, name, region, lat, lon, why in SITES:
+        arr, native = terrarium_square(lat, lon)
+        save(manifest, f"site_{sid}", arr, unit="m", lat=lat, lon=lon, resolution_m=round(native),
+             source="AWS Terrain Tiles (SRTM / national DEMs)")
+        manifest["sites"].append({"id": sid, "name": name, "region": region, "lat": lat, "lon": lon, "why": why})
+
+
+STEPS = {"lst": step_lst, "s1": step_s1, "twins": step_twins, "sites": step_sites}
 
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)

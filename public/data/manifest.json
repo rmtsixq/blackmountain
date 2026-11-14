@@ -83,6 +83,90 @@
       "lon": 222.69,
       "resolution_m": 20,
       "source": "LRO LOLA south pole DEM 20 m (NASA PGDA, Barker et al. 2021)"
+    },
+    "site_craters": {
+      "file": "site_craters.bin",
+      "min": 1296.017,
+      "max": 2563.276,
+      "mean": 1524.109,
+      "valid": 1.0,
+      "unit": "m",
+      "lat": 43.2,
+      "lon": -113.5,
+      "resolution_m": 56,
+      "source": "AWS Terrain Tiles (SRTM / national DEMs)"
+    },
+    "site_maunaloa": {
+      "file": "site_maunaloa.bin",
+      "min": 17.955,
+      "max": 4179.34,
+      "mean": 1991.117,
+      "valid": 1.0,
+      "unit": "m",
+      "lat": 19.55,
+      "lon": -155.55,
+      "resolution_m": 72,
+      "source": "AWS Terrain Tiles (SRTM / national DEMs)"
+    },
+    "site_askja": {
+      "file": "site_askja.bin",
+      "min": 344.541,
+      "max": 1623.887,
+      "mean": 721.847,
+      "valid": 1.0,
+      "unit": "m",
+      "lat": 65.05,
+      "lon": -16.75,
+      "resolution_m": 64,
+      "source": "AWS Terrain Tiles (SRTM / national DEMs)"
+    },
+    "site_sfvf": {
+      "file": "site_sfvf.bin",
+      "min": 1279.389,
+      "max": 3826.088,
+      "mean": 1969.151,
+      "valid": 1.0,
+      "unit": "m",
+      "lat": 35.45,
+      "lon": -111.6,
+      "resolution_m": 62,
+      "source": "AWS Terrain Tiles (SRTM / national DEMs)"
+    },
+    "site_atacama": {
+      "file": "site_atacama.bin",
+      "min": 674.479,
+      "max": 2608.212,
+      "mean": 1187.99,
+      "valid": 1.0,
+      "unit": "m",
+      "lat": -24.08,
+      "lon": -69.92,
+      "resolution_m": 70,
+      "source": "AWS Terrain Tiles (SRTM / national DEMs)"
+    },
+    "site_haughton": {
+      "file": "site_haughton.bin",
+      "min": -3.265,
+      "max": 454.881,
+      "mean": 240.848,
+      "valid": 1.0,
+      "unit": "m",
+      "lat": 75.38,
+      "lon": -89.67,
+      "resolution_m": 39,
+      "source": "AWS Terrain Tiles (SRTM / national DEMs)"
+    },
+    "site_deathvalley": {
+      "file": "site_deathvalley.bin",
+      "min": -141.409,
+      "max": 3340.81,
+      "mean": 795.462,
+      "valid": 1.0,
+      "unit": "m",
+      "lat": 36.4,
+      "lon": -116.9,
+      "resolution_m": 62,
+      "source": "AWS Terrain Tiles (SRTM / national DEMs)"
     }
   },
   "lst_series": [
@@ -176,5 +260,63 @@
     "field_night": 9.13,
     "summit_day": 23.5,
     "summit_night": 3.05
-  }
+  },
+  "sites": [
+    {
+      "id": "craters",
+      "name": "Craters of the Moon",
+      "region": "Idaho, USA",
+      "lat": 43.2,
+      "lon": -113.5,
+      "why": "NASA BASALT and FINESSE field site"
+    },
+    {
+      "id": "maunaloa",
+      "name": "Mauna Loa",
+      "region": "Hawai\u02bbi, USA",
+      "lat": 19.55,
+      "lon": -155.55,
+      "why": "HI-SEAS habitat, BASALT field site"
+    },
+    {
+      "id": "askja",
+      "name": "Askja",
+      "region": "Iceland",
+      "lat": 65.05,
+      "lon": -16.75,
+      "why": "Apollo and Artemis geology training"
+    },
+    {
+      "id": "sfvf",
+      "name": "San Francisco Volcanic Field",
+      "region": "Arizona, USA",
+      "lat": 35.45,
+      "lon": -111.6,
+      "why": "Apollo training, Desert RATS"
+    },
+    {
+      "id": "atacama",
+      "name": "Atacama, Yungay",
+      "region": "Chile",
+      "lat": -24.08,
+      "lon": -69.92,
+      "why": "Mars rover and life-detection trials"
+    },
+    {
+      "id": "haughton",
+      "name": "Haughton Crater",
+      "region": "Devon Island, Canada",
+      "lat": 75.38,
+      "lon": -89.67,
+      "why": "Haughton-Mars Project"
+    },
+    {
+      "id": "deathvalley",
+      "name": "Death Valley",
+      "region": "California, USA",
+      "lat": 36.4,
+      "lon": -116.9,
+      "why": "Mars instrument testing"
+    }
+  ]
 }

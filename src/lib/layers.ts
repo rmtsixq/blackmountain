@@ -1,206 +1,180 @@
-// Raster layers draped on the terrain.
-// Elevation, slope and the baked relief shading are computed from the real DEM.
-// Thermal, radar roughness and the analog score are SIMULATED placeholders with
-// the same shape and units the satellite products will have.
+// Raster layers draped on the terrain. All of them are real data:
+// elevation and slope from the DEMs, surface temperature from VIIRS,
+// radar backscatter from Sentinel-1, and a terrain match computed in
+// src/lib/analysis.ts.
 
-import { CELL_M, GRID, lonLatToUV, type Dem } from './dem'
-import { clamp01, fbm, smoothstep } from './noise'
-import { solarPosition } from './solar'
+import { cellMetres, type Dem } from './dem'
+import { clamp01 } from './noise'
+import type { Analysis } from './analysis'
+import type { Manifest } from './data'
 import type { TargetId } from '../data/targets'
 
-export type LayerId = 'terrain' | 'thermal' | 'roughness' | 'slope' | 'score'
+export type LayerId = 'terrain' | 'thermal' | 'swing' | 'radar' | 'slope' | 'score'
+export type Side = 'earth' | 'twin'
 
 export interface LayerMeta {
   id: LayerId
   label: string
   unit: string
   source: string
-  twin: string
-  simulated: boolean
+  /** also available on the Moon / Mars twin terrain */
+  onTwin: boolean
   stops: string[]
 }
+
+const INFERNO = ['#000004', '#1b0c41', '#4a0c6b', '#781c6d', '#a52c60', '#cf4446', '#ed6925', '#fb9b06', '#f7d13d', '#fcffa4']
 
 export const LAYERS: LayerMeta[] = [
   {
     id: 'terrain',
     label: 'Elevation',
     unit: 'm',
-    source: 'Terrain tiles (SRTM-derived)',
-    twin: 'LOLA · MOLA',
-    simulated: false,
+    source: 'SRTM-derived terrain tiles',
+    onTwin: true,
     stops: ['#0b0c0f', '#1c1d22', '#34343a', '#5a5856', '#8c8780', '#c9c4bb', '#f2efe9'],
   },
   {
     id: 'thermal',
-    label: 'Surface temperature',
+    label: 'Surface temperature, 13:30',
     unit: '°C',
-    source: 'VIIRS LST · 13:30 overpass',
-    twin: 'Diviner · THEMIS',
-    simulated: true,
-    stops: ['#000004', '#1b0c41', '#4a0c6b', '#781c6d', '#a52c60', '#cf4446', '#ed6925', '#fb9b06', '#f7d13d', '#fcffa4'],
+    source: 'VIIRS S-NPP, Oct 2026 mean (NASA GIBS)',
+    onTwin: false,
+    stops: INFERNO,
   },
   {
-    id: 'roughness',
-    label: 'Radar roughness',
+    id: 'swing',
+    label: 'Day–night swing',
+    unit: 'K',
+    source: 'VIIRS 13:30 minus 01:30, Oct 2026',
+    onTwin: false,
+    stops: ['#03051a', '#2a1150', '#5f187f', '#982d80', '#d3436e', '#f8765c', '#febb81', '#fcfdbf'],
+  },
+  {
+    id: 'radar',
+    label: 'Radar backscatter',
     unit: 'dB',
-    source: 'Sentinel-1 σ⁰ VV',
-    twin: 'Mini-RF · SHARAD',
-    simulated: true,
+    source: 'Sentinel-1 C-band VV, Sep–Nov',
+    onTwin: false,
     stops: ['#0b0405', '#2a1c3d', '#3b3472', '#3a5a99', '#3482a4', '#37a8ac', '#5fceac', '#b3e7c5', '#def5e5'],
   },
   {
     id: 'slope',
     label: 'Slope',
     unit: '°',
-    source: 'Derived from DEM',
-    twin: 'LOLA · HiRISE DTM',
-    simulated: false,
+    source: 'Derived from elevation',
+    onTwin: true,
     stops: ['#440154', '#482878', '#3e4989', '#31688e', '#26828e', '#1f9e89', '#35b779', '#6ece58', '#b5de2b', '#fde725'],
   },
   {
     id: 'score',
-    label: 'Analog score',
+    label: 'Terrain match',
     unit: '%',
-    source: 'Twin-sensor fusion',
-    twin: 'Selected target',
-    simulated: true,
+    source: 'Slope + roughness statistics vs target',
+    onTwin: false,
     stops: ['#050506', '#1a1020', '#4a1528', '#8f2323', '#d9481c', '#ff8a3d', '#ffd08a', '#ffffff'],
   },
 ]
 
 export const layerById = (id: LayerId) => LAYERS.find((l) => l.id === id)!
 
-export interface Fields {
+/** The layer actually drawn: twins only carry elevation and slope. */
+export const effectiveLayer = (layer: LayerId, side: Side): LayerId =>
+  side === 'twin' && !layerById(layer).onTwin ? 'terrain' : layer
+
+/** A terrain with what is needed to draw it. */
+export interface Surface {
+  dem: Dem
   slope: Float32Array
-  thermal: Float32Array
-  roughness: Float32Array
   /** 0..1 baked relief shading (NW light) */
   shade: Float32Array
+}
+
+export interface EarthSurface extends Surface {
+  thermal: Float32Array
+  swing: Float32Array
+  radar: Float32Array
   score: Record<TargetId, Float32Array>
+}
+
+export interface World {
+  earth: EarthSurface
+  twins: Record<TargetId, Surface>
+  analysis: Analysis
+  manifest: Manifest
+  domains: Record<'thermal' | 'swing' | 'radar', [number, number]>
 }
 
 const DEG = 180 / Math.PI
 
-export function computeFields(dem: Dem): Fields {
+export function derive(dem: Dem): Surface {
   const N = dem.size
   const h = dem.heights
-  const size = N * N
-  const slope = new Float32Array(size)
-  const thermal = new Float32Array(size)
-  const roughness = new Float32Array(size)
-  const shade = new Float32Array(size)
-  const arsia = new Float32Array(size)
-  const tranq = new Float32Array(size)
-  const shackleton = new Float32Array(size)
-
-  const sun = solarPosition(13.5)
-  // Approximate centres of the young Ovabağ field and the summit fissure.
-  const field = lonLatToUV(40.0, 37.69)
-  const summit = lonLatToUV(39.828, 37.712)
-
+  const cell = cellMetres(dem)
+  const slope = new Float32Array(N * N)
+  const shade = new Float32Array(N * N)
   for (let y = 0; y < N; y++) {
     const ym = y > 0 ? y - 1 : y
     const yp = y < N - 1 ? y + 1 : y
-    const v = y / (N - 1)
     for (let x = 0; x < N; x++) {
       const xm = x > 0 ? x - 1 : x
       const xp = x < N - 1 ? x + 1 : x
       const i = y * N + x
-      const u = x / (N - 1)
-
-      // gradients: east and north, metres per metre
-      const gx = (h[y * N + xp] - h[y * N + xm]) / ((xp - xm) * CELL_M)
-      const gn = (h[ym * N + x] - h[yp * N + x]) / ((yp - ym) * CELL_M)
-      const sl = Math.atan(Math.hypot(gx, gn)) * DEG
-      slope[i] = sl
-
+      const gx = (h[y * N + xp] - h[y * N + xm]) / ((xp - xm) * cell)
+      const gn = (h[ym * N + x] - h[yp * N + x]) / ((yp - ym) * cell)
+      slope[i] = Math.atan(Math.hypot(gx, gn)) * DEG
       const ex = 3
       shade[i] = Math.max(
         0,
         (gx * ex * 0.5 - gn * ex * 0.5 + 0.7071) / Math.hypot(gx * ex, gn * ex, 1),
       )
-
-      const f1 = fbm(u * 9, v * 9, 11, 4)
-      const f2 = fbm(u * 42, v * 42, 23, 3)
-
-      // simulated young-lava mask
-      const d = Math.hypot(u - field.u, v - field.v)
-      let lava = Math.exp(-(d * d) / (2 * 0.11 * 0.11)) * (0.35 + 1.1 * f1)
-      const dr = Math.abs(u - summit.u - (v - summit.v) * 0.1)
-      const dv = v - summit.v
-      lava +=
-        0.5 *
-        Math.exp(-(dr * dr) / (2 * 0.035 * 0.035)) *
-        Math.exp(-(dv * dv) / (2 * 0.2 * 0.2)) *
-        (0.3 + f1)
-      lava = smoothstep(0.38, 0.72, lava)
-
-      const insolation =
-        (-gx * sun.e - gn * sun.n + sun.up) / Math.hypot(gx, gn, 1)
-      thermal[i] =
-        17 -
-        (6.5 * (h[i] - 700)) / 1000 +
-        6.5 * lava +
-        14 * (insolation - sun.up) +
-        2 * (f2 - 0.5)
-
-      roughness[i] =
-        -19.5 + 8.5 * lava * (0.55 + 0.45 * f2) + 0.22 * sl + 2.5 * (f1 - 0.5)
-
-      const flat = 1 - smoothstep(3, 12, sl)
-      const steep = smoothstep(6, 22, sl)
-      const northFacing = clamp01(0.5 - gn * 6)
-      arsia[i] =
-        100 * clamp01(0.12 + 0.5 * lava + 0.2 * flat + 0.18 * lava * f2 + 0.08 * (f1 - 0.5))
-      tranq[i] =
-        100 * clamp01(0.08 + 0.62 * lava * flat + 0.12 * flat + 0.1 * (f2 - 0.5))
-      shackleton[i] =
-        100 *
-        clamp01(
-          0.04 +
-            0.42 * steep +
-            0.22 * northFacing * steep +
-            0.1 * smoothstep(1400, 1900, h[i]) +
-            0.06 * (f1 - 0.5),
-        )
     }
   }
-
-  return { slope, thermal, roughness, shade, score: { arsia, tranq, shackleton } }
+  return { dem, slope, shade }
 }
 
-export function layerDomain(layer: LayerId, dem: Dem): [number, number] {
-  switch (layer) {
-    case 'terrain':
-      return [Math.floor(dem.min / 50) * 50, Math.ceil(dem.max / 50) * 50]
-    case 'thermal':
-      return [4, 30]
-    case 'roughness':
-      return [-22, -6]
-    case 'slope':
-      return [0, 25]
-    case 'score':
-      return [0, 100]
-  }
+/** Robust display range: the 2nd to 98th percentile, rounded outward. */
+export function percentileDomain(values: Float32Array): [number, number] {
+  const sample = new Float32Array(Math.ceil(values.length / 16))
+  for (let i = 0; i < sample.length; i++) sample[i] = values[i * 16]
+  sample.sort()
+  return [
+    Math.floor(sample[Math.floor(sample.length * 0.02)]),
+    Math.ceil(sample[Math.floor(sample.length * 0.98)]),
+  ]
 }
 
-export function layerField(
-  layer: LayerId,
-  dem: Dem,
-  fields: Fields,
-  target: TargetId,
-): Float32Array {
-  switch (layer) {
+export interface LayerData {
+  layer: LayerId
+  surface: Surface
+  values: Float32Array
+  domain: [number, number]
+}
+
+/** Values, range and terrain for what is on screen. */
+export function layerData(world: World, layer: LayerId, target: TargetId, side: Side): LayerData {
+  const id = effectiveLayer(layer, side)
+  const surface = side === 'twin' ? world.twins[target] : world.earth
+  const { dem } = surface
+  switch (id) {
     case 'terrain':
-      return dem.heights
-    case 'thermal':
-      return fields.thermal
-    case 'roughness':
-      return fields.roughness
+      return {
+        layer: id,
+        surface,
+        values: dem.heights,
+        domain: [Math.floor(dem.min / 50) * 50, Math.ceil(dem.max / 50) * 50],
+      }
     case 'slope':
-      return fields.slope
-    case 'score':
-      return fields.score[target]
+      return { layer: id, surface, values: surface.slope, domain: [0, 30] }
+    case 'thermal':
+      return { layer: id, surface, values: world.earth.thermal, domain: world.domains.thermal }
+    case 'swing':
+      return { layer: id, surface, values: world.earth.swing, domain: world.domains.swing }
+    case 'radar':
+      return { layer: id, surface, values: world.earth.radar, domain: world.domains.radar }
+    case 'score': {
+      const values = world.earth.score[target]
+      return { layer: id, surface, values, domain: percentileDomain(values) }
+    }
   }
 }
 
@@ -229,29 +203,23 @@ function getLut(layer: LayerId) {
 }
 
 /** Paint a layer to a canvas: colour ramp × relief shading + 100 m contours. */
-export function bakeLayer(
-  dem: Dem,
-  fields: Fields,
-  layer: LayerId,
-  target: TargetId,
-): HTMLCanvasElement {
-  const N = dem.size
+export function bakeLayer({ layer, surface, values, domain }: LayerData): HTMLCanvasElement {
+  const N = surface.dem.size
   const canvas = document.createElement('canvas')
   canvas.width = canvas.height = N
   const ctx = canvas.getContext('2d')!
   const img = ctx.createImageData(N, N)
   const out = img.data
-  const src = layerField(layer, dem, fields, target)
-  const [lo, hi] = layerDomain(layer, dem)
+  const [lo, hi] = domain
   const lut = getLut(layer)
-  const h = dem.heights
+  const h = surface.dem.heights
   const base = layer === 'terrain' ? 0.62 : 0.8
   const amp = layer === 'terrain' ? 0.55 : 0.28
   const contour = layer === 'terrain' ? 1 : 0.6
 
   for (let i = 0; i < N * N; i++) {
-    const k = (clamp01((src[i] - lo) / (hi - lo)) * 255) | 0
-    const s = base + amp * fields.shade[i]
+    const k = (clamp01((values[i] - lo) / (hi - lo)) * 255) | 0
+    const s = base + amp * surface.shade[i]
     let r = lut[k * 3] * s
     let g = lut[k * 3 + 1] * s
     let b = lut[k * 3 + 2] * s
@@ -280,9 +248,7 @@ export function bakeLayer(
   return canvas
 }
 
-export const GRID_SIZE = GRID
-
-/** Colour of a layer value as linear-ish 0..1 RGB, for vertex colouring. */
+/** Colour of a layer value as 0..1 RGB, for vertex colouring. */
 export function layerColor(
   layer: LayerId,
   value: number,

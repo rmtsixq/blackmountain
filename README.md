@@ -1,35 +1,52 @@
 # BlackMountain
 
-A twin-sensor analog fingerprint of Karacadağ (SE Türkiye) for Moon and Mars exploration.
-Built for the NASA Space Apps Challenge 2026: *Identify Earth Locations that Analog the Permanent Moon Base Locations and Mars*.
+Is Karacadağ, a little-studied basalt shield in southeast Türkiye, a useful stand-in for the Moon and Mars?
+BlackMountain answers with real data: it compares the mountain with three exploration targets using the same measurements on both worlds, and ranks it against the analog sites NASA already uses.
 
-The young basalt flows and lava tubes around Ovabağ are compared against three targets — Arsia Mons (Mars), the Mare Tranquillitatis pit and the Shackleton Connecting Ridge (Moon) — on five axes. Each axis pairs an Earth instrument with a Moon/Mars instrument that measures the same physics, and states where the analogy breaks.
+Built for the NASA Space Apps Challenge 2026, *Identify Earth Locations that Analog the Permanent Moon Base Locations and Mars*.
 
 ## Screenshots
 
 _Add screenshots here._
 
-## What is in the app
+## What it does
 
-- **3D terrain** of a 62 × 62 km scene, drawn as stacked elevation profiles coloured by the active data layer.
-- **Layers:** elevation, surface temperature, radar roughness, slope, analog score per target.
-- **Sun simulation:** real solar geometry for the field day; drag the timeline to cast shadows, including the grazing light used for the polar-light test.
-- **Probe:** hover the terrain for coordinates, values and the west–east transect.
-- **Fingerprint:** radar chart and axis-by-axis comparison per target.
-- **Field:** stations, lava-tube thermal profile, rock abundance against the Golombek–Rapp model, low-sun rock detection.
-- **Limits:** what Earth cannot reproduce.
+- **Morph.** Press space: Karacadağ turns into Arsia Mons (Mars), the Mare Tranquillitatis pit region or the Shackleton connecting ridge (Moon) — real elevation, the same 62 km square, the same vertical scale.
+- **Terrain match.** Slope, roughness and relief distributions are computed on every elevation model at a 480 m baseline and compared (Jensen–Shannon distance). A map shows where on the mountain the ground is closest to each target.
+- **Leaderboard.** The same score for seven established analog sites (Mauna Loa, Craters of the Moon, Askja, San Francisco Volcanic Field, Atacama, Haughton, Death Valley), so the number means something.
+- **Light.** Real solar geometry on the terrain, and shadow curves ray-traced on each elevation model with planetary curvature — the lunar south pole never sees the sun above about 1.5°.
+- **Heat and radar.** VIIRS surface temperature (day, night, a full year) and Sentinel-1 backscatter draped on the terrain.
+- **Limits.** Where each analogy breaks, stated next to every score.
+- **Tour.** A 40-second guided sequence for the demo video.
 
-Deep links: `?layer=score&target=tranq&hour=16.6`.
+Deep links: `?target=shackleton&twin=1&layer=terrain&hour=16.6` (`still=1` skips transitions).
 
-## Data status
+## Results so far
 
-| Real | Simulated placeholder (marked † in the UI) |
+Terrain match of Karacadağ, and its rank among eight Earth sites:
+
+| Target | Match | Rank | Leader |
+|---|---|---|---|
+| Arsia Mons, Mars | 60% | 6th | Mauna Loa |
+| Mare Tranquillitatis pit region, Moon | 63% | 3rd | Craters of the Moon |
+| Shackleton connecting ridge, Moon | 46% | 6th | Mauna Loa |
+
+Mauna Loa, the standard shield-volcano analog, comes out first for Arsia Mons, which is a sanity check on the method.
+The scores describe one 62 km window per site and terrain only.
+
+## Data
+
+| Layer | Source |
 |---|---|
-| Elevation (`public/dem`, Terrarium tiles, zoom 11) | Surface temperature, radar roughness |
-| Slope, relief shading | Analog scores and axis read-outs |
-| Sun position | Station positions and readings, tube profile, rock counts |
+| Earth elevation | AWS Terrain Tiles (SRTM-derived) |
+| Surface temperature | VIIRS S-NPP monthly LST via NASA GIBS (the service behind NASA Worldview) |
+| Radar | Sentinel-1 C-band seasonal backscatter (Copernicus; Earth Big Data on AWS Open Data) |
+| Mars elevation | MOLA + HRSC blended DEM, 200 m (USGS Astrogeology) |
+| Moon elevation | LRO LOLA 118 m global (USGS) and 20 m south-pole model (NASA PGDA) |
 
-To swap in real data: station and chart values live in `src/data/field.ts`, target scores in `src/data/targets.ts`, raster layers in `computeFields` in `src/lib/layers.ts`.
+`python scripts/ingest.py` fetches all of it into `public/data` (`pip install -r scripts/requirements.txt`).
+
+**Still placeholders**, marked † in the app: radar and rock scores for the targets, and the station positions and readings, lava-tube temperature profile and rock counts that the field campaign will replace (`src/data/field.ts`, `src/data/targets.ts`).
 
 ## Run
 
@@ -40,6 +57,4 @@ npm run dev
 
 ## Tech
 
-Vite, React, TypeScript, Tailwind CSS v4, three.js (react-three-fiber, drei), Recharts, Zustand, Framer Motion.
-
-Elevation: Terrain Tiles on AWS (SRTM-derived).
+Vite, React, TypeScript, Tailwind CSS v4, three.js (react-three-fiber, drei), Recharts, Zustand, Framer Motion. Python (rasterio, numpy) for data ingest.

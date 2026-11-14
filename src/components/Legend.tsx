@@ -1,20 +1,22 @@
-import type { Dem } from '../lib/dem'
-import { layerById, layerDomain } from '../lib/layers'
+import { layerById, layerData, type World } from '../lib/layers'
 import { targetById } from '../data/targets'
 import { useStore } from '../store'
 
-export function Legend({ dem }: { dem: Dem }) {
+export function Legend({ world }: { world: World }) {
   const layerId = useStore((s) => s.layer)
   const targetId = useStore((s) => s.target)
-  const layer = layerById(layerId)
-  const [lo, hi] = layerDomain(layerId, dem)
+  const side = useStore((s) => s.side)
+  const data = layerData(world, layerId, targetId, side)
+  const layer = layerById(data.layer)
+  const [lo, hi] = data.domain
 
   return (
     <div className="w-full">
       <p className="truncate text-[12px] text-zinc-300">
         {layer.label}
-        {layerId === 'score' && <span className="text-zinc-500">, {targetById(targetId).name}</span>}
-        {layer.simulated && <sup className="ml-0.5 text-zinc-600">†</sup>}
+        {(data.layer === 'score' || side === 'twin') && (
+          <span className="text-zinc-500">, {targetById(targetId).name}</span>
+        )}
       </p>
       <div
         className="mt-2 h-[3px]"

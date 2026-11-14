@@ -1,7 +1,9 @@
-import { TARGETS, overallScore } from '../data/targets'
+import { TARGETS } from '../data/targets'
+import type { World } from '../lib/layers'
+import { terrainScore } from '../lib/scores'
 import { useStore } from '../store'
 
-export function TargetSelector() {
+export function TargetSelector({ world }: { world: World }) {
   const target = useStore((s) => s.target)
   const setTarget = useStore((s) => s.setTarget)
 
@@ -22,7 +24,9 @@ export function TargetSelector() {
               <span className={`size-1.5 shrink-0 -translate-y-0.5 ${on ? 'bg-ember' : 'bg-transparent'}`} />
               <span className="w-10 shrink-0 font-mono text-[11px]">{t.body}</span>
               <span className="flex-1 truncate text-[14px]">{t.name}</span>
-              <span className="font-mono text-[12px] tabular-nums">{overallScore(t).toFixed(0)}</span>
+              <span className="font-mono text-[12px] tabular-nums">
+                {terrainScore(t, world).toFixed(0)}
+              </span>
             </button>
           </li>
         )
