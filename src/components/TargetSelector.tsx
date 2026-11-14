@@ -6,44 +6,27 @@ export function TargetSelector() {
   const setTarget = useStore((s) => s.setTarget)
 
   return (
-    <div className="grid grid-cols-3 gap-2">
+    <ul>
       {TARGETS.map((t) => {
         const on = t.id === target
         return (
-          <button
-            key={t.id}
-            type="button"
-            aria-pressed={on}
-            onClick={() => setTarget(t.id)}
-            className={`rounded-xl border p-2.5 text-left transition-all ${
-              on
-                ? 'border-white/30 bg-white/8 shadow-lg shadow-black/40'
-                : 'border-white/8 bg-ink-800/40 hover:border-white/20 hover:bg-white/4'
-            }`}
-          >
-            <div className="flex items-center justify-between">
-              <span
-                className="font-mono text-[9px] uppercase tracking-[0.18em]"
-                style={{ color: t.color }}
-              >
-                {t.body}
-              </span>
-              <span className="font-mono text-[11px] tabular-nums text-zinc-400">
-                {overallScore(t).toFixed(0)}
-              </span>
-            </div>
-            <p className={`mt-1.5 text-[12px] font-medium leading-tight ${on ? 'text-white' : 'text-zinc-300'}`}>
-              {t.name}
-            </p>
-            <div className="mt-2 h-0.5 overflow-hidden rounded-full bg-white/8">
-              <div
-                className="h-full rounded-full transition-all duration-500"
-                style={{ width: `${overallScore(t)}%`, background: t.color, opacity: on ? 1 : 0.45 }}
-              />
-            </div>
-          </button>
+          <li key={t.id} className="border-b border-white/10 last:border-b-0">
+            <button
+              type="button"
+              aria-pressed={on}
+              onClick={() => setTarget(t.id)}
+              className={`flex w-full items-baseline gap-3 py-2.5 text-left transition-colors ${
+                on ? 'text-white' : 'text-zinc-500 hover:text-zinc-200'
+              }`}
+            >
+              <span className={`size-1.5 shrink-0 -translate-y-0.5 ${on ? 'bg-ember' : 'bg-transparent'}`} />
+              <span className="w-10 shrink-0 font-mono text-[11px]">{t.body}</span>
+              <span className="flex-1 truncate text-[14px]">{t.name}</span>
+              <span className="font-mono text-[12px] tabular-nums">{overallScore(t).toFixed(0)}</span>
+            </button>
+          </li>
         )
       })}
-    </div>
+    </ul>
   )
 }

@@ -1,5 +1,4 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { Fingerprint, MapPinned, Unlink, type LucideIcon } from 'lucide-react'
 import type { Dem } from '../lib/dem'
 import { useStore, type SidebarTab } from '../store'
 import { AxisList } from './AxisList'
@@ -13,25 +12,30 @@ import { StationDetail } from './StationDetail'
 import { TargetSelector } from './TargetSelector'
 import { TubeProfileChart } from './TubeProfileChart'
 
-const TABS: { id: SidebarTab; label: string; icon: LucideIcon }[] = [
-  { id: 'fingerprint', label: 'Fingerprint', icon: Fingerprint },
-  { id: 'field', label: 'Field data', icon: MapPinned },
-  { id: 'limits', label: 'Limits', icon: Unlink },
+const TABS: { id: SidebarTab; label: string }[] = [
+  { id: 'fingerprint', label: 'Fingerprint' },
+  { id: 'field', label: 'Field' },
+  { id: 'limits', label: 'Limits' },
 ]
 
+/** The reading column: one answer at the top, the evidence below. */
 export function Sidebar({ dem }: { dem: Dem | null }) {
   const tab = useStore((s) => s.tab)
   const setTab = useStore((s) => s.setTab)
 
   return (
-    <aside className="flex w-full shrink-0 flex-col border-t border-white/8 bg-ink-900 lg:w-[440px] lg:overflow-y-auto lg:border-l lg:border-t-0">
-      <div className="space-y-4 p-4">
-        <TargetSelector />
+    <aside className="w-full shrink-0 border-t border-white/10 px-5 lg:w-[430px] lg:overflow-y-auto lg:border-l lg:border-t-0 lg:px-7">
+      <div className="pb-7 pt-6">
         <ScoreHeader />
-        <StatTiles dem={dem} />
+        <div className="mt-7 border-t border-white/10">
+          <TargetSelector />
+        </div>
+        <div className="mt-5">
+          <StatTiles dem={dem} />
+        </div>
       </div>
 
-      <nav className="sticky top-0 z-10 flex gap-1 border-y border-white/8 bg-ink-900/95 px-4 py-2 backdrop-blur">
+      <nav className="sticky top-0 z-10 flex gap-6 border-t border-white/10 bg-ink-950 py-3 text-[14px]">
         {TABS.map((t) => {
           const on = t.id === tab
           return (
@@ -39,19 +43,18 @@ export function Sidebar({ dem }: { dem: Dem | null }) {
               key={t.id}
               type="button"
               onClick={() => setTab(t.id)}
-              className={`relative flex flex-1 items-center justify-center gap-1.5 rounded-lg px-2 py-1.5 text-[12px] font-medium transition-colors ${
-                on ? 'text-black' : 'text-zinc-400 hover:text-white'
+              className={`relative pb-1 transition-colors ${
+                on ? 'text-white' : 'text-zinc-500 hover:text-zinc-200'
               }`}
             >
+              {t.label}
               {on && (
                 <motion.span
-                  layoutId="tab-pill"
-                  className="absolute inset-0 rounded-lg bg-white"
-                  transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                  layoutId="tab-rule"
+                  className="absolute inset-x-0 -bottom-px h-px bg-ember"
+                  transition={{ type: 'spring', stiffness: 420, damping: 34 }}
                 />
               )}
-              <t.icon className="relative size-3.5" strokeWidth={1.75} />
-              <span className="relative">{t.label}</span>
             </button>
           )
         })}
@@ -60,11 +63,10 @@ export function Sidebar({ dem }: { dem: Dem | null }) {
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={tab}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -6 }}
-          transition={{ duration: 0.18 }}
-          className="space-y-3 p-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
         >
           {tab === 'fingerprint' && (
             <>
@@ -83,6 +85,12 @@ export function Sidebar({ dem }: { dem: Dem | null }) {
           {tab === 'limits' && <LimitsPanel />}
         </motion.div>
       </AnimatePresence>
+
+      <p className="border-t border-white/10 py-6 text-[12px] leading-relaxed text-zinc-600">
+        † Placeholder values. Elevation, slope and the sun's position are computed from real data;
+        temperature, radar, scores and station readings are simulated until the field and
+        satellite data are loaded.
+      </p>
     </aside>
   )
 }

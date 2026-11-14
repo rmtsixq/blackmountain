@@ -8,30 +8,21 @@ export function Legend({ dem }: { dem: Dem }) {
   const targetId = useStore((s) => s.target)
   const layer = layerById(layerId)
   const [lo, hi] = layerDomain(layerId, dem)
-  const mid = (lo + hi) / 2
 
   return (
-    <div className="pointer-events-auto w-full rounded-xl border border-white/10 bg-ink-900/80 px-3.5 py-3 shadow-lg shadow-black/50 backdrop-blur-md md:w-56">
-      <div className="flex items-center justify-between gap-2">
-        <p className="truncate text-[12px] font-medium text-zinc-100">
-          {layer.label}
-          {layerId === 'score' && (
-            <span className="text-zinc-500"> · {targetById(targetId).name}</span>
-          )}
-        </p>
-        {layer.simulated && (
-          <span className="rounded bg-amber-400/10 px-1 font-mono text-[9px] uppercase tracking-wider text-amber-300/80">
-            sim
-          </span>
-        )}
-      </div>
+    <div className="w-full">
+      <p className="truncate text-[12px] text-zinc-300">
+        {layer.label}
+        {layerId === 'score' && <span className="text-zinc-500">, {targetById(targetId).name}</span>}
+        {layer.simulated && <sup className="ml-0.5 text-zinc-600">†</sup>}
+      </p>
       <div
-        className="mt-2 h-2 rounded-full ring-1 ring-white/10"
+        className="mt-2 h-[3px]"
         style={{ background: `linear-gradient(to right, ${layer.stops.join(',')})` }}
       />
-      <div className="mt-1 flex justify-between font-mono text-[10px] tabular-nums text-zinc-500">
+      <div className="mt-1.5 flex justify-between font-mono text-[10px] tabular-nums text-zinc-500">
         <span>{lo}</span>
-        <span>{mid}</span>
+        <span>{(lo + hi) / 2}</span>
         <span>
           {hi} {layer.unit}
         </span>

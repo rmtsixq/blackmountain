@@ -8,7 +8,7 @@ import { HOME_POSITION } from '../lib/camera'
 import { useStore } from '../store'
 
 
-const HOME_TARGET = new THREE.Vector3(0, 3, 0)
+const HOME_TARGET = new THREE.Vector3(0, -5, 8)
 
 export function CameraRig({ dem }: { dem: Dem }) {
   const controls = useRef<ComponentRef<typeof OrbitControls>>(null)

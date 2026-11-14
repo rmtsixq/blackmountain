@@ -1,32 +1,45 @@
-# React + TypeScript + Vite
+# BlackMountain
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A twin-sensor analog fingerprint of Karacadağ (SE Türkiye) for Moon and Mars exploration.
+Built for the NASA Space Apps Challenge 2026: *Identify Earth Locations that Analog the Permanent Moon Base Locations and Mars*.
 
-Currently, two official plugins are available:
+The young basalt flows and lava tubes around Ovabağ are compared against three targets — Arsia Mons (Mars), the Mare Tranquillitatis pit and the Shackleton Connecting Ridge (Moon) — on five axes. Each axis pairs an Earth instrument with a Moon/Mars instrument that measures the same physics, and states where the analogy breaks.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Screenshots
 
-## React Compiler
+_Add screenshots here._
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## What is in the app
 
-## Expanding the Oxlint configuration
+- **3D terrain** of a 62 × 62 km scene, drawn as stacked elevation profiles coloured by the active data layer.
+- **Layers:** elevation, surface temperature, radar roughness, slope, analog score per target.
+- **Sun simulation:** real solar geometry for the field day; drag the timeline to cast shadows, including the grazing light used for the polar-light test.
+- **Probe:** hover the terrain for coordinates, values and the west–east transect.
+- **Fingerprint:** radar chart and axis-by-axis comparison per target.
+- **Field:** stations, lava-tube thermal profile, rock abundance against the Golombek–Rapp model, low-sun rock detection.
+- **Limits:** what Earth cannot reproduce.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+Deep links: `?layer=score&target=tranq&hour=16.6`.
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+## Data status
+
+| Real | Simulated placeholder (marked † in the UI) |
+|---|---|
+| Elevation (`public/dem`, Terrarium tiles, zoom 11) | Surface temperature, radar roughness |
+| Slope, relief shading | Analog scores and axis read-outs |
+| Sun position | Station positions and readings, tube profile, rock counts |
+
+To swap in real data: station and chart values live in `src/data/field.ts`, target scores in `src/data/targets.ts`, raster layers in `computeFields` in `src/lib/layers.ts`.
+
+## Run
+
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Tech
+
+Vite, React, TypeScript, Tailwind CSS v4, three.js (react-three-fiber, drei), Recharts, Zustand, Framer Motion.
+
+Elevation: Terrain Tiles on AWS (SRTM-derived).

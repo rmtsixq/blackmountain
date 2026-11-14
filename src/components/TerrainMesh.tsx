@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import { heightToY, sampleHeight, WORLD, type Dem } from '../lib/dem'
 import { bakeLayer, type Fields } from '../lib/layers'
 import { useStore } from '../store'
+import { Ridgelines } from './Ridgelines'
 
 const SEG = 256
 const BASE = 1.2
@@ -52,6 +53,10 @@ interface Props {
   fields: Fields
 }
 
+/**
+ * A dark, sun-lit surface that carries the shadows and hides lines behind
+ * ridges; the colour lives mostly in the ridgelines drawn on top of it.
+ */
 export function TerrainMesh({ dem, fields }: Props) {
   const layer = useStore((s) => s.layer)
   const target = useStore((s) => s.target)
@@ -86,19 +91,24 @@ export function TerrainMesh({ dem, fields }: Props) {
       >
         <meshStandardMaterial
           map={texture}
+          color="#8a8a8a"
           emissiveMap={texture}
           emissive="#ffffff"
-          emissiveIntensity={layer === 'terrain' ? 0.1 : 0.42}
-          roughness={0.96}
+          emissiveIntensity={layer === 'terrain' ? 0.03 : 0.16}
+          roughness={1}
           metalness={0}
+          polygonOffset
+          polygonOffsetFactor={1}
+          polygonOffsetUnits={1}
         />
       </mesh>
+      <Ridgelines dem={dem} fields={fields} />
       <mesh geometry={skirt}>
-        <meshBasicMaterial color="#0b0c0f" side={THREE.DoubleSide} />
+        <meshBasicMaterial color="#050506" side={THREE.DoubleSide} />
       </mesh>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -BASE, 0]}>
         <planeGeometry args={[WORLD, WORLD]} />
-        <meshBasicMaterial color="#08090b" side={THREE.DoubleSide} />
+        <meshBasicMaterial color="#050506" side={THREE.DoubleSide} />
       </mesh>
     </group>
   )

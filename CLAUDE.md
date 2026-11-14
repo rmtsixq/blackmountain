@@ -1,9 +1,11 @@
 # Project brief
 
 ## Project (fill this in)
-- **Idea:** <one sentence: what it does and for whom>
-- **Demo flow:** <the 3–4 screens/clicks the judges will see>
-- **Judging criteria:** <e.g. innovation, technical depth, design, impact>
+- **Idea:** BlackMountain — a twin-sensor "analog fingerprint" that scores the Karacadağ lava field (Ovabağ lava tubes) against Moon and Mars targets, for the NASA Space Apps 2026 analog challenge.
+- **Demo flow:** 3D terrain with data layers → pick a target (Arsia Mons / Tranquillitatis pit / Shackleton ridge) and read the fingerprint → Field tab: lava-tube thermal profile and rock counts → sun timeline to grazing light, then Limits.
+- **Judging criteria:** impact, creativity, validity, relevance, presentation.
+- **Data:** elevation is real; thermal, radar, scores and field readings are placeholders (marked † in the UI) until the team supplies data. See README "Data status".
+- **Design:** monochrome, no boxed cards, no badges or decorative icons; type and hairlines only, one accent (`ember`).
 
 ## Stack
 Vite + React + TypeScript + Tailwind CSS v4 (already scaffolded and installed).

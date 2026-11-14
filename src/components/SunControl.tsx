@@ -1,45 +1,54 @@
-import { Satellite, Sun, Sunset } from 'lucide-react'
+import type { CSSProperties } from 'react'
 import { formatHour, solarPosition } from '../lib/solar'
 import { useStore } from '../store'
 
+const MIN = 6.8
+const MAX = 17.2
 const PRESETS = [
-  { hour: 12, label: 'Noon', icon: Sun },
-  { hour: 13.5, label: 'VIIRS pass', icon: Satellite },
-  { hour: 16.6, label: 'Polar-light test', icon: Sunset },
+  { hour: 12, label: 'noon' },
+  { hour: 13.5, label: 'VIIRS overpass' },
+  { hour: 16.6, label: 'grazing light' },
 ]
+const TICKS = [7, 9, 11, 13, 15, 17]
+const pct = (h: number) => `${((h - MIN) / (MAX - MIN)) * 100}%`
 
+/** The day as a timeline: drag the marker to move the real sun. */
 export function SunControl() {
   const hour = useStore((s) => s.hour)
   const setHour = useStore((s) => s.setHour)
   const sun = solarPosition(hour)
+  const low = sun.elevation < 6
 
   return (
-    <div className="pointer-events-auto w-full rounded-xl border border-white/10 bg-ink-900/80 px-3.5 py-3 shadow-lg shadow-black/50 backdrop-blur-md md:w-[340px]">
-      <div className="flex items-baseline justify-between font-mono text-[10px] uppercase tracking-wider text-zinc-500">
-        <span>Sun simulation · 14 Nov</span>
-        <span className="text-zinc-300">
-          az {sun.azimuth.toFixed(0)}° · el{' '}
-          <span className={sun.elevation < 6 ? 'text-ember' : ''}>
-            {sun.elevation.toFixed(1)}°
-          </span>
-        </span>
-      </div>
-      <div className="mt-2 flex items-center gap-3">
-        <span className="w-12 font-mono text-lg tabular-nums text-white">
+    <div className="pointer-events-auto w-full">
+      <div className="flex items-end justify-between gap-4">
+        <p className="font-display text-[44px] leading-none text-white tabular-nums">
           {formatHour(hour)}
-        </span>
-        <input
-          type="range"
-          min={6.8}
-          max={17.2}
-          step={0.05}
-          value={hour}
-          onChange={(e) => setHour(Number(e.target.value))}
-          className="h-1 flex-1 cursor-pointer accent-ember"
-          aria-label="Local solar time"
-        />
+        </p>
+        <p className="pb-1 text-right font-mono text-[11px] leading-relaxed text-zinc-500">
+          sun <span className={low ? 'text-ember' : 'text-white'}>{sun.elevation.toFixed(1)}°</span>{' '}
+          above horizon, bearing {sun.azimuth.toFixed(0)}°
+        </p>
       </div>
-      <div className="mt-2.5 flex gap-1.5">
+      <input
+        type="range"
+        min={MIN}
+        max={MAX}
+        step={0.05}
+        value={hour}
+        onChange={(e) => setHour(Number(e.target.value))}
+        className="hairline mt-1 block w-full"
+        style={{ '--thumb': low ? '#ff6a3d' : '#fff' } as CSSProperties}
+        aria-label="Local solar time, 14 November"
+      />
+      <div className="relative h-4 font-mono text-[10px] text-zinc-600">
+        {TICKS.map((t) => (
+          <span key={t} className="absolute -translate-x-1/2" style={{ left: pct(t) }}>
+            {String(t).padStart(2, '0')}
+          </span>
+        ))}
+      </div>
+      <div className="mt-2 flex gap-5 text-[12px]">
         {PRESETS.map((p) => {
           const on = Math.abs(hour - p.hour) < 0.03
           return (
@@ -47,14 +56,11 @@ export function SunControl() {
               key={p.label}
               type="button"
               onClick={() => setHour(p.hour)}
-              className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg border px-2 py-1.5 text-[11px] transition-colors ${
-                on
-                  ? 'border-ember/60 bg-ember/15 text-ember'
-                  : 'border-white/10 text-zinc-400 hover:border-white/25 hover:text-zinc-100'
+              className={`underline-offset-4 transition-colors ${
+                on ? 'text-white underline decoration-ember' : 'text-zinc-500 hover:text-white'
               }`}
             >
-              <p.icon className="size-3.5 shrink-0" strokeWidth={1.75} />
-              <span className="truncate">{p.label}</span>
+              {p.label}
             </button>
           )
         })}

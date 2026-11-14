@@ -281,3 +281,18 @@ export function bakeLayer(
 }
 
 export const GRID_SIZE = GRID
+
+/** Colour of a layer value as linear-ish 0..1 RGB, for vertex colouring. */
+export function layerColor(
+  layer: LayerId,
+  value: number,
+  domain: [number, number],
+  out: [number, number, number],
+) {
+  const lut = getLut(layer)
+  const k = (clamp01((value - domain[0]) / (domain[1] - domain[0])) * 255) | 0
+  out[0] = lut[k * 3] / 255
+  out[1] = lut[k * 3 + 1] / 255
+  out[2] = lut[k * 3 + 2] / 255
+  return out
+}

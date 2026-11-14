@@ -1,5 +1,4 @@
 import { Canvas } from '@react-three/fiber'
-import { Stars } from '@react-three/drei'
 import type { Dem } from '../lib/dem'
 import type { Fields } from '../lib/layers'
 import { HOME_POSITION } from '../lib/camera'
@@ -18,16 +17,13 @@ export function Scene3D({ dem, fields }: Props) {
     <Canvas
       shadows
       dpr={[1, 2]}
-      camera={{ position: HOME_POSITION, fov: 34, near: 0.5, far: 900 }}
+      camera={{ position: HOME_POSITION, fov: 30, near: 0.5, far: 900 }}
     >
       <color attach="background" args={['#050506']} />
-      <fog attach="fog" args={['#050506', 190, 460]} />
-      <hemisphereLight args={['#93a4c4', '#0a0a0c', 0.4]} />
+      <hemisphereLight args={['#aab4c8', '#050506', 0.3]} />
       <SunLight />
-      <Stars radius={320} depth={60} count={2200} factor={4} fade speed={0.3} />
       <TerrainMesh dem={dem} fields={fields} />
       <StationMarkers dem={dem} />
-      <gridHelper args={[440, 88, '#1d2027', '#101216']} position={[0, -8, 0]} />
       <CameraRig dem={dem} />
     </Canvas>
   )

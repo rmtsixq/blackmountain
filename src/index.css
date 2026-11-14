@@ -7,8 +7,9 @@
   --color-ink-700: #1a1c22;
   --color-ember: #ff6a3d;
 
-  --font-sans: "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --font-sans: "Geist", system-ui, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, Consolas, monospace;
+  --font-display: "Instrument Serif", "Times New Roman", serif;
 }
 
 :root {
@@ -24,5 +25,36 @@ body {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #2a2d36 transparent;
+  scrollbar-color: #26272c transparent;
+}
+
+/* Hairline slider: a 1px track with a 1px tall marker. */
+input[type="range"].hairline {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  height: 24px;
+  cursor: ew-resize;
+}
+input[type="range"].hairline::-webkit-slider-runnable-track {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.22);
+}
+input[type="range"].hairline::-moz-range-track {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.22);
+}
+input[type="range"].hairline::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px;
+  height: 19px;
+  margin-top: -9px;
+  background: linear-gradient(to right, transparent 6px, var(--thumb, #fff) 6px, var(--thumb, #fff) 7px, transparent 7px);
+}
+input[type="range"].hairline::-moz-range-thumb {
+  width: 1px;
+  height: 19px;
+  border: 0;
+  border-radius: 0;
+  background: var(--thumb, #fff);
 }

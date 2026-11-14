@@ -23,15 +23,15 @@ export function FingerprintRadar() {
 
   return (
     <Panel
-      title="Analog fingerprint"
-      hint="Similarity per axis, each from a sensor pair measuring the same physics on both worlds."
+      title="Fingerprint"
+      hint="Five axes, each scored from a pair of instruments that measure the same physics on both worlds. The other two targets are dashed."
       demo
     >
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
-          <RadarChart data={DATA} outerRadius="74%">
+          <RadarChart data={DATA} outerRadius="76%">
             <PolarGrid stroke={GRID_STROKE} />
-            <PolarAngleAxis dataKey="axis" tick={{ fill: '#a1a1aa', fontSize: 11 }} />
+            <PolarAngleAxis dataKey="axis" tick={{ fill: '#a1a1aa', fontSize: 12 }} />
             <PolarRadiusAxis domain={[0, 100]} tick={false} axisLine={false} />
             {ordered.map((t) => {
               const on = t.id === targetId
@@ -40,13 +40,12 @@ export function FingerprintRadar() {
                   key={t.id}
                   name={t.name}
                   dataKey={t.id}
-                  stroke={t.color}
-                  strokeWidth={on ? 2 : 1}
-                  strokeOpacity={on ? 1 : 0.4}
-                  strokeDasharray={on ? undefined : '3 3'}
-                  fill={t.color}
-                  fillOpacity={on ? 0.22 : 0}
-                  dot={on ? { r: 2.5, fill: t.color, strokeWidth: 0 } : false}
+                  stroke={on ? '#ff6a3d' : '#6b6b6b'}
+                  strokeWidth={on ? 1.5 : 1}
+                  strokeDasharray={on ? undefined : '2 4'}
+                  fill="#ff6a3d"
+                  fillOpacity={on ? 0.14 : 0}
+                  dot={on ? { r: 2, fill: '#ff6a3d', strokeWidth: 0 } : false}
                   animationDuration={500}
                 />
               )
@@ -54,14 +53,6 @@ export function FingerprintRadar() {
             <Tooltip {...TOOLTIP_STYLE} />
           </RadarChart>
         </ResponsiveContainer>
-      </div>
-      <div className="flex flex-wrap justify-center gap-x-4 gap-y-1">
-        {TARGETS.map((t) => (
-          <span key={t.id} className="flex items-center gap-1.5 text-[11px] text-zinc-400">
-            <span className="size-2 rounded-full" style={{ background: t.color }} />
-            {t.name}
-          </span>
-        ))}
       </div>
     </Panel>
   )
