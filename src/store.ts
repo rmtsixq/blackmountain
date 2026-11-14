@@ -4,6 +4,8 @@ import type { TargetId } from './data/targets'
 import type { UV } from './lib/dem'
 
 export type SidebarTab = 'fingerprint' | 'field' | 'limits'
+/** story: one finding at a time. explore: every instrument. */
+export type Mode = 'story' | 'explore'
 
 export interface Shot {
   position: [number, number, number]
@@ -12,6 +14,9 @@ export interface Shot {
 
 interface State {
   world: World | null
+  mode: Mode
+  chapter: number
+  autoplay: boolean
   layer: LayerId
   target: TargetId
   /** which terrain the user asked for */
@@ -23,15 +28,18 @@ interface State {
   /** vertical exaggeration */
   exag: number
   stationId: string | null
+  /** field stations drawn on the terrain */
+  stations: boolean
   probe: UV | null
   autoRotate: boolean
   tab: SidebarTab
   resetNonce: number
-  /** guided tour */
-  touring: boolean
-  caption: string | null
+  /** camera framing chosen by the story; null hands control to the user */
   shot: Shot | null
   setWorld: (world: World) => void
+  setMode: (mode: Mode) => void
+  setChapter: (chapter: number) => void
+  setAutoplay: (on: boolean) => void
   setLayer: (layer: LayerId) => void
   setTarget: (target: TargetId) => void
   setTwin: (twin: boolean) => void
@@ -39,14 +47,15 @@ interface State {
   setHour: (hour: number) => void
   setExag: (exag: number) => void
   selectStation: (id: string | null) => void
+  setStations: (on: boolean) => void
   setProbe: (probe: UV | null) => void
   setAutoRotate: (on: boolean) => void
   setTab: (tab: SidebarTab) => void
+  setShot: (shot: Shot | null) => void
   resetView: () => void
-  setTour: (tour: Partial<Pick<State, 'touring' | 'caption' | 'shot'>>) => void
 }
 
-// Deep links for the demo: ?layer=score&target=tranq&hour=16.6&twin=1
+// Deep links: ?mode=explore&layer=score&target=tranq&hour=16.6&twin=1&chapter=3
 const params = new URLSearchParams(window.location.search)
 const LAYER_IDS: LayerId[] = ['terrain', 'thermal', 'swing', 'radar', 'slope', 'score']
 const TARGET_IDS: TargetId[] = ['arsia', 'tranq', 'shackleton']
@@ -55,25 +64,43 @@ const pick = <T extends string>(key: string, allowed: T[], fallback: T) => {
   return value && allowed.includes(value) ? value : fallback
 }
 const initialHour = Number(params.get('hour'))
-const initialTwin = params.get('twin') === '1'
+const initialMode = pick<Mode>('mode', ['story', 'explore'], 'story')
 
 export const useStore = create<State>((set) => ({
   world: null,
+  mode: initialMode,
+  chapter: Math.max(0, Number(params.get('chapter')) || 0),
+  autoplay: false,
   layer: pick('layer', LAYER_IDS, 'thermal'),
   target: pick('target', TARGET_IDS, 'arsia'),
-  twin: initialTwin,
+  twin: params.get('twin') === '1',
   side: 'earth',
   hour: initialHour >= 6.8 && initialHour <= 17.2 ? initialHour : 13.5,
   exag: 4,
   stationId: null,
+  stations: initialMode === 'explore',
   probe: null,
-  autoRotate: true,
+  autoRotate: initialMode === 'explore',
   tab: 'fingerprint',
   resetNonce: 0,
-  touring: false,
-  caption: null,
   shot: null,
   setWorld: (world) => set({ world }),
+  setMode: (mode) =>
+    set((s) =>
+      mode === 'explore'
+        ? {
+            mode,
+            autoplay: false,
+            shot: null,
+            twin: false,
+            stations: true,
+            autoRotate: true,
+            resetNonce: s.resetNonce + 1,
+          }
+        : { mode, stationId: null, autoRotate: false },
+    ),
+  setChapter: (chapter) => set({ chapter }),
+  setAutoplay: (autoplay) => set({ autoplay }),
   setLayer: (layer) => set({ layer }),
   setTarget: (target) => set({ target }),
   setTwin: (twin) => set(twin ? { twin, stationId: null } : { twin }),
@@ -82,10 +109,11 @@ export const useStore = create<State>((set) => ({
   setExag: (exag) => set({ exag }),
   selectStation: (stationId) =>
     set(stationId ? { stationId, tab: 'field', autoRotate: false, twin: false } : { stationId }),
+  setStations: (stations) => set({ stations }),
   setProbe: (probe) => set({ probe }),
   setAutoRotate: (autoRotate) => set({ autoRotate }),
   setTab: (tab) => set({ tab }),
+  setShot: (shot) => set({ shot }),
   resetView: () =>
     set((s) => ({ resetNonce: s.resetNonce + 1, stationId: null, autoRotate: true })),
-  setTour: (tour) => set(tour),
 }))

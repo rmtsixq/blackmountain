@@ -111,7 +111,7 @@ export function StationMarkers({ world }: { world: World }) {
   const side = useStore((s) => s.side)
   const twin = useStore((s) => s.twin)
   const layer = useStore((s) => s.layer)
-  const touring = useStore((s) => s.touring)
+  const stations = useStore((s) => s.stations)
   const target = targetById(useStore((s) => s.target))
   const settled = (side === 'twin') === twin
   if (!settled) return null
@@ -140,7 +140,7 @@ export function StationMarkers({ world }: { world: World }) {
   const best = world.analysis.best[target.id]
   return (
     <group>
-      {!touring && STATIONS.map((s) => <StationPole key={s.id} station={s} dem={world.earth.dem} />)}
+      {stations && STATIONS.map((s) => <StationPole key={s.id} station={s} dem={world.earth.dem} />)}
       {layer === 'score' && (
         <Pole
           dem={world.earth.dem}

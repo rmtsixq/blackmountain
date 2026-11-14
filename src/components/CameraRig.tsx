@@ -42,14 +42,24 @@ export function CameraRig({ dem }: { dem: Dem }) {
     animating.current = true
   }, [resetNonce, camera])
 
-  useFrame((_, dt) => {
+  useFrame(({ clock }, dt) => {
     const c = controls.current
     if (!c) return
     if (shot) {
-      // a tour shot drives both the camera and its target
-      const k = 1 - Math.exp(-Math.min(dt, 0.05) * 1.1)
-      camera.position.lerp(scratch.set(...shot.position), k)
-      c.target.lerp(scratch.set(...shot.target), k)
+      // A story shot drives both the camera and its target, then keeps
+      // drifting a few degrees around the target so the scene stays alive.
+      const k = 1 - Math.exp(-Math.min(dt, 0.05) * 1.3)
+      const sway = Math.sin(clock.elapsedTime * 0.13) * 0.1
+      const [tx, ty, tz] = shot.target
+      const dx = shot.position[0] - tx
+      const dz = shot.position[2] - tz
+      scratch.set(
+        tx + dx * Math.cos(sway) - dz * Math.sin(sway),
+        shot.position[1],
+        tz + dx * Math.sin(sway) + dz * Math.cos(sway),
+      )
+      camera.position.lerp(scratch, k)
+      c.target.lerp(scratch.set(tx, ty, tz), k)
       c.update()
       return
     }

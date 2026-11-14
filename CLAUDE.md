@@ -2,7 +2,7 @@
 
 ## Project (fill this in)
 - **Idea:** BlackMountain — scores the Karacadağ lava field (SE Türkiye) as a Moon / Mars analog from real elevation, temperature and radar data, and ranks it against the analog sites NASA already uses. NASA Space Apps 2026.
-- **Demo flow:** press "play the 40 s tour" (sun sweep → VIIRS → Sentinel-1 → morph into Arsia Mons and the Shackleton ridge → terrain-match map). Then: space bar to morph, pick a target, read the leaderboard, Field tab, Limits tab.
+- **Demo flow:** the app opens in Findings mode: eight chapters (question → Mars twin → ranking vs NASA analog sites → heat → cold trap → polar light → where to go → limits), stepped with arrow keys or autoplay. "Data" in the header opens the full instrument view (space bar morphs, leaderboard, Field and Limits tabs).
 - **Judging criteria:** impact, creativity, validity, relevance, presentation.
 - **Data:** everything drawn on the terrain is real (`scripts/ingest.py` → `public/data`). Terrain and light scores are computed in `src/lib/analysis.ts`. Still placeholders, marked † in the UI: radar and rock scores for the targets (`src/data/targets.ts`) and station readings, tube profile and rock counts (`src/data/field.ts`).
 - **Design:** monochrome, no boxed cards, no badges or decorative icons; type and hairlines only, one accent (`ember`). Never present a placeholder as measured.

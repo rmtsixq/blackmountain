@@ -17,9 +17,9 @@ _Add screenshots here._
 - **Light.** Real solar geometry on the terrain, and shadow curves ray-traced on each elevation model with planetary curvature — the lunar south pole never sees the sun above about 1.5°.
 - **Heat and radar.** VIIRS surface temperature (day, night, a full year) and Sentinel-1 backscatter draped on the terrain.
 - **Limits.** Where each analogy breaks, stated next to every score.
-- **Tour.** A 40-second guided sequence for the demo video.
+- **Findings.** The app opens on eight findings, one per screen, each staged on the terrain with a single number; arrow keys or autoplay step through them (use autoplay for the demo video). **Data** opens every instrument.
 
-Deep links: `?target=shackleton&twin=1&layer=terrain&hour=16.6` (`still=1` skips transitions).
+Deep links: `?chapter=5`, or `?mode=explore&target=shackleton&twin=1&layer=terrain&hour=16.6` (`still=1` skips transitions).
 
 ## Results so far
 
