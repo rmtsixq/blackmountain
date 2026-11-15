@@ -1,0 +1,8 @@
+// Copies the Vite build into Vercel's Build Output API folder, so the deploy
+// does not depend on the project's framework preset.
+import fs from 'node:fs'
+
+fs.rmSync('.vercel/output', { recursive: true, force: true })
+fs.mkdirSync('.vercel/output', { recursive: true })
+fs.cpSync('dist', '.vercel/output/static', { recursive: true })
+fs.writeFileSync('.vercel/output/config.json', JSON.stringify({ version: 3 }))
