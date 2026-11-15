@@ -1,7 +1,7 @@
 // The findings, one per chapter, in English and Turkish. Every number is read
 // from the analysis, the ingested rasters or the field scan at run time, so
 // the text cannot drift from the data. Each chapter declares its evidence:
-// measured on foot, measured from orbit, published, or a model.
+// measured on foot, measured from orbit, or published.
 //
 // The Turkish is written, not translated: it says the same thing the way a
 // Turkish speaker would, so sentence breaks and emphasis may differ.
@@ -20,7 +20,7 @@ import type { Plate, Shot } from '../store'
 export type Visual = 'ranking' | 'year' | 'shadow' | 'night' | 'catalogue' | 'rock'
 
 /** Where a chapter's evidence comes from. */
-export type Evidence = 'field' | 'orbit' | 'lab' | 'model'
+export type Evidence = 'field' | 'orbit' | 'lab'
 
 export interface Chapter {
   id: string
@@ -224,7 +224,7 @@ export function buildStory(world: World, lang: Lang): Chapter[] {
       ),
       body: L(
         `This pit formed when the roof of a cavity in the Ovabağ flows collapsed. Part of the roof still stands and covers ${pct(PIT_SCAN.roofed_fraction)} of the opening. More than ${n(PIT_COUNTS.moon)} such pits are catalogued on the Moon and more than ${n(PIT_COUNTS.mars)} candidate cave entrances on Mars. The pits in the lunar maria and the skylights on Arsia Mons are explained the same way, by the roof of a void giving way, and they are where future crews could shelter from radiation and temperature extremes. In the 30 m elevation data this pit is smaller than one pixel, so we scanned it on site in three dimensions. Drag to turn it.`,
-        `Bu çukur, Ovabağ lavlarının içindeki bir boşluğun tavanı çökünce oluştu. Tavanın bir bölümü hâlâ yerinde ve açıklığın ${pct(PIT_SCAN.roofed_fraction)} kadarını örtüyor. Ay’da ${n(PIT_COUNTS.moon)}’den, Mars’ta ${n(PIT_COUNTS.mars)}’den fazla benzer yapı kataloglandı. Ay’ın lav düzlüklerindeki çukurlar ve Arsia Mons’un yamacındaki tavan açıklıkları da aynı süreçle, bir boşluğun tavanının çökmesiyle açıklanıyor. Bu yapılar, gelecekteki ekiplerin radyasyondan ve aşırı sıcaklıktan korunabileceği yerler olarak değerlendiriliyor. Çukur, 30 metrelik yükseklik verisinde bir pikselden küçük kaldığı için uydudan seçilemiyor; bu nedenle yerinde üç boyutlu olarak taradık. Model sürüklenerek döndürülebilir.`,
+        `Bu çukur, Ovabağ lavlarının içindeki bir boşluğun tavanı çökünce oluştu. Tavanın bir bölümü hâlâ yerinde ve açıklığın ${pct(PIT_SCAN.roofed_fraction)} kadarını örtüyor. Ay’da ${n(PIT_COUNTS.moon)}’den, Mars’ta ${n(PIT_COUNTS.mars)}’den fazla benzer yapı kataloglandı. Ay’ın lav düzlüklerindeki çukurlar ve Arsia Mons’un yamacındaki tavan açıklıkları da aynı süreçle, bir boşluğun tavanının çökmesiyle açıklanıyor. Bu yapılar, gelecekteki ekiplerin radyasyondan ve aşırı sıcaklıktan korunabileceği yerler olarak değerlendiriliyor. Çukur, 30 metrelik yükseklik verisinde bir pikselden küçük kaldığı için uydudan seçilemiyor; bu nedenle yerinde üç boyutlu olarak taradık. Tarama sürüklenerek döndürülebilir.`,
       ),
       source: L(
         `Our scan: ${n(PIT_SCAN.raw_points)} points, ${n(PIT_SCAN.count)} drawn · the yellow line is a 1.7 m person`,

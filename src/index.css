@@ -7,8 +7,8 @@
  *   field  (yellow) — measured by us, on foot. Always drawn with an ink edge,
  *                     so it never relies on colour alone.
  *   accent (red)    — the other world: Mars or the Moon in a comparison.
- * Everything measured from orbit is neutral ink. A model is drawn dashed
- * and named as a model.
+ * Everything measured from orbit is neutral ink. A calculated curve is
+ * drawn dashed and described in its caption.
  *
  * Contrast on the light surface (#fff): ink 16.8:1, ink-2 10.0:1, ink-3 6.5:1,
  * ink-4 5.1:1, accent 6.0:1. ink-5 and rule are for non-text marks only.

@@ -1,4 +1,4 @@
-import { BookOpen, Footprints, Satellite, Spline, type LucideIcon } from 'lucide-react'
+import { BookOpen, Footprints, Satellite, type LucideIcon } from 'lucide-react'
 import { useT } from '../lib/i18n'
 import type { Evidence } from '../lib/story'
 
@@ -7,17 +7,15 @@ const ICON: Record<Evidence, LucideIcon> = {
   field: Footprints,
   orbit: Satellite,
   lab: BookOpen,
-  model: Spline,
 }
 
 const TILE: Record<Evidence, string> = {
   field: 'bg-field text-on-field',
   orbit: 'bg-ink-3 text-paper',
   lab: 'bg-ink-3 text-paper',
-  model: 'border border-ink-4 text-ink-2',
 }
 
-/** Says where a chapter's evidence comes from: our own feet, orbit, the literature, or a model. */
+/** Says where a chapter's evidence comes from: our own feet, orbit, or the literature. */
 export function EvidenceTag({ kind }: { kind: Evidence }) {
   const { t } = useT()
   const Icon = ICON[kind]

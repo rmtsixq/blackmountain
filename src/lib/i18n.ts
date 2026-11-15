@@ -25,7 +25,6 @@ const en = {
     field: 'Measured on foot',
     orbit: 'Measured from orbit',
     lab: 'Published data',
-    model: 'Model',
   },
   play: 'Play',
   pause: 'Pause',
@@ -54,7 +53,7 @@ const en = {
   nightIn: (t: string) => `${t} °C in the pit`,
   nightOut: (t: string) => `${t} °C outside`,
   nightCaption: (drop: string, share: string, lag: number, moonSwing: number, moonPit: number) =>
-    `Yellow dots: our own readings. Grey line: hourly air temperature for the site from a weather model (Open-Meteo), shifted to pass through our outside reading; it fell ${drop} °C by 06:00. Dashed line: the pit floor, calculated from that air temperature, following the outside air at ${share} of its amplitude, ${lag} hours late. On the Moon the surface swings about ${moonSwing} K while pit floors hold near ${moonPit} °C (Horvath et al. 2022).`,
+    `Yellow dots: our own readings. Grey line: hourly air temperature for the site (Open-Meteo weather data), shifted to pass through our outside reading; it fell ${drop} °C by 06:00. Dashed line: the pit floor, calculated from that air temperature, following the outside air at ${share} of its amplitude, ${lag} hours late. On the Moon the surface swings about ${moonSwing} K while pit floors hold near ${moonPit} °C (Horvath et al. 2022).`,
   catWidth: 'width, m',
   catDepth: 'depth, m',
   catOurs: (w: string, d: string) => `Karacadağ, ${w} × ${d} m`,
@@ -75,7 +74,6 @@ const tr: typeof en = {
     field: 'Saha ölçümümüz',
     orbit: 'Uydu verisi',
     lab: 'Yayımlanmış veri',
-    model: 'Model',
   },
   play: 'Oynat',
   pause: 'Duraklat',
@@ -104,7 +102,7 @@ const tr: typeof en = {
   nightIn: (t) => `çukurda ${t} °C`,
   nightOut: (t) => `dışarıda ${t} °C`,
   nightCaption: (drop, share, lag, moonSwing, moonPit) =>
-    `Sarı noktalar kendi ölçümlerimizdir. Gri çizgi, bölgenin saatlik hava sıcaklığını gösterir (Open-Meteo hava modeli); dışarıda ölçtüğümüz değere göre kaydırılmıştır ve sabah 06.00’ya kadar ${drop} °C düşmüştür. Kesikli çizgi, bu hava sıcaklığından hesaplanan çukur tabanıdır: dış havadaki değişimin ${share} kadarını ${lag} saat gecikmeyle izler. Ay’da yüzey sıcaklığı yaklaşık ${moonSwing} K değişirken çukur tabanları ${moonPit} °C dolayında kalır (Horvath vd. 2022).`,
+    `Sarı noktalar kendi ölçümlerimizdir. Gri çizgi, bölgenin saatlik hava sıcaklığını gösterir (Open-Meteo hava verisi); dışarıda ölçtüğümüz değere göre kaydırılmıştır ve sabah 06.00’ya kadar ${drop} °C düşmüştür. Kesikli çizgi, bu hava sıcaklığından hesaplanan çukur tabanıdır: dış havadaki değişimin ${share} kadarını ${lag} saat gecikmeyle izler. Ay’da yüzey sıcaklığı yaklaşık ${moonSwing} K değişirken çukur tabanları ${moonPit} °C dolayında kalır (Horvath vd. 2022).`,
   catWidth: 'genişlik, m',
   catDepth: 'derinlik, m',
   catOurs: (w, d) => `Karacadağ, ${w} × ${d} m`,
