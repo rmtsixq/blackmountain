@@ -6,16 +6,16 @@ export function ViewControls() {
   const autoRotate = useStore((s) => s.autoRotate)
   const setAutoRotate = useStore((s) => s.setAutoRotate)
   const resetView = useStore((s) => s.resetView)
-  const link = 'transition-colors hover:text-white'
+  const link = 'transition-colors hover:text-ink'
 
   return (
-    <div className="pointer-events-auto flex items-center gap-4 font-mono text-[11px] text-zinc-500">
+    <div className="pointer-events-auto flex items-center gap-4 font-label text-[11px] text-ink-3">
       <span className="hidden items-center gap-2 md:flex">
         relief
         <button type="button" aria-label="Less relief" className={link} onClick={() => setExag(Math.max(1, exag - 1))}>
           −
         </button>
-        <span className="w-5 text-center text-white">×{exag}</span>
+        <span className="w-5 text-center text-ink">×{exag}</span>
         <button type="button" aria-label="More relief" className={link} onClick={() => setExag(Math.min(8, exag + 1))}>
           +
         </button>
@@ -24,7 +24,7 @@ export function ViewControls() {
         type="button"
         aria-pressed={autoRotate}
         onClick={() => setAutoRotate(!autoRotate)}
-        className={autoRotate ? 'text-white' : link}
+        className={autoRotate ? 'text-ink' : link}
       >
         orbit
       </button>

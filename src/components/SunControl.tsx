@@ -22,11 +22,11 @@ export function SunControl() {
   return (
     <div className="pointer-events-auto w-full">
       <div className="flex items-end justify-between gap-4">
-        <p className="font-display text-[44px] leading-none text-white tabular-nums">
+        <p className="font-display text-[44px] leading-none text-ink tabular-nums">
           {formatHour(hour)}
         </p>
-        <p className="pb-1 text-right font-mono text-[11px] leading-relaxed text-zinc-500">
-          sun <span className={low ? 'text-ember' : 'text-white'}>{sun.elevation.toFixed(1)}°</span>{' '}
+        <p className="pb-1 text-right font-label text-[11px] leading-relaxed text-ink-3">
+          sun <span className={low ? 'text-accent' : 'text-ink'}>{sun.elevation.toFixed(1)}°</span>{' '}
           above horizon, bearing {sun.azimuth.toFixed(0)}°
         </p>
       </div>
@@ -38,10 +38,10 @@ export function SunControl() {
         value={hour}
         onChange={(e) => setHour(Number(e.target.value))}
         className="hairline mt-1 block w-full"
-        style={{ '--thumb': low ? '#ff6a3d' : '#fff' } as CSSProperties}
+        style={{ '--thumb': low ? 'var(--accent)' : 'var(--ink)' } as CSSProperties}
         aria-label="Local solar time, 14 November"
       />
-      <div className="relative h-4 font-mono text-[10px] text-zinc-600">
+      <div className="relative h-4 font-label text-[10px] text-ink-4">
         {TICKS.map((t) => (
           <span key={t} className="absolute -translate-x-1/2" style={{ left: pct(t) }}>
             {String(t).padStart(2, '0')}
@@ -57,7 +57,7 @@ export function SunControl() {
               type="button"
               onClick={() => setHour(p.hour)}
               className={`underline-offset-4 transition-colors ${
-                on ? 'text-white underline decoration-ember' : 'text-zinc-500 hover:text-white'
+                on ? 'text-ink underline decoration-accent' : 'text-ink-3 hover:text-ink'
               }`}
             >
               {p.label}

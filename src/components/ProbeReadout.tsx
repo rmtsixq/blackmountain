@@ -15,7 +15,7 @@ export function ProbeReadout({ world }: { world: World }) {
 
   if (!probe) {
     return (
-      <p className="font-mono text-[11px] text-zinc-600">Move over the terrain to read it.</p>
+      <p className="font-label text-[11px] text-ink-4">Move over the terrain to read it.</p>
     )
   }
 
@@ -32,16 +32,16 @@ export function ProbeReadout({ world }: { world: World }) {
   const y = H - ((dem.heights[i] - dem.min) / range) * H
   const { lon, lat } = uvToLonLat(probe.u, probe.v)
   const e = uvToIndex(probe.u, probe.v, world.earth.dem.size)
-  const num = (v: number, d = 0) => <span className="text-white">{v.toFixed(d)}</span>
+  const num = (v: number, d = 0) => <span className="text-ink">{v.toFixed(d)}</span>
 
   return (
-    <div className="font-mono text-[11px] text-zinc-500">
+    <div className="font-label text-[11px] text-ink-3">
       <svg width={W} height={H + 2} className="mb-2 block overflow-visible">
-        <polyline points={path} fill="none" stroke="#fff" strokeWidth={1} />
-        <line x1={x} x2={x} y1={0} y2={H} stroke="#ff6a3d" strokeWidth={1} />
-        <circle cx={x} cy={y} r={2.5} fill="#ff6a3d" />
+        <polyline points={path} fill="none" stroke="var(--ink)" strokeWidth={1} />
+        <line x1={x} x2={x} y1={0} y2={H} stroke="var(--accent)" strokeWidth={1} />
+        <circle cx={x} cy={y} r={2.5} fill="var(--accent)" />
       </svg>
-      <p className="tabular-nums text-white">
+      <p className="tabular-nums text-ink">
         {twin
           ? `${targetById(targetId).name}, ${(probe.u * EXTENT_KM).toFixed(1)} km E ${(probe.v * EXTENT_KM).toFixed(1)} km S`
           : `${lat.toFixed(4)}°N ${lon.toFixed(4)}°E`}

@@ -1,29 +1,73 @@
 import { useEffect, useMemo } from 'react'
-import { AnimatePresence, motion, useSpring, useTransform } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
+import { useT } from '../lib/i18n'
 import type { World } from '../lib/layers'
 import { buildStory, type Chapter } from '../lib/story'
 import { useStore } from '../store'
+import { EvidenceTag } from './EvidenceTag'
 import { StoryVisual } from './StoryVisual'
 
-const AUTOPLAY_SECONDS = 9
+const AUTOPLAY_SECONDS = 11
 
-function Figure({ figure }: { figure: NonNullable<Chapter['figure']> }) {
-  const spring = useSpring(0, { stiffness: 50, damping: 18 })
-  const text = useTransform(spring, (v) => v.toFixed(figure.decimals ?? 0))
-  useEffect(() => {
-    spring.set(figure.value)
-  }, [figure.value, spring])
+const round =
+  'flex size-9 items-center justify-center rounded-full bg-paper-2 text-ink transition-colors hover:bg-rule disabled:text-ink-5 disabled:hover:bg-paper-2'
+
+const enter = {
+  initial: { opacity: 0, y: 8 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0 },
+  transition: { duration: 0.35, ease: [0.28, 0.11, 0.32, 1] as const },
+}
+
+function Tags({ chapter, centred }: { chapter: Chapter; centred?: boolean }) {
+  if (!chapter.evidence.length) return null
   return (
-    <p className="flex items-end gap-3 font-display leading-[0.8] text-white">
-      <motion.span className="text-[110px] tracking-tight sm:text-[168px]">{text}</motion.span>
-      <span className="mb-3 max-w-[12ch] font-mono text-[11px] leading-snug text-ember">{figure.unit}</span>
-    </p>
+    <div className={`flex flex-wrap items-center gap-x-5 gap-y-2 ${centred ? 'justify-center' : ''}`}>
+      {chapter.evidence.map((kind) => (
+        <EvidenceTag key={kind} kind={kind} />
+      ))}
+    </div>
   )
 }
 
-/** One finding at a time, with the terrain staged behind it. */
+/** The opening: the field panorama edge to edge, the question under it. */
+function Cover({ chapter }: { chapter: Chapter }) {
+  const banner = chapter.plate.kind === 'cover' ? chapter.plate : null
+  return (
+    <div className="absolute inset-x-0 bottom-14 top-0 flex flex-col overflow-y-auto px-3 pt-3 lg:px-6 lg:pt-6">
+      {banner && (
+        <motion.img
+          src={banner.src}
+          alt={banner.alt}
+          initial={{ opacity: 0, scale: 1.015 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.9, ease: [0.28, 0.11, 0.32, 1] }}
+          className="aspect-[16/8] w-full shrink-0 rounded-[22px] object-cover sm:aspect-[1600/366] lg:rounded-[28px]"
+        />
+      )}
+      <motion.article
+        {...enter}
+        transition={{ ...enter.transition, delay: 0.15 }}
+        className="mx-auto flex w-full max-w-[1040px] flex-1 flex-col items-center justify-center px-3 py-8 text-center"
+      >
+        <Tags chapter={chapter} centred />
+        <h1 className="mt-5 text-balance font-display text-[36px] leading-[1.06] text-ink sm:text-[52px] xl:text-[68px]">
+          {chapter.title}
+        </h1>
+        <p className="mt-5 max-w-[62ch] text-pretty text-[17px] leading-[1.47] text-ink-2 sm:text-[19px] xl:text-[21px] xl:leading-[1.4]">
+          {chapter.body}
+        </p>
+        <p className="mt-5 text-[13px] text-ink-4">{chapter.source}</p>
+      </motion.article>
+    </div>
+  )
+}
+
+/** One finding at a time: the text on the page, its evidence in the tile. */
 export function Story({ world }: { world: World }) {
-  const chapters = useMemo(() => buildStory(world), [world])
+  const { lang, t } = useT()
+  const chapters = useMemo(() => buildStory(world, lang), [world, lang])
   const index = Math.min(useStore((s) => s.chapter), chapters.length - 1)
   const autoplay = useStore((s) => s.autoplay)
   const setChapter = useStore((s) => s.setChapter)
@@ -32,10 +76,11 @@ export function Story({ world }: { world: World }) {
   const chapter = chapters[index]
   const last = index === chapters.length - 1
 
-  // Stage the scene for this chapter; the sun eases to its new position.
+  // Stage the tile for this chapter; the sun eases to its new position.
   useEffect(() => {
     const s = useStore.getState()
     const { scene } = chapter
+    s.setPlate(chapter.plate)
     s.setLayer(scene.layer)
     s.setTarget(scene.target)
     s.setTwin(scene.twin)
@@ -56,10 +101,8 @@ export function Story({ world }: { world: World }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const s = useStore.getState()
-      if (e.key === 'ArrowRight' || e.code === 'Space') {
-        e.preventDefault()
-        s.setChapter(Math.min(chapters.length - 1, s.chapter + 1))
-      }
+      if (s.lang === null) return
+      if (e.key === 'ArrowRight') s.setChapter(Math.min(chapters.length - 1, s.chapter + 1))
       if (e.key === 'ArrowLeft') s.setChapter(Math.max(0, s.chapter - 1))
     }
     window.addEventListener('keydown', onKey)
@@ -75,87 +118,109 @@ export function Story({ world }: { world: World }) {
     return () => clearTimeout(id)
   }, [autoplay, index, last, setAutoplay, setChapter])
 
-  const link = 'transition-colors hover:text-white disabled:text-zinc-800 disabled:hover:text-zinc-800'
-
   return (
-    <div className="pointer-events-none absolute inset-0 z-30 flex flex-col justify-end bg-gradient-to-t from-ink-950 via-ink-950/55 to-transparent px-6 pb-6 sm:px-10 sm:pb-9">
-      <div className="flex items-end justify-between gap-10">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={chapter.id}
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.55, ease: 'easeOut' }}
-            className="max-w-[640px]"
-          >
-            <p className="font-mono text-[11px] text-zinc-500">
-              <span className="text-ember">0{index + 1}</span> / 0{chapters.length} · {chapter.kicker}
-            </p>
-            {chapter.figure && (
-              <div className="mt-5">
-                <Figure figure={chapter.figure} />
-              </div>
-            )}
-            <h2 className="mt-5 font-display text-[34px] leading-[1.06] text-white sm:text-[48px]">
-              {chapter.title}
-            </h2>
-            <p className="mt-4 max-w-[58ch] text-[15px] leading-relaxed text-zinc-400">{chapter.body}</p>
-            <p className="mt-4 font-mono text-[10px] text-zinc-600">{chapter.source}</p>
+    <>
+      <AnimatePresence mode="wait">
+        {chapter.plate.kind === 'cover' ? (
+          <motion.div key="cover" exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+            <Cover chapter={chapter} />
           </motion.div>
-        </AnimatePresence>
+        ) : (
+          <motion.div key="spread" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+            <div className="absolute inset-x-0 bottom-14 top-[calc(38%+1.5rem)] overflow-y-auto px-5 pb-4 sm:px-8 lg:left-0 lg:right-auto lg:top-0 lg:w-[44%] lg:px-10 lg:pt-10 xl:px-14 xl:pt-14">
+              <AnimatePresence mode="wait">
+                <motion.article key={chapter.id} {...enter} className="max-w-[560px]">
+                  <Tags chapter={chapter} />
+                  <h2 className="mt-4 text-balance font-display text-[30px] leading-[1.08] text-ink sm:text-[38px] xl:text-[46px]">
+                    {chapter.title}
+                  </h2>
+                  {chapter.figure && (
+                    <p className="mt-4 text-[21px] font-semibold leading-snug tracking-[-0.018em] xl:text-[24px]">
+                      <span className="text-ink">{chapter.figure.strong}</span>{' '}
+                      <span className="text-ink-4">{chapter.figure.rest}</span>
+                    </p>
+                  )}
+                  <p className="mt-4 max-w-[54ch] text-pretty text-[17px] leading-[1.47] text-ink-2 xl:text-[18px]">
+                    {chapter.body}
+                  </p>
+                  {chapter.visual && (
+                    <div className="mt-7 border-t border-rule pt-6">
+                      <StoryVisual kind={chapter.visual} world={world} />
+                    </div>
+                  )}
+                  <p className="mt-6 text-[13px] leading-snug text-ink-4 lg:hidden">{chapter.source}</p>
+                </motion.article>
+              </AnimatePresence>
+            </div>
 
-        <AnimatePresence mode="wait">
-          {chapter.visual && (
-            <motion.div
-              key={chapter.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="hidden w-[420px] shrink-0 pb-12 pr-28 xl:block"
-            >
-              <StoryVisual kind={chapter.visual} world={world} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+            {/* the tile's caption */}
+            <p className="absolute bottom-14 left-[44%] right-6 hidden h-11 items-center px-1 text-[13px] leading-snug text-ink-4 lg:flex">
+              <span className="line-clamp-2">{chapter.source}</span>
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      <nav className="pointer-events-auto mt-9 flex items-center gap-6 font-mono text-[11px] text-zinc-500">
-        <div className="flex flex-1 gap-1.5">
+      <nav aria-label={t.chapters} className="absolute inset-x-0 bottom-0 grid h-14 grid-cols-[1fr_auto_1fr] items-center px-4 lg:px-6">
+        <div>
+          <button
+            type="button"
+            onClick={() => setAutoplay(!autoplay)}
+            aria-label={autoplay ? t.pause : t.play}
+            title={autoplay ? t.pause : t.play}
+            className={round}
+          >
+            {autoplay ? <Pause className="size-4" fill="currentColor" /> : <Play className="size-4" fill="currentColor" />}
+          </button>
+        </div>
+
+        {/* page control: one neutral dot per chapter, the current one solid */}
+        <div className="flex items-center">
           {chapters.map((c, i) => (
             <button
               key={c.id}
               type="button"
               title={c.kicker}
-              aria-label={`Chapter ${i + 1}: ${c.kicker}`}
+              aria-label={t.page(c.kicker, i + 1, chapters.length)}
+              aria-current={i === index ? 'page' : undefined}
               onClick={() => setChapter(i)}
-              className="group h-5 flex-1"
+              className="group flex size-6 items-center justify-center rounded-full"
             >
               <span
-                className={`block h-px transition-colors ${
-                  i === index ? 'bg-ember' : i < index ? 'bg-white/60' : 'bg-white/15 group-hover:bg-white/50'
+                className={`size-2 rounded-full transition-colors duration-200 ${
+                  i === index ? 'bg-ink' : 'bg-ink-5 group-hover:bg-ink-4'
                 }`}
               />
             </button>
           ))}
         </div>
-        <button type="button" onClick={() => setAutoplay(!autoplay)} className={autoplay ? 'text-ember' : link}>
-          {autoplay ? 'pause' : 'autoplay'}
-        </button>
-        <button type="button" disabled={index === 0} onClick={() => setChapter(index - 1)} className={link}>
-          ← back
-        </button>
-        {last ? (
-          <button type="button" onClick={() => setMode('explore')} className="text-white underline decoration-ember underline-offset-4">
-            open the data →
+
+        <div className="flex items-center justify-end gap-2">
+          <button
+            type="button"
+            disabled={index === 0}
+            onClick={() => setChapter(index - 1)}
+            aria-label={t.previous}
+            title={t.previous}
+            className={round}
+          >
+            <ChevronLeft className="size-5" />
           </button>
-        ) : (
-          <button type="button" onClick={() => setChapter(index + 1)} className="text-white">
-            next →
-          </button>
-        )}
+          {last ? (
+            <button
+              type="button"
+              onClick={() => setMode('explore')}
+              className="h-9 rounded-full bg-ink px-4 text-[14px] font-medium text-paper transition-opacity hover:opacity-85"
+            >
+              {t.openData}
+            </button>
+          ) : (
+            <button type="button" onClick={() => setChapter(index + 1)} aria-label={t.next} title={t.next} className={round}>
+              <ChevronRight className="size-5" />
+            </button>
+          )}
+        </div>
       </nav>
-    </div>
+    </>
   )
 }

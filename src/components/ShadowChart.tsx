@@ -29,13 +29,13 @@ export function ShadowChart({ world }: { world: World }) {
       title="Ground in shadow as the sun drops"
       hint="Horizon angles traced on each elevation model, curvature of the planet included. The lunar south pole never sees the sun above about 1.5°."
     >
-      <p className="mb-5 text-[15px] leading-snug text-white">
+      <p className="mb-5 text-[15px] leading-snug text-ink">
         At 1.5° of sun,{' '}
         <span className="font-display text-[40px] leading-none">
           {(earth.shadow[low] * 100).toFixed(0)}%
         </span>{' '}
         of Karacadağ is in shadow;{' '}
-        <span className="font-display text-[40px] leading-none text-ember">
+        <span className="font-display text-[40px] leading-none text-accent">
           {(twins[targetId].shadow[low] * 100).toFixed(0)}%
         </span>{' '}
         of {target.name}.
@@ -69,10 +69,10 @@ export function ShadowChart({ world }: { world: World }) {
                   name={t.name}
                   dataKey={t.id}
                   type="monotone"
-                  stroke={on ? '#ff6a3d' : '#52525b'}
+                  stroke={on ? 'var(--accent)' : 'var(--ink-4)'}
                   strokeWidth={on ? 1.75 : 1}
                   strokeDasharray={on ? undefined : '2 4'}
-                  dot={on ? { r: 2, fill: '#ff6a3d', strokeWidth: 0 } : false}
+                  dot={on ? { r: 2, fill: 'var(--accent)', strokeWidth: 0 } : false}
                   animationDuration={500}
                 />
               )
@@ -81,23 +81,23 @@ export function ShadowChart({ world }: { world: World }) {
               name="Karacadağ"
               dataKey="earth"
               type="monotone"
-              stroke="#ffffff"
+              stroke="var(--ink)"
               strokeWidth={1.75}
-              dot={{ r: 2, fill: '#ffffff', strokeWidth: 0 }}
+              dot={{ r: 2, fill: 'var(--ink)', strokeWidth: 0 }}
               isAnimationActive={false}
             />
           </LineChart>
         </ResponsiveContainer>
       </div>
-      <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-zinc-500">
+      <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-label text-[11px] text-ink-3">
         <span className="flex items-center gap-1.5">
-          <span className="h-px w-3 bg-white" /> Karacadağ
+          <span className="h-px w-3 bg-ink" /> Karacadağ
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-px w-3 bg-ember" /> {target.name}
+          <span className="h-px w-3 bg-accent" /> {target.name}
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-3 border-t border-dashed border-zinc-500" /> other targets
+          <span className="w-3 border-t border-dashed border-ink-3" /> other targets
         </span>
       </p>
     </Panel>

@@ -21,8 +21,8 @@ export interface Station {
 }
 
 export const KIND_META: Record<StationKind, { label: string; color: string }> = {
-  tube: { label: 'Lava tube', color: '#ff6a3d' },
-  thermal: { label: 'Thermal point', color: '#ffffff' },
+  tube: { label: 'Lava tube', color: '#ff7a5c' },
+  thermal: { label: 'Thermal point', color: '#f5f5f7' },
   quadrat: { label: 'Rock quadrat', color: '#8a8a8a' },
 }
 
@@ -74,11 +74,11 @@ export const TUBE_PROFILE: TubePoint[] = Array.from({ length: 23 }, (_, i) => {
 })
 
 export const TUBE_SERIES = [
-  { key: 'sun', label: 'Sunlit basalt', color: '#ff6a3d' },
-  { key: 'shade', label: 'Shade', color: '#a8553a' },
-  { key: 'entrance', label: 'Entrance', color: '#6b6b6b' },
-  { key: 'm10', label: '10 m in', color: '#b4b4b4' },
-  { key: 'm25', label: '25 m in', color: '#ffffff' },
+  { key: 'sun', label: 'Sunlit basalt', color: 'var(--accent)' },
+  { key: 'shade', label: 'Shade', color: 'color-mix(in oklab, var(--accent) 55%, var(--paper))' },
+  { key: 'entrance', label: 'Entrance', color: 'var(--ink-5)' },
+  { key: 'm10', label: '10 m in', color: 'var(--ink-3)' },
+  { key: 'm25', label: '25 m in', color: 'var(--ink)' },
 ] as const
 
 const swing = (key: keyof Omit<TubePoint, 'hour'>) => {

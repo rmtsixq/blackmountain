@@ -13,9 +13,9 @@ export function LimitsPanel({ world }: { world: World }) {
         <ol className="space-y-5">
           {EARTH_LIMITS.map((l, i) => (
             <li key={l.title} className="flex gap-4">
-              <span className="font-display text-[28px] leading-none text-zinc-600">{i + 1}</span>
-              <p className="text-[13px] leading-relaxed text-zinc-400">
-                <span className="text-white">{l.title}.</span> {l.text}
+              <span className="font-display text-[28px] leading-none text-ink-4">{i + 1}</span>
+              <p className="text-[13px] leading-relaxed text-ink-2">
+                <span className="text-ink">{l.title}.</span> {l.text}
               </p>
             </li>
           ))}
@@ -35,14 +35,14 @@ export function LimitsPanel({ world }: { world: World }) {
             const axis = results[worst.id]
             return (
               <li key={t.id}>
-                <p className="flex items-baseline justify-between text-[14px] text-white">
+                <p className="flex items-baseline justify-between text-[14px] text-ink">
                   {t.name}
-                  <span className="font-mono text-[11px] text-zinc-500">
+                  <span className="font-label text-[11px] text-ink-3">
                     {worst.label.toLowerCase()}{' '}
-                    <span className="text-ember">{axis.score.toFixed(0)}</span>
+                    <span className="text-accent">{axis.score.toFixed(0)}</span>
                   </span>
                 </p>
-                <p className="mt-1.5 text-[13px] leading-relaxed text-zinc-400">{axis.note}</p>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-ink-2">{axis.note}</p>
               </li>
             )
           })}

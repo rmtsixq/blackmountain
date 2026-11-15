@@ -4,12 +4,13 @@
 // src/lib/analysis.ts) and are not stored here. This file holds what cannot be
 // computed from the rasters we have:
 //   - published surface-temperature swings (for the thermal axis)
-//   - PLACEHOLDER scores for radar and composition, marked † in the UI,
-//     until co-registered Moon / Mars products are added
+//   - rock chemistry scores from published analyses (see ./rock.ts)
 //   - where each analogy breaks, written from published facts
 
+import { ROCK_MATCH } from './rock'
+
 export type TargetId = 'arsia' | 'tranq' | 'shackleton'
-export type AxisId = 'topo' | 'illumination' | 'thermal' | 'radar' | 'composition'
+export type AxisId = 'topo' | 'illumination' | 'thermal' | 'composition'
 
 export interface AxisMeta {
   id: AxisId
@@ -22,11 +23,10 @@ export const AXES: AxisMeta[] = [
   { id: 'topo', label: 'Topography', short: 'Terrain', earthSensor: 'SRTM elevation' },
   { id: 'illumination', label: 'Illumination', short: 'Light', earthSensor: 'Sun on the DEM' },
   { id: 'thermal', label: 'Thermal swing', short: 'Thermal', earthSensor: 'VIIRS day and night' },
-  { id: 'radar', label: 'Radar roughness', short: 'Radar', earthSensor: 'Sentinel-1 C-band' },
-  { id: 'composition', label: 'Composition', short: 'Rock', earthSensor: 'Published petrology' },
+  { id: 'composition', label: 'Rock chemistry', short: 'Rock', earthSensor: 'Ovabağ lava, sample CA 134' },
 ]
 
-interface Placeholder {
+interface Reference {
   score: number
   twinSensor: string
   twin: string
@@ -53,8 +53,7 @@ export interface Target {
   swingK: number
   swingText: string
   swingSource: string
-  radar: Placeholder
-  composition: Placeholder & { earth: string }
+  composition: Reference & { earth: string }
   notes: Record<AxisId, string>
 }
 
@@ -72,19 +71,17 @@ export const TARGETS: Target[] = [
     swingK: 100,
     swingText: 'about 100 K per sol',
     swingSource: 'Mars orbital thermal IR (TES / THEMIS)',
-    radar: { score: 70, twinSensor: 'SHARAD · HiRISE rock counts', twin: 'Rock abundance 10–20%' },
     composition: {
-      score: 63,
-      earth: 'Alkali basalt, olivine-bearing',
-      twinSensor: 'CRISM · TES',
-      twin: 'Tholeiitic basalt under dust',
+      score: ROCK_MATCH.arsia.score,
+      earth: 'Alkali basalt, ten major oxides (Agostini et al. 2022)',
+      twinSensor: 'Spirit APXS, Gusev crater',
+      twin: 'Four ground basalt interiors, Adirondack class',
     },
     notes: {
       topo: 'Arsia is about 435 km wide and Karacadağ a tenth of that: the match holds for a 62 km window of flank, not for the whole edifice.',
       illumination: 'Earth’s sky scatters light into shadows. Martian shadows are harder and skylight interiors darker.',
       thermal: 'A thin CO₂ atmosphere lets the Martian surface swing about five times further than Karacadağ does under one bar of air.',
-      radar: 'Tharsis flows carry a dust mantle metres thick in places; Ovabağ flows are bare or soil-covered.',
-      composition: 'Karacadağ lavas are alkaline, and liquid water and vegetation weather them in ways Mars does not.',
+      composition: 'The Mars analyses are from Gusev crater, not Arsia, which no rover has reached. Karacadağ lavas are alkaline, and water and vegetation weather them in ways Mars does not.',
     },
   },
   {
@@ -100,19 +97,17 @@ export const TARGETS: Target[] = [
     swingK: 290,
     swingText: 'about 290 K (≈ 390 K noon, ≈ 95 K before dawn)',
     swingSource: 'LRO Diviner, equatorial surface (Williams et al. 2017)',
-    radar: { score: 55, twinSensor: 'LRO Mini-RF', twin: 'Elevated CPR at the pit rim' },
     composition: {
-      score: 71,
-      earth: 'Alkali basalt',
-      twinSensor: 'Chandrayaan-1 M³',
+      score: ROCK_MATCH.tranq.score,
+      earth: 'Alkali basalt, ten major oxides (Agostini et al. 2022)',
+      twinSensor: 'Apollo 11 sample 10017',
       twin: 'High-titanium mare basalt',
     },
     notes: {
       topo: 'A mare plain is far flatter than any volcano flank. In one-sixth gravity, lunar tubes can also be far wider than any on Earth.',
       illumination: 'No sky glow on the Moon: shadow edges are absolute, and a 14-day night follows each day.',
       thermal: 'The lunar surface swings about 290 K in vacuum; Karacadağ, under air and moisture, moves a small fraction of that.',
-      radar: 'Lunar regolith is impact-gardened powder. There is no terrestrial equivalent of metres of fine regolith on a lava flow.',
-      composition: 'Both are basalt, but mare lavas are dry and titanium-rich: no hydrated minerals, no organics.',
+      composition: 'The sample is from the Apollo 11 site, about 380 km from the pit. Both are basalt, but mare lavas are dry and titanium-rich: no hydrated minerals, no organics.',
     },
   },
   {
@@ -132,19 +127,17 @@ export const TARGETS: Target[] = [
     swingK: 150,
     swingText: 'well over 100 K between sunlit ridge and neighbouring cold traps',
     swingSource: 'LRO Diviner polar maps',
-    radar: { score: 40, twinSensor: 'LRO Mini-RF', twin: 'Mature highland regolith' },
     composition: {
-      score: 18,
-      earth: 'Alkali basalt',
-      twinSensor: 'M³ · LEND',
-      twin: 'Anorthositic highlands',
+      score: ROCK_MATCH.shackleton.score,
+      earth: 'Alkali basalt, ten major oxides (Agostini et al. 2022)',
+      twinSensor: 'Apollo 16 soil 64501',
+      twin: 'Feldspathic highland soil',
     },
     notes: {
       topo: 'A ridge between impact craters, not a volcanic flank. Crater walls here are steeper than almost anything on a basalt shield.',
       illumination: 'Karacadağ gets about 40 minutes of grazing light a day. At the pole the sun circles the horizon for months and never climbs above about 1.5°.',
       thermal: 'Nothing on Earth approaches cryogenic cold-trap temperatures. Only the trapping mechanism compares, not the numbers.',
-      radar: 'Boulder fields exist on the ridge, but the matrix is fine anorthositic regolith, not lava.',
-      composition: 'Wrong rock entirely: bright feldspar-rich crust against dark iron-rich basalt.',
+      composition: 'Apollo 16 highland soil stands in for the pole, where nothing has been sampled. Wrong rock entirely: bright feldspar-rich crust against dark iron-rich basalt.',
     },
   },
 ]

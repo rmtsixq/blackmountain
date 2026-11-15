@@ -26,15 +26,15 @@ export function Sidebar() {
   const tab = useStore((s) => s.tab)
   const setTab = useStore((s) => s.setTab)
   const shell =
-    'w-full shrink-0 border-t border-white/10 px-5 lg:w-[430px] lg:overflow-y-auto lg:border-l lg:border-t-0 lg:px-7'
+    'w-full shrink-0 border-t border-ink/10 px-5 lg:w-[430px] lg:overflow-y-auto lg:border-l lg:border-t-0 lg:px-7'
 
   if (!world) {
     return (
       <aside className={shell}>
         <div className="animate-pulse space-y-4 py-8">
-          <div className="h-24 w-32 bg-white/5" />
-          <div className="h-4 w-3/4 bg-white/5" />
-          <div className="h-4 w-2/3 bg-white/5" />
+          <div className="h-24 w-32 bg-ink/5" />
+          <div className="h-4 w-3/4 bg-ink/5" />
+          <div className="h-4 w-2/3 bg-ink/5" />
         </div>
       </aside>
     )
@@ -44,7 +44,7 @@ export function Sidebar() {
     <aside className={shell}>
       <div className="pb-7 pt-6">
         <ScoreHeader world={world} />
-        <div className="mt-7 border-t border-white/10">
+        <div className="mt-7 border-t border-ink/10">
           <TargetSelector world={world} />
         </div>
         <div className="mt-5">
@@ -52,7 +52,7 @@ export function Sidebar() {
         </div>
       </div>
 
-      <nav className="sticky top-0 z-10 flex gap-6 border-t border-white/10 bg-ink-950 py-3 text-[14px]">
+      <nav className="sticky top-0 z-10 flex gap-6 border-t border-ink/10 bg-paper py-3 text-[14px]">
         {TABS.map((t) => {
           const on = t.id === tab
           return (
@@ -61,14 +61,14 @@ export function Sidebar() {
               type="button"
               onClick={() => setTab(t.id)}
               className={`relative pb-1 transition-colors ${
-                on ? 'text-white' : 'text-zinc-500 hover:text-zinc-200'
+                on ? 'text-ink' : 'text-ink-3 hover:text-ink'
               }`}
             >
               {t.label}
               {on && (
                 <motion.span
                   layoutId="tab-rule"
-                  className="absolute inset-x-0 -bottom-px h-px bg-ember"
+                  className="absolute inset-x-0 -bottom-px h-px bg-accent"
                   transition={{ type: 'spring', stiffness: 420, damping: 34 }}
                 />
               )}
@@ -106,11 +106,12 @@ export function Sidebar() {
         </motion.div>
       </AnimatePresence>
 
-      <p className="border-t border-white/10 py-6 text-[12px] leading-relaxed text-zinc-600">
+      <p className="border-t border-ink/10 py-6 text-[12px] leading-relaxed text-ink-4">
         Elevation (Earth, Moon, Mars), VIIRS surface temperature, Sentinel-1 radar and the sun's
         position are real data; every terrain and light score is computed from them in the
-        browser. † marks what is still a placeholder: radar and rock scores for the targets,
-        and the station readings, tube profile and rock counts awaiting the field campaign.
+        browser. Rock chemistry scores come from published analyses. † marks what is still a
+        placeholder: the station readings, tube profile and rock counts awaiting the field
+        campaign.
       </p>
     </aside>
   )

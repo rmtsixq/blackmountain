@@ -28,12 +28,12 @@ export function TubeProfileChart() {
         <EmptyState title="No readings yet" text="The profile appears once the field sheet is loaded." />
       ) : (
         <>
-          <p className="mb-5 text-[15px] leading-snug text-white">
+          <p className="mb-5 text-[15px] leading-snug text-ink">
             <span className="font-display text-[40px] leading-none">
               {TUBE_STATS.surfaceSwing.toFixed(0)} K
             </span>{' '}
             of swing outside becomes{' '}
-            <span className="font-display text-[40px] leading-none text-ember">
+            <span className="font-display text-[40px] leading-none text-accent">
               {TUBE_STATS.deepSwing.toFixed(1)} K
             </span>{' '}
             at 25 m.
@@ -58,7 +58,7 @@ export function TubeProfileChart() {
                   labelFormatter={(h) => `${formatHour(Number(h))} solar time`}
                   formatter={(v) => `${Number(v).toFixed(1)} °C`}
                 />
-                <ReferenceLine x={hour} stroke="#ffffff" strokeOpacity={0.6} />
+                <ReferenceLine x={hour} stroke="var(--ink)" strokeOpacity={0.6} />
                 {TUBE_SERIES.map((s) => (
                   <Line
                     key={s.key}
@@ -74,7 +74,7 @@ export function TubeProfileChart() {
               </LineChart>
             </ResponsiveContainer>
           </div>
-          <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-zinc-500">
+          <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-label text-[11px] text-ink-3">
             {TUBE_SERIES.map((s) => (
               <span key={s.key} className="flex items-center gap-1.5">
                 <span className="h-px w-3" style={{ background: s.color }} />
@@ -82,7 +82,7 @@ export function TubeProfileChart() {
               </span>
             ))}
           </p>
-          <p className="mt-4 border-l border-ember pl-3 text-[13px] leading-relaxed text-zinc-400">
+          <p className="mt-4 border-l border-accent pl-3 text-[13px] leading-relaxed text-ink-2">
             Lunar pits hold about 17 °C in shade while the surface runs from +127 °C to −173 °C
             (LRO Diviner). Measuring the same damping here is the cold-trap test.
           </p>

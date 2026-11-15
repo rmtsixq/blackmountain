@@ -26,14 +26,14 @@ export function ScoreHeader({ world }: { world: World }) {
 
   return (
     <div>
-      <p className="font-display leading-[0.82] text-white">
+      <p className="font-display leading-[0.82] text-ink">
         <motion.span className="text-[132px] tracking-tight">{text}</motion.span>
-        <span className="ml-2 font-mono text-[11px] text-zinc-600">% terrain match</span>
+        <span className="ml-2 font-label text-[11px] text-ink-4">% terrain match</span>
       </p>
-      <p className="mt-4 text-[15px] leading-snug text-white">
+      <p className="mt-4 text-[15px] leading-snug text-ink">
         Karacadağ ranks {ORDINAL[place]} of {ranked.length} Earth sites for the terrain of{' '}
         {target.name}
-        <span className="text-zinc-500">
+        <span className="text-ink-3">
           {place === 0
             ? ', ahead of every established analog tested.'
             : behind.length
@@ -41,7 +41,7 @@ export function ScoreHeader({ world }: { world: World }) {
               : `. ${leader.name} leads.`}
         </span>
       </p>
-      <p className="mt-2 max-w-[48ch] text-[13px] leading-relaxed text-zinc-500">{target.summary}</p>
+      <p className="mt-2 max-w-[48ch] text-[13px] leading-relaxed text-ink-3">{target.summary}</p>
     </div>
   )
 }

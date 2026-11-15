@@ -10,7 +10,7 @@ export function StationDetail() {
 
   return (
     <Panel title="Stations" hint="Pick one here or on the terrain; the camera follows." demo>
-      <div className="flex flex-wrap gap-x-4 gap-y-1.5 font-mono text-[11px]">
+      <div className="flex flex-wrap gap-x-4 gap-y-1.5 font-label text-[11px]">
         {STATIONS.map((s) => {
           const on = s.id === stationId
           return (
@@ -20,10 +20,10 @@ export function StationDetail() {
               onClick={() => select(on ? null : s.id)}
               className={`underline-offset-4 transition-colors ${
                 on
-                  ? 'text-ember underline'
+                  ? 'text-accent underline'
                   : s.kind === 'tube'
-                    ? 'text-white hover:text-ember'
-                    : 'text-zinc-500 hover:text-white'
+                    ? 'text-ink hover:text-accent'
+                    : 'text-ink-3 hover:text-ink'
               }`}
             >
               {s.code}
@@ -37,8 +37,8 @@ export function StationDetail() {
           <EmptyState title="No station selected" text="Readings for a station appear here." />
         ) : (
           <>
-            <p className="text-[15px] text-white">{station.name}</p>
-            <p className="mt-1 font-mono text-[11px] tabular-nums text-zinc-500">
+            <p className="text-[15px] text-ink">{station.name}</p>
+            <p className="mt-1 font-label text-[11px] tabular-nums text-ink-3">
               {KIND_META[station.kind].label.toLowerCase()} · {station.lat.toFixed(4)}°N{' '}
               {station.lon.toFixed(4)}°E
             </p>
@@ -50,12 +50,12 @@ export function StationDetail() {
                 ['rock cover', station.rockCover != null ? `${station.rockCover}%` : '—'],
               ].map(([k, v]) => (
                 <div key={k}>
-                  <dd className="font-display text-[28px] leading-none tabular-nums text-white">{v}</dd>
-                  <dt className="mt-1.5 font-mono text-[10px] text-zinc-500">{k}</dt>
+                  <dd className="font-display text-[28px] leading-none tabular-nums text-ink">{v}</dd>
+                  <dt className="mt-1.5 font-label text-[10px] text-ink-3">{k}</dt>
                 </div>
               ))}
             </dl>
-            <p className="mt-4 text-[13px] leading-relaxed text-zinc-400">{station.note}</p>
+            <p className="mt-4 text-[13px] leading-relaxed text-ink-2">{station.note}</p>
           </>
         )}
       </div>

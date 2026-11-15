@@ -47,7 +47,7 @@ export function RockAbundanceChart() {
                 key={key}
                 name={`model ${key.slice(1)}%`}
                 dataKey={key}
-                stroke="#52525b"
+                stroke="var(--ink-4)"
                 strokeWidth={1}
                 strokeDasharray="2 4"
                 dot={false}
@@ -55,17 +55,17 @@ export function RockAbundanceChart() {
                 isAnimationActive={false}
               />
             ))}
-            <Scatter name="QD-01 fresh flow" dataKey="fresh" fill="#ff6a3d" />
-            <Scatter name="QD-05 weathered flow" dataKey="weathered" fill="#ffffff" />
+            <Scatter name="QD-01 fresh flow" dataKey="fresh" fill="var(--accent)" />
+            <Scatter name="QD-05 weathered flow" dataKey="weathered" fill="var(--ink)" />
           </ComposedChart>
         </ResponsiveContainer>
       </div>
-      <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-zinc-500">
+      <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-label text-[11px] text-ink-3">
         <span className="flex items-center gap-1.5">
-          <span className="size-1.5 rounded-full bg-ember" /> fresh ʻaʻā, QD-01
+          <span className="size-1.5 rounded-full bg-accent" /> fresh ʻaʻā, QD-01
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="size-1.5 rounded-full bg-white" /> weathered flow, QD-05
+          <span className="size-1.5 rounded-full bg-ink" /> weathered flow, QD-05
         </span>
       </p>
     </Panel>

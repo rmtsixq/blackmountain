@@ -26,31 +26,31 @@ export function AxisList({ world }: { world: World }) {
           return (
             <li key={axis.id}>
               <div className="flex items-baseline gap-3">
-                <span className="text-[14px] text-white">{axis.label}</span>
-                <span className={`flex-1 font-mono text-[10px] ${soft ? 'text-zinc-600' : 'text-zinc-400'}`}>
+                <span className="text-[14px] text-ink">{axis.label}</span>
+                <span className={`flex-1 font-label text-[10px] ${soft ? 'text-ink-4' : 'text-ink-2'}`}>
                   {STATUS[a.status]}
                 </span>
-                <span className={`font-mono text-[13px] tabular-nums ${soft ? 'text-zinc-500' : 'text-white'}`}>
+                <span className={`font-label text-[13px] tabular-nums ${soft ? 'text-ink-3' : 'text-ink'}`}>
                   {a.score.toFixed(0)}
                 </span>
               </div>
-              <div className="mt-2 h-px bg-white/10">
+              <div className="mt-2 h-px bg-ink/10">
                 <div
-                  className={`h-px transition-all duration-500 ${soft ? 'bg-zinc-500' : 'bg-ember'}`}
+                  className={`h-px transition-all duration-500 ${soft ? 'bg-ink-3' : 'bg-accent'}`}
                   style={{ width: `${a.score}%` }}
                 />
               </div>
-              <div className="mt-3 grid grid-cols-2 gap-5 font-mono text-[11px] leading-relaxed">
-                <p className="text-zinc-300">
-                  <span className="block text-zinc-600">{a.earthSensor}</span>
+              <div className="mt-3 grid grid-cols-2 gap-5 font-label text-[11px] leading-relaxed">
+                <p className="text-ink-2">
+                  <span className="block text-ink-4">{a.earthSensor}</span>
                   {a.earth}
                 </p>
-                <p className="text-zinc-300">
-                  <span className="block text-zinc-600">{a.twinSensor}</span>
+                <p className="text-ink-2">
+                  <span className="block text-ink-4">{a.twinSensor}</span>
                   {a.twin}
                 </p>
               </div>
-              <p className="mt-3 border-l border-ember pl-3 text-[13px] leading-relaxed text-zinc-400">
+              <p className="mt-3 border-l border-accent pl-3 text-[13px] leading-relaxed text-ink-2">
                 {a.note}
               </p>
             </li>

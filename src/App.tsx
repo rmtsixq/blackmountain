@@ -1,4 +1,7 @@
+import { useEffect } from 'react'
+import { AnimatePresence, MotionConfig } from 'framer-motion'
 import { Header } from './components/Header'
+import { LanguageGate } from './components/LanguageGate'
 import { MapView } from './components/MapView'
 import { Sidebar } from './components/Sidebar'
 import { useWorld } from './hooks/useWorld'
@@ -7,15 +10,24 @@ import { useStore } from './store'
 function App() {
   const state = useWorld()
   const mode = useStore((s) => s.mode)
+  const lang = useStore((s) => s.lang)
+
+  useEffect(() => {
+    if (lang) document.documentElement.lang = lang
+  }, [lang])
 
   return (
-    <div className="flex min-h-svh flex-col bg-ink-950 font-sans text-zinc-300 lg:h-svh lg:overflow-hidden">
-      <Header />
-      <main className="flex min-h-0 flex-1 flex-col lg:flex-row">
-        <MapView state={state} />
-        {mode === 'explore' && <Sidebar />}
-      </main>
-    </div>
+    <MotionConfig reducedMotion="user">
+      <div className="flex min-h-svh flex-col bg-paper font-sans text-ink-2 lg:h-svh lg:overflow-hidden">
+        <Header />
+        <main className="flex min-h-0 flex-1 flex-col lg:flex-row">
+          <MapView state={state} />
+          {mode === 'explore' && <Sidebar />}
+        </main>
+      </div>
+      {/* the data loads behind the choice */}
+      <AnimatePresence>{lang === null && <LanguageGate />}</AnimatePresence>
+    </MotionConfig>
   )
 }
 

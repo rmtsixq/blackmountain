@@ -24,9 +24,9 @@ export function TwinSwitch() {
       type="button"
       aria-pressed={on}
       onClick={onClick}
-      className={`group text-left transition-colors ${on ? 'text-white' : 'text-zinc-600 hover:text-zinc-300'}`}
+      className={`group text-left transition-colors ${on ? 'text-ink' : 'text-ink-4 hover:text-ink-2'}`}
     >
-      <span className={`block font-mono text-[10px] ${on ? 'text-ember' : ''}`}>{world}</span>
+      <span className={`block font-label text-[10px] ${on ? 'text-accent' : ''}`}>{world}</span>
       <span className="block font-display text-[26px] leading-tight sm:text-[32px]">{name}</span>
     </button>
   )
@@ -39,13 +39,13 @@ export function TwinSwitch() {
           type="button"
           title="Switch world (space)"
           onClick={() => setTwin(!twin)}
-          className="pb-1.5 font-display text-[26px] leading-none text-zinc-500 transition-colors hover:text-white"
+          className="pb-1.5 font-display text-[26px] leading-none text-ink-3 transition-colors hover:text-ink"
         >
           ⇄
         </button>
         {option(twin, target.body, target.name, () => setTwin(true))}
       </div>
-      <p className="mt-2 max-w-[44ch] font-mono text-[10px] leading-relaxed text-zinc-600">
+      <p className="mt-2 max-w-[44ch] font-label text-[10px] leading-relaxed text-ink-4">
         {twin
           ? `${target.coords} · ${target.demSource} · same 62 km square and vertical scale as Karacadağ`
           : 'Press space to turn this mountain into its twin: real elevation, same scale.'}

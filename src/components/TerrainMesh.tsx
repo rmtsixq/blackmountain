@@ -148,11 +148,11 @@ export function TerrainMesh({ world }: { world: World }) {
       </mesh>
       <Ridgelines world={world} />
       <mesh ref={skirtMesh} geometry={skirt}>
-        <meshBasicMaterial color="#050506" side={THREE.DoubleSide} />
+        <meshBasicMaterial color="#000000" side={THREE.DoubleSide} />
       </mesh>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -BASE, 0]}>
         <planeGeometry args={[WORLD, WORLD]} />
-        <meshBasicMaterial color="#050506" side={THREE.DoubleSide} />
+        <meshBasicMaterial color="#000000" side={THREE.DoubleSide} />
       </mesh>
     </group>
   )

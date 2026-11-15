@@ -44,12 +44,12 @@ export function FingerprintRadar({ world }: { world: World }) {
                   key={t.id}
                   name={t.name}
                   dataKey={t.id}
-                  stroke={on ? '#ff6a3d' : '#6b6b6b'}
+                  stroke={on ? 'var(--accent)' : 'var(--ink-3)'}
                   strokeWidth={on ? 1.5 : 1}
                   strokeDasharray={on ? undefined : '2 4'}
-                  fill="#ff6a3d"
+                  fill="var(--accent)"
                   fillOpacity={on ? 0.14 : 0}
-                  dot={on ? { r: 2, fill: '#ff6a3d', strokeWidth: 0 } : false}
+                  dot={on ? { r: 2, fill: 'var(--accent)', strokeWidth: 0 } : false}
                   animationDuration={500}
                 />
               )

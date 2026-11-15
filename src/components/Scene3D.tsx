@@ -14,8 +14,8 @@ export function Scene3D({ world }: { world: World }) {
       dpr={[1, 2]}
       camera={{ position: HOME_POSITION, fov: 30, near: 0.5, far: 900 }}
     >
-      <color attach="background" args={['#050506']} />
-      <hemisphereLight args={['#aab4c8', '#050506', 0.3]} />
+      <color attach="background" args={['#000000']} />
+      <hemisphereLight args={['#aab4c8', '#000000', 0.3]} />
       <Animator />
       <SunLight />
       <TerrainMesh world={world} />

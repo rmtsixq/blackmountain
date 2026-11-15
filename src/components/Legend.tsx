@@ -12,17 +12,17 @@ export function Legend({ world }: { world: World }) {
 
   return (
     <div className="w-full">
-      <p className="truncate text-[12px] text-zinc-300">
+      <p className="truncate text-[12px] text-ink-2">
         {layer.label}
         {(data.layer === 'score' || side === 'twin') && (
-          <span className="text-zinc-500">, {targetById(targetId).name}</span>
+          <span className="text-ink-3">, {targetById(targetId).name}</span>
         )}
       </p>
       <div
         className="mt-2 h-[3px]"
         style={{ background: `linear-gradient(to right, ${layer.stops.join(',')})` }}
       />
-      <div className="mt-1.5 flex justify-between font-mono text-[10px] tabular-nums text-zinc-500">
+      <div className="mt-1.5 flex justify-between font-label text-[10px] tabular-nums text-ink-3">
         <span>{lo}</span>
         <span>{(lo + hi) / 2}</span>
         <span>

@@ -78,7 +78,7 @@ export function CameraRig({ dem }: { dem: Dem }) {
       target={[HOME_TARGET.x, HOME_TARGET.y, HOME_TARGET.z]}
       maxPolarAngle={Math.PI * 0.47}
       minDistance={10}
-      maxDistance={230}
+      maxDistance={320}
       enabled={!shot}
       autoRotate={autoRotate && !shot}
       autoRotateSpeed={0.35}

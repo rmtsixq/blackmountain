@@ -7,7 +7,7 @@ import type { World } from './layers'
 
 /**
  * computed    — both sides measured from real rasters in this app
- * published   — measured here, compared with a published value for the target
+ * published   — compared with a published value for the target
  * placeholder — not yet backed by data; marked † in the UI
  */
 export type AxisStatus = 'computed' | 'published' | 'placeholder'
@@ -80,18 +80,9 @@ export function axisResults(target: Target, world: World): Record<AxisId, AxisRe
       twin: target.swingText,
       note: target.notes.thermal,
     },
-    radar: {
-      score: target.radar.score,
-      status: 'placeholder',
-      earthSensor: earthSensor('radar'),
-      twinSensor: target.radar.twinSensor,
-      earth: `${fieldMean(world.earth.radar).toFixed(1)} dB on the young flows`,
-      twin: target.radar.twin,
-      note: target.notes.radar,
-    },
     composition: {
       score: target.composition.score,
-      status: 'placeholder',
+      status: 'published',
       earthSensor: earthSensor('composition'),
       twinSensor: target.composition.twinSensor,
       earth: target.composition.earth,

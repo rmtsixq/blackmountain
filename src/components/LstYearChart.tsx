@@ -25,9 +25,9 @@ export function LstYearChart({ world }: { world: World }) {
         <EmptyState title="No temperature series" text="Run scripts/ingest.py to fetch it." />
       ) : (
         <>
-          <p className="mb-5 text-[15px] leading-snug text-white">
+          <p className="mb-5 text-[15px] leading-snug text-ink">
             The surface averages{' '}
-            <span className="font-display text-[40px] leading-none text-ember">
+            <span className="font-display text-[40px] leading-none text-accent">
               {mean.toFixed(0)} °C
             </span>{' '}
             over the year.
@@ -39,30 +39,30 @@ export function LstYearChart({ world }: { world: World }) {
                 <XAxis dataKey="label" tick={AXIS_TICK} tickLine={false} stroke={GRID_STROKE} interval={1} />
                 <YAxis tick={AXIS_TICK} tickLine={false} axisLine={false} unit="°" />
                 <Tooltip {...TOOLTIP_STYLE} formatter={(v) => `${Number(v).toFixed(1)} °C`} />
-                <ReferenceLine y={mean} stroke="#ff6a3d" strokeDasharray="2 4" />
-                <ReferenceLine y={4.5} stroke="#ffffff" strokeOpacity={0.5} strokeDasharray="2 4" />
-                <Line name="Summit, day" dataKey="summit_day" stroke="#52525b" strokeWidth={1} dot={false} type="monotone" connectNulls />
-                <Line name="Summit, night" dataKey="summit_night" stroke="#52525b" strokeWidth={1} dot={false} type="monotone" connectNulls />
-                <Line name="Lava field, 13:30" dataKey="field_day" stroke="#ff6a3d" strokeWidth={1.75} dot={false} type="monotone" connectNulls />
-                <Line name="Lava field, 01:30" dataKey="field_night" stroke="#ffffff" strokeWidth={1.75} dot={false} type="monotone" connectNulls />
+                <ReferenceLine y={mean} stroke="var(--accent)" strokeDasharray="2 4" />
+                <ReferenceLine y={4.5} stroke="var(--ink)" strokeOpacity={0.5} strokeDasharray="2 4" />
+                <Line name="Summit, day" dataKey="summit_day" stroke="var(--ink-4)" strokeWidth={1} dot={false} type="monotone" connectNulls />
+                <Line name="Summit, night" dataKey="summit_night" stroke="var(--ink-4)" strokeWidth={1} dot={false} type="monotone" connectNulls />
+                <Line name="Lava field, 13:30" dataKey="field_day" stroke="var(--accent)" strokeWidth={1.75} dot={false} type="monotone" connectNulls />
+                <Line name="Lava field, 01:30" dataKey="field_night" stroke="var(--ink)" strokeWidth={1.75} dot={false} type="monotone" connectNulls />
               </LineChart>
             </ResponsiveContainer>
           </div>
-          <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-zinc-500">
+          <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-label text-[11px] text-ink-3">
             <span className="flex items-center gap-1.5">
-              <span className="h-px w-3 bg-ember" /> field, day
+              <span className="h-px w-3 bg-accent" /> field, day
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="h-px w-3 bg-white" /> field, night
+              <span className="h-px w-3 bg-ink" /> field, night
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="h-px w-3 bg-zinc-600" /> summit
+              <span className="h-px w-3 bg-ink-4" /> summit
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="w-3 border-t border-dashed border-white/60" /> reported in-tube
+              <span className="w-3 border-t border-dashed border-ink/60" /> reported in-tube
             </span>
           </p>
-          <p className="mt-4 border-l border-ember pl-3 text-[13px] leading-relaxed text-zinc-400">
+          <p className="mt-4 border-l border-accent pl-3 text-[13px] leading-relaxed text-ink-2">
             Local cavers report 4–5 °C inside an Ovabağ tube in summer (press report, not yet
             verified by us). Rock deep in a closed cave settles near the annual mean of the
             surface above it. A tube sitting some {(mean - 4.5).toFixed(0)} K below that mean

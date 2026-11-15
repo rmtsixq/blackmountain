@@ -72,7 +72,7 @@ function Pole({
           zIndexRange={[20, 0]}
           style={{ pointerEvents: 'none', transform: 'translate(6px, -50%)' }}
         >
-          <span className="whitespace-nowrap font-mono text-[10px]" style={{ color }}>
+          <span className="whitespace-nowrap font-label text-[10px]" style={{ color }}>
             {label}
           </span>
         </Html>
@@ -92,7 +92,7 @@ function StationPole({ station, dem }: { station: Station; dem: Dem }) {
       u={u}
       v={v}
       height={selected ? 5.5 : tube ? 4 : 2.2}
-      color={selected || tube ? '#ff6a3d' : '#ffffff'}
+      color={selected || tube ? '#ff7a5c' : '#f5f5f7'}
       label={station.code}
       showLabel={selected || tube}
       onSelect={() => select(selected ? null : station.id)}
@@ -127,7 +127,7 @@ export function StationMarkers({ world }: { world: World }) {
             u={l.u}
             v={l.v}
             height={5}
-            color="#ffffff"
+            color="#f5f5f7"
             label={l.text}
             showLabel
             lower={lower}
@@ -147,7 +147,7 @@ export function StationMarkers({ world }: { world: World }) {
           u={best.u}
           v={best.v}
           height={7}
-          color="#ffffff"
+          color="#f5f5f7"
           label={`closest terrain to ${target.name} · ${best.score.toFixed(0)}%`}
           showLabel
         />

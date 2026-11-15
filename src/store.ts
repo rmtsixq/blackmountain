@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import type { LayerId, Side, World } from './lib/layers'
 import type { TargetId } from './data/targets'
 import type { UV } from './lib/dem'
+import type { Lang } from './lib/i18n'
 
 export type SidebarTab = 'fingerprint' | 'field' | 'limits'
 /** story: one finding at a time. explore: every instrument. */
@@ -12,8 +13,19 @@ export interface Shot {
   target: [number, number, number]
 }
 
+/** What the plate beside the text shows. */
+export type Plate =
+  | { kind: 'terrain' }
+  | { kind: 'photo'; src: string; alt: string }
+  /** the opening: a full-width banner the story lays out itself */
+  | { kind: 'cover'; src: string; alt: string }
+  | { kind: 'scan' }
+
 interface State {
   world: World | null
+  /** null until chosen on the first screen */
+  lang: Lang | null
+  setLang: (lang: Lang) => void
   mode: Mode
   chapter: number
   autoplay: boolean
@@ -36,6 +48,8 @@ interface State {
   resetNonce: number
   /** camera framing chosen by the story; null hands control to the user */
   shot: Shot | null
+  plate: Plate
+  setPlate: (plate: Plate) => void
   setWorld: (world: World) => void
   setMode: (mode: Mode) => void
   setChapter: (chapter: number) => void
@@ -55,7 +69,7 @@ interface State {
   resetView: () => void
 }
 
-// Deep links: ?mode=explore&layer=score&target=tranq&hour=16.6&twin=1&chapter=3
+// Deep links: ?lang=tr&mode=explore&layer=score&target=tranq&hour=16.6&twin=1&chapter=3
 const params = new URLSearchParams(window.location.search)
 const LAYER_IDS: LayerId[] = ['terrain', 'thermal', 'swing', 'radar', 'slope', 'score']
 const TARGET_IDS: TargetId[] = ['arsia', 'tranq', 'shackleton']
@@ -65,9 +79,12 @@ const pick = <T extends string>(key: string, allowed: T[], fallback: T) => {
 }
 const initialHour = Number(params.get('hour'))
 const initialMode = pick<Mode>('mode', ['story', 'explore'], 'story')
+const initialLang = params.get('lang')
 
 export const useStore = create<State>((set) => ({
   world: null,
+  lang: initialLang === 'tr' || initialLang === 'en' ? initialLang : null,
+  setLang: (lang) => set({ lang }),
   mode: initialMode,
   chapter: Math.max(0, Number(params.get('chapter')) || 0),
   autoplay: false,
@@ -84,6 +101,8 @@ export const useStore = create<State>((set) => ({
   tab: 'fingerprint',
   resetNonce: 0,
   shot: null,
+  plate: { kind: 'terrain' },
+  setPlate: (plate) => set({ plate }),
   setWorld: (world) => set({ world }),
   setMode: (mode) =>
     set((s) =>
@@ -92,6 +111,7 @@ export const useStore = create<State>((set) => ({
             mode,
             autoplay: false,
             shot: null,
+            plate: { kind: 'terrain' },
             twin: false,
             stations: true,
             autoRotate: true,

@@ -1,14 +1,15 @@
-export const AXIS_TICK = { fill: '#71717a', fontSize: 10, fontFamily: 'var(--font-mono)' }
-export const GRID_STROKE = '#1c1d21'
+export const AXIS_TICK = { fill: 'var(--ink-3)', fontSize: 11, fontFamily: 'var(--font-label)' }
+export const GRID_STROKE = 'var(--rule)'
 
 export const TOOLTIP_STYLE = {
   contentStyle: {
-    background: '#050506',
-    border: '1px solid rgba(255,255,255,0.18)',
-    borderRadius: 0,
+    background: 'var(--paper)',
+    border: '1px solid var(--rule)',
+    borderRadius: 12,
+    boxShadow: '0 8px 28px rgba(0,0,0,0.14)',
     fontSize: 12,
     padding: '8px 10px',
   },
-  labelStyle: { color: '#a1a1aa', marginBottom: 4 },
+  labelStyle: { color: 'var(--ink-3)', marginBottom: 4 },
   itemStyle: { padding: 0 },
 } as const

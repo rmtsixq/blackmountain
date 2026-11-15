@@ -24,13 +24,13 @@ export function LayerPanel() {
                 onClick={() => setLayer(l.id)}
                 className={`flex items-baseline gap-3 transition-colors ${
                   on
-                    ? 'text-white'
+                    ? 'text-ink'
                     : unavailable
-                      ? 'cursor-not-allowed text-zinc-800 line-through'
-                      : 'text-zinc-500 hover:text-zinc-200'
+                      ? 'cursor-not-allowed text-ink-5 line-through'
+                      : 'text-ink-3 hover:text-ink'
                 }`}
               >
-                <span className={`hidden font-mono text-[10px] sm:inline ${on ? 'text-ember' : 'text-zinc-700'}`}>
+                <span className={`hidden font-label text-[10px] sm:inline ${on ? 'text-accent' : 'text-ink-5'}`}>
                   0{i + 1}
                 </span>
                 {l.label}
@@ -39,7 +39,7 @@ export function LayerPanel() {
           )
         })}
       </ul>
-      <p className="mt-5 hidden max-w-[26ch] font-mono text-[10px] leading-relaxed text-zinc-600 sm:block">
+      <p className="mt-5 hidden max-w-[26ch] font-label text-[10px] leading-relaxed text-ink-4 sm:block">
         {twin && shown === 'terrain' ? 'LOLA / MOLA elevation' : active.source}
       </p>
     </div>

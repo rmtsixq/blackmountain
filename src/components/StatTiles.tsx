@@ -12,10 +12,10 @@ export function StatTiles({ world }: { world: World }) {
   ]
 
   return (
-    <dl className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-[11px] text-zinc-500">
+    <dl className="flex flex-wrap gap-x-6 gap-y-2 font-label text-[11px] text-ink-3">
       {facts.map(([value, label]) => (
         <div key={label} className="flex gap-1.5">
-          <dd className="tabular-nums text-white">{value}</dd>
+          <dd className="tabular-nums text-ink">{value}</dd>
           <dt>{label}</dt>
         </div>
       ))}

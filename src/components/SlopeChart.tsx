@@ -27,8 +27,8 @@ export function SlopeChart({ world }: { world: World }) {
       title="How steep the ground is"
       hint={`Share of each 62 km square at every slope, measured the same way (${BASELINE_M} m baseline) on Karacadağ and on ${target.name}.`}
     >
-      <p className="mb-5 text-[15px] leading-snug text-white">
-        <span className="font-display text-[40px] leading-none text-ember">
+      <p className="mb-5 text-[15px] leading-snug text-ink">
+        <span className="font-display text-[40px] leading-none text-accent">
           {(twin.slopeSim * 100).toFixed(0)}%
         </span>{' '}
         overlap in slope,{' '}
@@ -65,9 +65,9 @@ export function SlopeChart({ world }: { world: World }) {
               name={target.name}
               dataKey="twin"
               type="monotone"
-              stroke="#ff6a3d"
+              stroke="var(--accent)"
               strokeWidth={1.5}
-              fill="#ff6a3d"
+              fill="var(--accent)"
               fillOpacity={0.14}
               animationDuration={500}
             />
@@ -75,21 +75,21 @@ export function SlopeChart({ world }: { world: World }) {
               name="Karacadağ"
               dataKey="earth"
               type="monotone"
-              stroke="#ffffff"
+              stroke="var(--ink)"
               strokeWidth={1.5}
-              fill="#ffffff"
+              fill="var(--ink)"
               fillOpacity={0.05}
               isAnimationActive={false}
             />
           </AreaChart>
         </ResponsiveContainer>
       </div>
-      <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-zinc-500">
+      <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-label text-[11px] text-ink-3">
         <span className="flex items-center gap-1.5">
-          <span className="h-px w-3 bg-white" /> Karacadağ, median {earth.medianSlope.toFixed(1)}°
+          <span className="h-px w-3 bg-ink" /> Karacadağ, median {earth.medianSlope.toFixed(1)}°
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-px w-3 bg-ember" /> {target.name}, median {twin.medianSlope.toFixed(1)}°
+          <span className="h-px w-3 bg-accent" /> {target.name}, median {twin.medianSlope.toFixed(1)}°
         </span>
       </p>
     </Panel>

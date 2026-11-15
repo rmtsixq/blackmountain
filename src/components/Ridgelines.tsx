@@ -96,7 +96,7 @@ export function Ridgelines({ world }: { world: World }) {
     }
     const g = new THREE.BufferGeometry()
     g.setAttribute('position', new THREE.BufferAttribute(pts, 3))
-    return new THREE.Line(g, new THREE.LineBasicMaterial({ color: '#ffffff', toneMapped: false }))
+    return new THREE.Line(g, new THREE.LineBasicMaterial({ color: '#f5f5f7', toneMapped: false }))
   }, [probeV, dem])
   useEffect(
     () => () => {
