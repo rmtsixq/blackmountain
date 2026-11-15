@@ -30,3 +30,4 @@ dist-ssr
 # the raw scan stays local: too large to push
 /*.ply
 /scan/
+.vercel
