@@ -1,11 +1,13 @@
 import { layerById, layerData, type World } from '../lib/layers'
 import { targetById } from '../data/targets'
+import { useT } from '../lib/i18n'
 import { useStore } from '../store'
 
 export function Legend({ world }: { world: World }) {
   const layerId = useStore((s) => s.layer)
   const targetId = useStore((s) => s.target)
   const side = useStore((s) => s.side)
+  const { x } = useT()
   const data = layerData(world, layerId, targetId, side)
   const layer = layerById(data.layer)
   const [lo, hi] = data.domain
@@ -13,9 +15,9 @@ export function Legend({ world }: { world: World }) {
   return (
     <div className="w-full">
       <p className="truncate text-[12px] text-ink-2">
-        {layer.label}
+        {x(layer.label)}
         {(data.layer === 'score' || side === 'twin') && (
-          <span className="text-ink-3">, {targetById(targetId).name}</span>
+          <span className="text-ink-3">, {x(targetById(targetId).name)}</span>
         )}
       </p>
       <div

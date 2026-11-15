@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { targetById } from '../data/targets'
+import { useT } from '../lib/i18n'
 import { useStore } from '../store'
 
 /** Karacadağ ⇄ the selected target: same square, same vertical scale. */
@@ -7,6 +8,7 @@ export function TwinSwitch() {
   const twin = useStore((s) => s.twin)
   const setTwin = useStore((s) => s.setTwin)
   const target = targetById(useStore((s) => s.target))
+  const { x } = useT()
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -34,21 +36,24 @@ export function TwinSwitch() {
   return (
     <div className="pointer-events-auto">
       <div className="flex items-end gap-5">
-        {option(!twin, 'Earth', 'Karacadağ', () => setTwin(false))}
+        {option(!twin, x('Earth'), 'Karacadağ', () => setTwin(false))}
         <button
           type="button"
-          title="Switch world (space)"
+          title={x('Switch world (space)')}
           onClick={() => setTwin(!twin)}
           className="pb-1.5 font-display text-[26px] leading-none text-ink-3 transition-colors hover:text-ink"
         >
           ⇄
         </button>
-        {option(twin, target.body, target.name, () => setTwin(true))}
+        {option(twin, x(target.body), x(target.name), () => setTwin(true))}
       </div>
       <p className="mt-2 max-w-[44ch] font-label text-[10px] leading-relaxed text-ink-4">
         {twin
-          ? `${target.coords} · ${target.demSource} · same 62 km square and vertical scale as Karacadağ`
-          : 'Press space to turn this mountain into its twin: real elevation, same scale.'}
+          ? x('{coords} · {dem} · same 62 km square and vertical scale as Karacadağ', {
+              coords: target.coords,
+              dem: x(target.demSource),
+            })
+          : x('Press space to turn this mountain into its twin: real elevation, same scale.')}
       </p>
     </div>
   )

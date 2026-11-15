@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useStore, type SidebarTab } from '../store'
+import { useT } from '../lib/i18n'
 import { AxisList } from './AxisList'
 import { FingerprintRadar } from './FingerprintRadar'
 import { Leaderboard } from './Leaderboard'
@@ -25,6 +26,7 @@ export function Sidebar() {
   const world = useStore((s) => s.world)
   const tab = useStore((s) => s.tab)
   const setTab = useStore((s) => s.setTab)
+  const { x } = useT()
   const shell =
     'w-full shrink-0 border-t border-ink/10 px-5 lg:w-[430px] lg:overflow-y-auto lg:border-l lg:border-t-0 lg:px-7'
 
@@ -64,7 +66,7 @@ export function Sidebar() {
                 on ? 'text-ink' : 'text-ink-3 hover:text-ink'
               }`}
             >
-              {t.label}
+              {x(t.label)}
               {on && (
                 <motion.span
                   layoutId="tab-rule"
@@ -107,11 +109,9 @@ export function Sidebar() {
       </AnimatePresence>
 
       <p className="border-t border-ink/10 py-6 text-[12px] leading-relaxed text-ink-4">
-        Elevation (Earth, Moon, Mars), VIIRS surface temperature, Sentinel-1 radar and the sun's
-        position are real data; every terrain and light score is computed from them in the
-        browser. Rock chemistry scores come from published analyses. † marks what is still a
-        placeholder: the station readings, tube profile and rock counts awaiting the field
-        campaign.
+        {x(
+          "Elevation (Earth, Moon, Mars), VIIRS surface temperature, Sentinel-1 radar and the sun's position are real data; every terrain and light score is computed from them in the browser. Rock chemistry scores come from published analyses. † marks what is still a placeholder: the station readings, tube profile and rock counts awaiting the field campaign.",
+        )}
       </p>
     </aside>
   )

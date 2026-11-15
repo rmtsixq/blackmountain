@@ -1,4 +1,5 @@
 import { targetById } from '../data/targets'
+import { useT } from '../lib/i18n'
 import { EXTENT_KM, uvToIndex, uvToLonLat } from '../lib/dem'
 import type { World } from '../lib/layers'
 import { useStore } from '../store'
@@ -12,10 +13,11 @@ export function ProbeReadout({ world }: { world: World }) {
   const probe = useStore((s) => s.probe)
   const targetId = useStore((s) => s.target)
   const side = useStore((s) => s.side)
+  const { x: tx } = useT()
 
   if (!probe) {
     return (
-      <p className="font-label text-[11px] text-ink-4">Move over the terrain to read it.</p>
+      <p className="font-label text-[11px] text-ink-4">{tx('Move over the terrain to read it.')}</p>
     )
   }
 
@@ -43,18 +45,22 @@ export function ProbeReadout({ world }: { world: World }) {
       </svg>
       <p className="tabular-nums text-ink">
         {twin
-          ? `${targetById(targetId).name}, ${(probe.u * EXTENT_KM).toFixed(1)} km E ${(probe.v * EXTENT_KM).toFixed(1)} km S`
-          : `${lat.toFixed(4)}°N ${lon.toFixed(4)}°E`}
+          ? tx('{name}, {e} km E {s} km S', {
+              name: tx(targetById(targetId).name),
+              e: (probe.u * EXTENT_KM).toFixed(1),
+              s: (probe.v * EXTENT_KM).toFixed(1),
+            })
+          : tx('{lat}°N {lon}°E', { lat: lat.toFixed(4), lon: lon.toFixed(4) })}
       </p>
       <p className="mt-1 tabular-nums leading-relaxed">
-        {num(dem.heights[i])} m · {num(surface.slope[i], 1)}° slope
+        {num(dem.heights[i])} m · {num(surface.slope[i], 1)}° {tx('slope')}
         {!twin && (
           <>
             <br />
-            {num(world.earth.thermal[e], 1)} °C · {num(world.earth.swing[e], 1)} K swing ·{' '}
+            {num(world.earth.thermal[e], 1)} °C · {num(world.earth.swing[e], 1)} {tx('K swing')} ·{' '}
             {num(world.earth.radar[e], 1)} dB
             <br />
-            terrain match {num(world.earth.score[targetId][e])}%
+            {tx('terrain match')} {num(world.earth.score[targetId][e])}%
           </>
         )}
       </p>

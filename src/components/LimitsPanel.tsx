@@ -1,21 +1,23 @@
 import { AXES, EARTH_LIMITS, TARGETS } from '../data/targets'
+import { useT } from '../lib/i18n'
 import type { World } from '../lib/layers'
 import { axisResults } from '../lib/scores'
 import { Panel } from './Panel'
 
 export function LimitsPanel({ world }: { world: World }) {
+  const { x, lang } = useT()
   return (
     <>
       <Panel
-        title="What Earth cannot reproduce"
-        hint="Stating the limits is part of the result. None of these change with more data."
+        title={x('What Earth cannot reproduce')}
+        hint={x('Stating the limits is part of the result. None of these change with more data.')}
       >
         <ol className="space-y-5">
           {EARTH_LIMITS.map((l, i) => (
             <li key={l.title} className="flex gap-4">
               <span className="font-display text-[28px] leading-none text-ink-4">{i + 1}</span>
               <p className="text-[13px] leading-relaxed text-ink-2">
-                <span className="text-ink">{l.title}.</span> {l.text}
+                <span className="text-ink">{x(l.title)}.</span> {x(l.text)}
               </p>
             </li>
           ))}
@@ -23,12 +25,12 @@ export function LimitsPanel({ world }: { world: World }) {
       </Panel>
 
       <Panel
-        title="The weakest measured axis for each target"
-        hint="Where each comparison should not be trusted."
+        title={x('The weakest measured axis for each target')}
+        hint={x('Where each comparison should not be trusted.')}
       >
         <ul className="space-y-5">
           {TARGETS.map((t) => {
-            const results = axisResults(t, world)
+            const results = axisResults(t, world, x)
             const worst = AXES.filter((a) => results[a.id].status !== 'placeholder').sort(
               (a, b) => results[a.id].score - results[b.id].score,
             )[0]
@@ -36,9 +38,9 @@ export function LimitsPanel({ world }: { world: World }) {
             return (
               <li key={t.id}>
                 <p className="flex items-baseline justify-between text-[14px] text-ink">
-                  {t.name}
+                  {x(t.name)}
                   <span className="font-label text-[11px] text-ink-3">
-                    {worst.label.toLowerCase()}{' '}
+                    {x(worst.label).toLocaleLowerCase(lang)}{' '}
                     <span className="text-accent">{axis.score.toFixed(0)}</span>
                   </span>
                 </p>

@@ -1,4 +1,5 @@
 import { TARGETS } from '../data/targets'
+import { useT } from '../lib/i18n'
 import type { World } from '../lib/layers'
 import { terrainScore } from '../lib/scores'
 import { useStore } from '../store'
@@ -6,6 +7,7 @@ import { useStore } from '../store'
 export function TargetSelector({ world }: { world: World }) {
   const target = useStore((s) => s.target)
   const setTarget = useStore((s) => s.setTarget)
+  const { x } = useT()
 
   return (
     <ul>
@@ -22,8 +24,8 @@ export function TargetSelector({ world }: { world: World }) {
               }`}
             >
               <span className={`size-1.5 shrink-0 -translate-y-0.5 ${on ? 'bg-accent' : 'bg-transparent'}`} />
-              <span className="w-10 shrink-0 font-label text-[11px]">{t.body}</span>
-              <span className="flex-1 truncate text-[14px]">{t.name}</span>
+              <span className="w-10 shrink-0 font-label text-[11px]">{x(t.body)}</span>
+              <span className="flex-1 truncate text-[14px]">{x(t.name)}</span>
               <span className="font-label text-[12px] tabular-nums">
                 {terrainScore(t, world).toFixed(0)}
               </span>

@@ -1,9 +1,11 @@
 import { EXTENT_KM } from '../lib/dem'
+import { useT } from '../lib/i18n'
 import type { World } from '../lib/layers'
 
 /** The scene in one line of facts. */
 export function StatTiles({ world }: { world: World }) {
   const { dem } = world.earth
+  const { x } = useT()
   const facts: [string, string][] = [
     [`${dem.min.toFixed(0)}–${dem.max.toFixed(0)} m`, 'elevation'],
     [`${EXTENT_KM.toFixed(0)} km`, 'across'],
@@ -16,7 +18,7 @@ export function StatTiles({ world }: { world: World }) {
       {facts.map(([value, label]) => (
         <div key={label} className="flex gap-1.5">
           <dd className="tabular-nums text-ink">{value}</dd>
-          <dt>{label}</dt>
+          <dt>{x(label)}</dt>
         </div>
       ))}
     </dl>

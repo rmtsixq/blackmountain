@@ -19,7 +19,7 @@ _Add screenshots here._
 - **Rock chemistry.** Ten major oxides of an Ovabağ lava sample compared with Spirit rover basalts and Apollo samples, all from published analyses (`src/data/rock.ts`).
 - **The pit.** Our own scan of a collapse pit, about 11 m across and 6 m deep, drawn as a point cloud (`python scripts/scan.py <export.ply>`), with the temperature we read there.
 - **Limits.** Where each analogy breaks, stated next to every score.
-- **Findings.** After a language choice (Türkçe / English) the app opens on eleven findings, one per screen, each beside its evidence: the terrain, a field photograph or the scan. Every finding is tagged by where its evidence comes from: measured on foot, measured from orbit, published lab analyses, or illustrative †. Arrow keys or autoplay step through them (use autoplay for the demo video). **Data** opens every instrument (English only).
+- **Findings.** After a language choice (Türkçe / English) the app opens on eleven findings, one per screen, each beside its evidence: the terrain, a field photograph or the scan. Every finding is tagged by where its evidence comes from: measured on foot, measured from orbit, published lab analyses, or illustrative †. Arrow keys or autoplay step through them (use autoplay for the demo video). **Data** opens every instrument. Both views are in Turkish and English.
 
 Deep links: `?lang=tr`, `?chapter=5`, or `?mode=explore&target=shackleton&twin=1&layer=terrain&hour=16.6` (`still=1` skips transitions).
 

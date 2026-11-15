@@ -3,6 +3,8 @@ import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YA
 import { targetById } from '../data/targets'
 import { BASELINE_M } from '../lib/analysis'
 import { AXIS_TICK, GRID_STROKE, TOOLTIP_STYLE } from '../lib/chartTheme'
+import { useT } from '../lib/i18n'
+import { rich } from '../lib/rich'
 import type { World } from '../lib/layers'
 import { useStore } from '../store'
 import { Panel } from './Panel'
@@ -10,6 +12,7 @@ import { Panel } from './Panel'
 /** The evidence behind the terrain score: both slope distributions. */
 export function SlopeChart({ world }: { world: World }) {
   const target = targetById(useStore((s) => s.target))
+  const { x, pct } = useT()
   const { earth, twins } = world.analysis
   const twin = twins[target.id]
   const data = useMemo(
@@ -24,22 +27,18 @@ export function SlopeChart({ world }: { world: World }) {
 
   return (
     <Panel
-      title="How steep the ground is"
-      hint={`Share of each 62 km square at every slope, measured the same way (${BASELINE_M} m baseline) on Karacadağ and on ${target.name}.`}
+      title={x('How steep the ground is')}
+      hint={x(
+        'Share of each 62 km square at every slope, measured the same way ({m} m baseline) on Karacadağ and on {name}.',
+        { m: BASELINE_M, name: x(target.name) },
+      )}
     >
       <p className="mb-5 text-[15px] leading-snug text-ink">
-        <span className="font-display text-[40px] leading-none text-accent">
-          {(twin.slopeSim * 100).toFixed(0)}%
-        </span>{' '}
-        overlap in slope,{' '}
-        <span className="font-display text-[40px] leading-none">
-          {(twin.roughSim * 100).toFixed(0)}%
-        </span>{' '}
-        in roughness,{' '}
-        <span className="font-display text-[40px] leading-none">
-          {(twin.reliefSim * 100).toFixed(0)}%
-        </span>{' '}
-        in relief.
+        {rich(x('{a} overlap in slope, {b} in roughness, {c} in relief.'), {
+          a: <span className="font-display text-[40px] leading-none text-accent">{pct(twin.slopeSim * 100)}</span>,
+          b: <span className="font-display text-[40px] leading-none">{pct(twin.roughSim * 100)}</span>,
+          c: <span className="font-display text-[40px] leading-none">{pct(twin.reliefSim * 100)}</span>,
+        })}
       </p>
       <div className="h-48">
         <ResponsiveContainer width="100%" height="100%">
@@ -58,11 +57,11 @@ export function SlopeChart({ world }: { world: World }) {
             <YAxis tick={AXIS_TICK} tickLine={false} axisLine={false} unit="%" />
             <Tooltip
               {...TOOLTIP_STYLE}
-              labelFormatter={(s) => `${Math.floor(Number(s))}–${Math.floor(Number(s)) + 1}° slope`}
-              formatter={(v) => `${Number(v).toFixed(1)} % of ground`}
+              labelFormatter={(s) => x('{a}–{b}° slope', { a: Math.floor(Number(s)), b: Math.floor(Number(s)) + 1 })}
+              formatter={(v) => x('{v} % of ground', { v: Number(v).toFixed(1) })}
             />
             <Area
-              name={target.name}
+              name={x(target.name)}
               dataKey="twin"
               type="monotone"
               stroke="var(--accent)"
@@ -86,10 +85,10 @@ export function SlopeChart({ world }: { world: World }) {
       </div>
       <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-label text-[11px] text-ink-3">
         <span className="flex items-center gap-1.5">
-          <span className="h-px w-3 bg-ink" /> Karacadağ, median {earth.medianSlope.toFixed(1)}°
+          <span className="h-px w-3 bg-ink" /> Karacadağ, {x('median')} {earth.medianSlope.toFixed(1)}°
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-px w-3 bg-accent" /> {target.name}, median {twin.medianSlope.toFixed(1)}°
+          <span className="h-px w-3 bg-accent" /> {x(target.name)}, {x('median')} {twin.medianSlope.toFixed(1)}°
         </span>
       </p>
     </Panel>

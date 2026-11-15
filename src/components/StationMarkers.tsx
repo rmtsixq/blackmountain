@@ -8,6 +8,7 @@ import { anim } from '../lib/anim'
 import { heightToY, lonLatToUV, sampleHeight, WORLD, type Dem } from '../lib/dem'
 import type { World } from '../lib/layers'
 import { useStore } from '../store'
+import { useT } from '../lib/i18n'
 
 /** A thin pole standing on the terrain; follows the animated relief. */
 function Pole({
@@ -113,6 +114,7 @@ export function StationMarkers({ world }: { world: World }) {
   const layer = useStore((s) => s.layer)
   const stations = useStore((s) => s.stations)
   const target = targetById(useStore((s) => s.target))
+  const { x } = useT()
   const settled = (side === 'twin') === twin
   if (!settled) return null
 
@@ -128,7 +130,7 @@ export function StationMarkers({ world }: { world: World }) {
             v={l.v}
             height={5}
             color="#f5f5f7"
-            label={l.text}
+            label={x(l.text)}
             showLabel
             lower={lower}
           />
@@ -148,7 +150,7 @@ export function StationMarkers({ world }: { world: World }) {
           v={best.v}
           height={7}
           color="#f5f5f7"
-          label={`closest terrain to ${target.name} · ${best.score.toFixed(0)}%`}
+          label={x('closest terrain to {name} · {score}%', { name: x(target.name), score: best.score.toFixed(0) })}
           showLabel
         />
       )}

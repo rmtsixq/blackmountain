@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useT } from '../lib/i18n'
 
 interface Props {
   progress: number
@@ -6,6 +7,7 @@ interface Props {
 }
 
 export function LoadingScreen({ progress, stage }: Props) {
+  const { x } = useT()
   return (
     <motion.div
       initial={{ opacity: 1 }}
@@ -21,7 +23,7 @@ export function LoadingScreen({ progress, stage }: Props) {
           transition={{ ease: 'easeOut', duration: 0.3 }}
         />
       </div>
-      <p className="mt-4 text-[13px] text-ink-4">{stage}</p>
+      <p className="mt-4 text-[13px] text-ink-4">{x(stage)}</p>
     </motion.div>
   )
 }

@@ -1,4 +1,5 @@
 import { KIND_META, STATIONS, stationById } from '../data/field'
+import { useT } from '../lib/i18n'
 import { useStore } from '../store'
 import { EmptyState } from './EmptyState'
 import { Panel } from './Panel'
@@ -7,9 +8,10 @@ export function StationDetail() {
   const stationId = useStore((s) => s.stationId)
   const select = useStore((s) => s.selectStation)
   const station = stationById(stationId)
+  const { x, lang } = useT()
 
   return (
-    <Panel title="Stations" hint="Pick one here or on the terrain; the camera follows." demo>
+    <Panel title={x('Stations')} hint={x('Pick one here or on the terrain; the camera follows.')} demo>
       <div className="flex flex-wrap gap-x-4 gap-y-1.5 font-label text-[11px]">
         {STATIONS.map((s) => {
           const on = s.id === stationId
@@ -34,13 +36,13 @@ export function StationDetail() {
 
       <div className="mt-6">
         {!station ? (
-          <EmptyState title="No station selected" text="Readings for a station appear here." />
+          <EmptyState title={x('No station selected')} text={x('Readings for a station appear here.')} />
         ) : (
           <>
-            <p className="text-[15px] text-ink">{station.name}</p>
+            <p className="text-[15px] text-ink">{x(station.name)}</p>
             <p className="mt-1 font-label text-[11px] tabular-nums text-ink-3">
-              {KIND_META[station.kind].label.toLowerCase()} · {station.lat.toFixed(4)}°N{' '}
-              {station.lon.toFixed(4)}°E
+              {x(KIND_META[station.kind].label).toLocaleLowerCase(lang)} ·{' '}
+              {x('{lat}°N {lon}°E', { lat: station.lat.toFixed(4), lon: station.lon.toFixed(4) })}
             </p>
             <dl className="mt-4 grid grid-cols-4 gap-4">
               {[
@@ -51,11 +53,11 @@ export function StationDetail() {
               ].map(([k, v]) => (
                 <div key={k}>
                   <dd className="font-display text-[28px] leading-none tabular-nums text-ink">{v}</dd>
-                  <dt className="mt-1.5 font-label text-[10px] text-ink-3">{k}</dt>
+                  <dt className="mt-1.5 font-label text-[10px] text-ink-3">{x(k)}</dt>
                 </div>
               ))}
             </dl>
-            <p className="mt-4 text-[13px] leading-relaxed text-ink-2">{station.note}</p>
+            <p className="mt-4 text-[13px] leading-relaxed text-ink-2">{x(station.note)}</p>
           </>
         )}
       </div>

@@ -3,6 +3,7 @@
 import { AXES, type AxisId, type Target } from '../data/targets'
 import { SUN_ELEVATIONS } from './analysis'
 import { lonLatToUV } from './dem'
+import { translator, type Translate } from './i18n'
 import type { World } from './layers'
 
 /**
@@ -43,13 +44,16 @@ export function fieldMean(values: Float32Array) {
 }
 
 const LOW_SUN = SUN_ELEVATIONS.indexOf(5)
-const pct = (f: number) => `${(f * 100).toFixed(0)}%`
 
-export function axisResults(target: Target, world: World): Record<AxisId, AxisResult> {
+export function axisResults(
+  target: Target,
+  world: World,
+  x: Translate = translator('en'),
+): Record<AxisId, AxisResult> {
   const { analysis } = world
   const e = analysis.earth
   const t = analysis.twins[target.id]
-  const earthSensor = (id: AxisId) => AXES.find((a) => a.id === id)!.earthSensor
+  const earthSensor = (id: AxisId) => x(AXES.find((a) => a.id === id)!.earthSensor)
   const swing = fieldMean(world.earth.swing)
 
   return {
@@ -57,37 +61,37 @@ export function axisResults(target: Target, world: World): Record<AxisId, AxisRe
       score: t.topo,
       status: 'computed',
       earthSensor: earthSensor('topo'),
-      twinSensor: target.demSource,
-      earth: `Median slope ${e.medianSlope.toFixed(1)}°, relief ${e.relief.toFixed(0)} m`,
-      twin: `Median slope ${t.medianSlope.toFixed(1)}°, relief ${t.relief.toFixed(0)} m`,
-      note: target.notes.topo,
+      twinSensor: x(target.demSource),
+      earth: x('Median slope {a}°, relief {b} m', { a: e.medianSlope.toFixed(1), b: e.relief.toFixed(0) }),
+      twin: x('Median slope {a}°, relief {b} m', { a: t.medianSlope.toFixed(1), b: t.relief.toFixed(0) }),
+      note: x(target.notes.topo),
     },
     illumination: {
       score: t.light,
       status: 'computed',
       earthSensor: earthSensor('illumination'),
-      twinSensor: `Sun on ${target.demSource}`,
-      earth: `${pct(e.shadow[LOW_SUN])} of ground shadowed at 5° sun`,
-      twin: `${pct(t.shadow[LOW_SUN])} of ground shadowed at 5° sun`,
-      note: target.notes.illumination,
+      twinSensor: x('Sun on {dem}', { dem: x(target.demSource) }),
+      earth: x('{n}% of ground shadowed at 5° sun', { n: (e.shadow[LOW_SUN] * 100).toFixed(0) }),
+      twin: x('{n}% of ground shadowed at 5° sun', { n: (t.shadow[LOW_SUN] * 100).toFixed(0) }),
+      note: x(target.notes.illumination),
     },
     thermal: {
       score: 100 * Math.min(1, swing / target.swingK),
       status: 'published',
       earthSensor: earthSensor('thermal'),
-      twinSensor: target.swingSource,
-      earth: `${swing.toFixed(0)} K day to night on the lava field`,
-      twin: target.swingText,
-      note: target.notes.thermal,
+      twinSensor: x(target.swingSource),
+      earth: x('{k} K day to night on the lava field', { k: swing.toFixed(0) }),
+      twin: x(target.swingText),
+      note: x(target.notes.thermal),
     },
     composition: {
       score: target.composition.score,
       status: 'published',
       earthSensor: earthSensor('composition'),
-      twinSensor: target.composition.twinSensor,
-      earth: target.composition.earth,
-      twin: target.composition.twin,
-      note: target.notes.composition,
+      twinSensor: x(target.composition.twinSensor),
+      earth: x(target.composition.earth),
+      twin: x(target.composition.twin),
+      note: x(target.notes.composition),
     },
   }
 }

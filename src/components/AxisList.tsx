@@ -1,4 +1,5 @@
 import { AXES, targetById } from '../data/targets'
+import { useT } from '../lib/i18n'
 import type { World } from '../lib/layers'
 import { axisResults, type AxisStatus } from '../lib/scores'
 import { useStore } from '../store'
@@ -12,12 +13,15 @@ const STATUS: Record<AxisStatus, string> = {
 
 export function AxisList({ world }: { world: World }) {
   const target = targetById(useStore((s) => s.target))
-  const results = axisResults(target, world)
+  const { x } = useT()
+  const results = axisResults(target, world, x)
 
   return (
     <Panel
-      title="Axis by axis"
-      hint={`What we read on Earth, what is read on ${target.body === 'Mars' ? 'Mars' : 'the Moon'}, and where the comparison stops holding.`}
+      title={x('Axis by axis')}
+      hint={x('What we read on Earth, what is read on {body}, and where the comparison stops holding.', {
+        body: x(target.body === 'Mars' ? 'Mars' : 'the Moon'),
+      })}
     >
       <ul className="space-y-7">
         {AXES.map((axis) => {
@@ -26,9 +30,9 @@ export function AxisList({ world }: { world: World }) {
           return (
             <li key={axis.id}>
               <div className="flex items-baseline gap-3">
-                <span className="text-[14px] text-ink">{axis.label}</span>
+                <span className="text-[14px] text-ink">{x(axis.label)}</span>
                 <span className={`flex-1 font-label text-[10px] ${soft ? 'text-ink-4' : 'text-ink-2'}`}>
-                  {STATUS[a.status]}
+                  {x(STATUS[a.status])}
                 </span>
                 <span className={`font-label text-[13px] tabular-nums ${soft ? 'text-ink-3' : 'text-ink'}`}>
                   {a.score.toFixed(0)}

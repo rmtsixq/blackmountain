@@ -3,6 +3,8 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import { TARGETS, targetById } from '../data/targets'
 import { SUN_ELEVATIONS } from '../lib/analysis'
 import { AXIS_TICK, GRID_STROKE, TOOLTIP_STYLE } from '../lib/chartTheme'
+import { useT } from '../lib/i18n'
+import { rich } from '../lib/rich'
 import type { World } from '../lib/layers'
 import { useStore } from '../store'
 import { Panel } from './Panel'
@@ -11,6 +13,7 @@ import { Panel } from './Panel'
 export function ShadowChart({ world }: { world: World }) {
   const targetId = useStore((s) => s.target)
   const target = targetById(targetId)
+  const { x, pct } = useT()
   const { earth, twins } = world.analysis
   const data = useMemo(
     () =>
@@ -26,19 +29,20 @@ export function ShadowChart({ world }: { world: World }) {
 
   return (
     <Panel
-      title="Ground in shadow as the sun drops"
-      hint="Horizon angles traced on each elevation model, curvature of the planet included. The lunar south pole never sees the sun above about 1.5°."
+      title={x('Ground in shadow as the sun drops')}
+      hint={x(
+        'Horizon angles traced on each elevation model, curvature of the planet included. The lunar south pole never sees the sun above about 1.5°.',
+      )}
     >
       <p className="mb-5 text-[15px] leading-snug text-ink">
-        At 1.5° of sun,{' '}
-        <span className="font-display text-[40px] leading-none">
-          {(earth.shadow[low] * 100).toFixed(0)}%
-        </span>{' '}
-        of Karacadağ is in shadow;{' '}
-        <span className="font-display text-[40px] leading-none text-accent">
-          {(twins[targetId].shadow[low] * 100).toFixed(0)}%
-        </span>{' '}
-        of {target.name}.
+        {rich(x('At 1.5° of sun, {a} of Karacadağ is in shadow; {b} of {name}.', { name: x(target.name) }), {
+          a: <span className="font-display text-[40px] leading-none">{pct(earth.shadow[low] * 100)}</span>,
+          b: (
+            <span className="font-display text-[40px] leading-none text-accent">
+              {pct(twins[targetId].shadow[low] * 100)}
+            </span>
+          ),
+        })}
       </p>
       <div className="h-48">
         <ResponsiveContainer width="100%" height="100%">
@@ -58,15 +62,15 @@ export function ShadowChart({ world }: { world: World }) {
             <YAxis tick={AXIS_TICK} tickLine={false} axisLine={false} unit="%" />
             <Tooltip
               {...TOOLTIP_STYLE}
-              labelFormatter={(e) => `Sun ${e}° above the horizon`}
-              formatter={(v) => `${v} % in shadow`}
+              labelFormatter={(e) => x('Sun {e}° above the horizon', { e: String(e) })}
+              formatter={(v) => x('{v} % in shadow', { v: String(v) })}
             />
             {ordered.map((t) => {
               const on = t.id === targetId
               return (
                 <Line
                   key={t.id}
-                  name={t.name}
+                  name={x(t.name)}
                   dataKey={t.id}
                   type="monotone"
                   stroke={on ? 'var(--accent)' : 'var(--ink-4)'}
@@ -94,10 +98,10 @@ export function ShadowChart({ world }: { world: World }) {
           <span className="h-px w-3 bg-ink" /> Karacadağ
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-px w-3 bg-accent" /> {target.name}
+          <span className="h-px w-3 bg-accent" /> {x(target.name)}
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-3 border-t border-dashed border-ink-3" /> other targets
+          <span className="w-3 border-t border-dashed border-ink-3" /> {x('other targets')}
         </span>
       </p>
     </Panel>

@@ -10,6 +10,7 @@ import {
 } from 'recharts'
 import { AXES, TARGETS } from '../data/targets'
 import { GRID_STROKE, TOOLTIP_STYLE } from '../lib/chartTheme'
+import { useT } from '../lib/i18n'
 import type { World } from '../lib/layers'
 import { axisResults } from '../lib/scores'
 import { useStore } from '../store'
@@ -17,6 +18,7 @@ import { Panel } from './Panel'
 
 export function FingerprintRadar({ world }: { world: World }) {
   const targetId = useStore((s) => s.target)
+  const { x } = useT()
   const data = useMemo(() => {
     const results = TARGETS.map((t) => [t.id, axisResults(t, world)] as const)
     return AXES.map((a) => ({
@@ -28,21 +30,23 @@ export function FingerprintRadar({ world }: { world: World }) {
 
   return (
     <Panel
-      title="Fingerprint"
-      hint="Five axes. Terrain and light are computed from elevation on both worlds; thermal compares VIIRS with published values. Radar and rock are placeholders†. The other two targets are dashed."
+      title={x('Fingerprint')}
+      hint={x(
+        'Four axes. Terrain and light are computed from elevation on both worlds; thermal compares VIIRS with published values; rock chemistry compares published analyses. The other two targets are dashed.',
+      )}
     >
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
-          <RadarChart data={data} outerRadius="76%">
+          <RadarChart data={data.map((d) => ({ ...d, axis: x(d.axis) }))} outerRadius="76%">
             <PolarGrid stroke={GRID_STROKE} />
-            <PolarAngleAxis dataKey="axis" tick={{ fill: '#a1a1aa', fontSize: 12 }} />
+            <PolarAngleAxis dataKey="axis" tick={{ fill: 'var(--ink-3)', fontSize: 12 }} />
             <PolarRadiusAxis domain={[0, 100]} tick={false} axisLine={false} />
             {ordered.map((t) => {
               const on = t.id === targetId
               return (
                 <Radar
                   key={t.id}
-                  name={t.name}
+                  name={x(t.name)}
                   dataKey={t.id}
                   stroke={on ? 'var(--accent)' : 'var(--ink-3)'}
                   strokeWidth={on ? 1.5 : 1}

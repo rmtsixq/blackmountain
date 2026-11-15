@@ -1,7 +1,21 @@
 import { useStore } from '../store'
+import { TR } from './tr'
 
 export type Lang = 'en' | 'tr'
 
+/** Looks a string up by its English text and fills `{name}` slots. */
+export type Translate = (text: string, vars?: Record<string, string | number>) => string
+
+const fill = (text: string, vars?: Record<string, string | number>) =>
+  vars ? text.replace(/\{(\w+)\}/g, (slot, key: string) => (key in vars ? String(vars[key]) : slot)) : text
+
+/** English is the source; a missing Turkish entry falls back to it. */
+export const translator =
+  (lang: Lang): Translate =>
+  (text, vars) =>
+    fill(lang === 'tr' ? (TR[text] ?? text) : text, vars)
+
+// Findings interface strings. The Data view goes through `x` and ./tr.ts.
 const en = {
   findings: 'Findings',
   data: 'Data',
@@ -53,13 +67,13 @@ const en = {
 const tr: typeof en = {
   findings: 'Bulgular',
   data: 'Veri',
-  tagline: 'Ay ve Mars analoğu olarak Karacadağ',
+  tagline: 'Karacadağ: Ay’ın ve Mars’ın Dünya’daki benzeri',
   view: 'Görünüm',
   evidence: {
-    field: 'Sahada ölçüldü',
-    orbit: 'Yörüngeden ölçüldü',
-    lab: 'Yayımlanmış laboratuvar analizi',
-    demo: 'Temsili †',
+    field: 'Kendi ölçümümüz',
+    orbit: 'Uydu verisi',
+    lab: 'Yayımlanmış analizler',
+    demo: 'Temsili veri †',
   },
   play: 'Oynat',
   pause: 'Duraklat',
@@ -67,44 +81,39 @@ const tr: typeof en = {
   next: 'Sonraki',
   openData: 'Veriyi Aç',
   chapters: 'Bölümler',
-  page: (kicker, i, n) => `${kicker}, sayfa ${i} / ${n}`,
+  page: (kicker, i, n) => `${kicker}, ${i}/${n}`,
   scanLoading: (n) => `${n} nokta yükleniyor`,
   scanFailed: 'Tarama yüklenemedi.',
   retry: 'Yeniden Dene',
   dataFailed: 'Veri yüklenemedi.',
-  ranking: 'Arsia Mons ile arazi benzerliği, 100 üzerinden. Karacadağ kalın yazılı.',
-  year: 'Yörüngeden yüzey sıcaklığı, Kasım 2025 – Ekim 2026. Sarı nokta, çukurda kendi ölçümümüz.',
+  ranking: 'Arsia Mons’a arazi benzerliği, 100 üzerinden. Karacadağ koyu yazılı.',
+  year: 'Uydudan ölçülen yüzey sıcaklığı, Kasım 2025 – Ekim 2026. Sarı nokta, çukurda bizim ölçtüğümüz değer.',
   yearDay: '13.30',
   yearNight: '01.30',
-  yearPit: (t) => `çukurumuz, ${t}°`,
-  shadow: 'Güneş yüksekliğine göre gölgede kalan zemin oranı.',
+  yearPit: (t) => `bizim çukur, ${t}°`,
+  shadow: 'Güneş alçaldıkça gölgede kalan zeminin oranı.',
   shackleton: 'Shackleton',
   karacadag: 'Karacadağ',
-  dayRock: 'güneş alan kaya †',
+  dayRock: 'güneş gören kaya †',
   dayAir: 'hava †',
   dayPit: 'çukur tabanı †',
   dayIn: (t) => `çukurda ${t}°`,
   dayOut: (t) => `dışarıda ${t}°`,
-  dayLogged: 'termometreler yerinde bırakıldı',
+  dayLogged: 'termometreler bu saatlerde yerindeydi',
   dayCaption: (date, moonSwing, moonPit) =>
-    `Sarı noktalar: kendi ölçümümüz, ${date}, saat 15.00 suları. Termometreler sonra gece boyunca, içeride ve dışarıda, 06.00'ya kadar yerinde kaldı; o kayıt henüz girilmedi. † Kesikli eğriler temsilidir. Ay'da yüzey yaklaşık ${moonSwing} K oynarken, modellenen çukur tabanı ${moonPit} °C civarında kalıyor.`,
+    `Sarı noktalar bizim ölçümümüz: ${date}, saat 15.00 civarı. Termometreleri sonra içeride ve dışarıda bırakıp ertesi sabah 06.00’da aldık; o kaydı henüz buraya işlemedik. † Kesikli eğriler temsilidir, beklediğimiz biçimi gösterir. Karşılaştırma için: Ay’da yüzey sıcaklığı yaklaşık ${moonSwing} derece oynarken, modellere göre çukurun tabanı ${moonPit} °C civarında sabit kalıyor.`,
   catWidth: 'genişlik',
-  catDepth: 'derinlik, m',
+  catDepth: 'derinlik (m)',
   catOurs: (w, d) => `Karacadağ, ${w} × ${d} m`,
   catCaption:
-    'İçi boş gri: Ay. İçi boş kırmızı: Mars. Kesikli çizgi: derinliğin genişliğin yarısına eşit olduğu yer. † Ay ve Mars noktaları, yayımlanmış katalogların yerini tutan temsili noktalardır. Bizimki taramadan ölçüldü.',
-  rockRows: { arsia: 'Mars bazaltı (Spirit, Gusev)', tranq: 'Ay denizi bazaltı (Apollo 11)', shackleton: 'Ay yayla toprağı (Apollo 16)' },
-  rockControl: (v) => `Mars bazaltı ile Ay bazaltı: ${v}`,
-  rockCaption: 'On ana oksidin Ovabağ lavıyla benzerliği, 100 üzerinden. Köşeli aralık, dört Karacadağ örneğinin dağılımı.',
+    'İçi boş gri noktalar Ay, kırmızılar Mars. Kesikli çizgi, derinliğin genişliğin yarısı olduğu yerleri gösteriyor. † Ay ve Mars noktaları temsilidir; gerçek kataloglar eklenince yerlerini onlar alacak. Sarı nokta bizim çukur, taramadan ölçüldü.',
+  rockRows: { arsia: 'Mars bazaltı (Spirit, Gusev)', tranq: 'Ay bazaltı (Apollo 11)', shackleton: 'Ay yayla toprağı (Apollo 16)' },
+  rockControl: (v) => `Mars bazaltı ile Ay bazaltı arası: ${v}`,
+  rockCaption:
+    'Ovabağ lavına kimyasal benzerlik, 100 üzerinden. Çubukların üzerindeki aralık, dört ayrı Karacadağ örneğinin verdiği en düşük ve en yüksek değer.',
 }
 
 export const UI = { en, tr }
-
-/** Strings and number formatting for the chosen language. */
-export function useT() {
-  const lang = useStore((s) => s.lang) ?? 'en'
-  return { lang, t: UI[lang], num: formatter(lang) }
-}
 
 export const formatter =
   (lang: Lang) =>
@@ -113,3 +122,12 @@ export const formatter =
       minimumFractionDigits: digits,
       maximumFractionDigits: digits,
     })
+
+/** Strings, lookup and number formatting for the chosen language. */
+export function useT() {
+  const lang = useStore((s) => s.lang) ?? 'en'
+  const num = formatter(lang)
+  /** a share out of 100, written the way the language writes it */
+  const pct = (value: number, digits = 0) => (lang === 'tr' ? `%${num(value, digits)}` : `${num(value, digits)}%`)
+  return { lang, t: UI[lang], x: translator(lang), num, pct }
+}

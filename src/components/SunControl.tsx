@@ -1,5 +1,7 @@
 import type { CSSProperties } from 'react'
 import { formatHour, solarPosition } from '../lib/solar'
+import { useT } from '../lib/i18n'
+import { rich } from '../lib/rich'
 import { useStore } from '../store'
 
 const MIN = 6.8
@@ -16,6 +18,7 @@ const pct = (h: number) => `${((h - MIN) / (MAX - MIN)) * 100}%`
 export function SunControl() {
   const hour = useStore((s) => s.hour)
   const setHour = useStore((s) => s.setHour)
+  const { x } = useT()
   const sun = solarPosition(hour)
   const low = sun.elevation < 6
 
@@ -26,8 +29,9 @@ export function SunControl() {
           {formatHour(hour)}
         </p>
         <p className="pb-1 text-right font-label text-[11px] leading-relaxed text-ink-3">
-          sun <span className={low ? 'text-accent' : 'text-ink'}>{sun.elevation.toFixed(1)}°</span>{' '}
-          above horizon, bearing {sun.azimuth.toFixed(0)}°
+          {rich(x('sun {e} above horizon, bearing {a}°', { a: sun.azimuth.toFixed(0) }), {
+            e: <span className={low ? 'text-accent' : 'text-ink'}>{sun.elevation.toFixed(1)}°</span>,
+          })}
         </p>
       </div>
       <input
@@ -39,7 +43,7 @@ export function SunControl() {
         onChange={(e) => setHour(Number(e.target.value))}
         className="hairline mt-1 block w-full"
         style={{ '--thumb': low ? 'var(--accent)' : 'var(--ink)' } as CSSProperties}
-        aria-label="Local solar time, 14 November"
+        aria-label={x('Local solar time, 14 November')}
       />
       <div className="relative h-4 font-label text-[10px] text-ink-4">
         {TICKS.map((t) => (
@@ -60,7 +64,7 @@ export function SunControl() {
                 on ? 'text-ink underline decoration-accent' : 'text-ink-3 hover:text-ink'
               }`}
             >
-              {p.label}
+              {x(p.label)}
             </button>
           )
         })}

@@ -10,15 +10,19 @@ import {
 } from 'recharts'
 import { ROCK_CURVE } from '../data/field'
 import { AXIS_TICK, GRID_STROKE, TOOLTIP_STYLE } from '../lib/chartTheme'
+import { useT } from '../lib/i18n'
 import { Panel } from './Panel'
 
 const MODELS = ['k5', 'k10', 'k20', 'k30']
 
 export function RockAbundanceChart() {
+  const { x } = useT()
   return (
     <Panel
-      title="Rocks, against the Mars landing model"
-      hint="Share of ground covered by rocks larger than D. Dashed curves are the Golombek–Rapp model at 5, 10, 20 and 30% total abundance."
+      title={x('Rocks, against the Mars landing model')}
+      hint={x(
+        'Share of ground covered by rocks larger than D. Dashed curves are the Golombek–Rapp model at 5, 10, 20 and 30% total abundance.',
+      )}
       demo
     >
       <div className="h-52">
@@ -45,7 +49,7 @@ export function RockAbundanceChart() {
             {MODELS.map((key) => (
               <Line
                 key={key}
-                name={`model ${key.slice(1)}%`}
+                name={x('model {p}%', { p: key.slice(1) })}
                 dataKey={key}
                 stroke="var(--ink-4)"
                 strokeWidth={1}
@@ -55,17 +59,17 @@ export function RockAbundanceChart() {
                 isAnimationActive={false}
               />
             ))}
-            <Scatter name="QD-01 fresh flow" dataKey="fresh" fill="var(--accent)" />
-            <Scatter name="QD-05 weathered flow" dataKey="weathered" fill="var(--ink)" />
+            <Scatter name={x('QD-01 fresh flow')} dataKey="fresh" fill="var(--accent)" />
+            <Scatter name={x('QD-05 weathered flow')} dataKey="weathered" fill="var(--ink)" />
           </ComposedChart>
         </ResponsiveContainer>
       </div>
       <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-label text-[11px] text-ink-3">
         <span className="flex items-center gap-1.5">
-          <span className="size-1.5 rounded-full bg-accent" /> fresh ʻaʻā, QD-01
+          <span className="size-1.5 rounded-full bg-accent" /> {x('fresh ʻaʻā, QD-01')}
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="size-1.5 rounded-full bg-ink" /> weathered flow, QD-05
+          <span className="size-1.5 rounded-full bg-ink" /> {x('weathered flow, QD-05')}
         </span>
       </p>
     </Panel>
