@@ -19,7 +19,7 @@ _Add screenshots here._
 - **Rock chemistry.** Ten major oxides of an Ovabağ lava sample compared with Spirit rover basalts and Apollo samples, all from published analyses (`src/data/rock.ts`).
 - **The pit.** Our own scan of a collapse pit, about 11 m across and 6 m deep, drawn as a point cloud (`python scripts/scan.py <export.ply>`), with the temperature we read there.
 - **Limits.** Where each analogy breaks, stated next to every score.
-- **Findings.** After a language choice (Türkçe / English) the app opens on eleven findings, one per screen, each beside its evidence: the terrain, a field photograph or the scan. Every finding is tagged by where its evidence comes from: measured on foot, measured from orbit, published lab analyses, or illustrative †. Arrow keys or autoplay step through them (use autoplay for the demo video). **Data** opens every instrument. Both views are in Turkish and English.
+- **Findings.** After a language choice (Türkçe / English) the app opens on eleven findings, one per screen, each beside its evidence: the terrain, a field photograph or the scan. Every finding is tagged by where its evidence comes from: measured on foot, measured from orbit, published data, or model. Arrow keys or autoplay step through them (use autoplay for the demo video). **Data** opens every instrument. Both views are in Turkish and English.
 
 Deep links: `?lang=tr`, `?chapter=5`, or `?mode=explore&target=shackleton&twin=1&layer=terrain&hour=16.6` (`still=1` skips transitions).
 
@@ -52,7 +52,9 @@ Field, 14 November 2026: a collapse pit about 11 m across and 6 m deep with a th
 
 `python scripts/ingest.py` fetches all of it into `public/data` (`pip install -r scripts/requirements.txt`).
 
-**Still placeholders**, marked † in the app: the 24-hour temperature curve and the Moon / Mars pit catalogue points (`src/data/pit.ts`), and the station positions and readings, lava-tube temperature profile and rock counts (`src/data/field.ts`).
+Also in `src/data/pit.ts`: hourly air temperature for the field night (Open-Meteo weather model) and published pit dimensions for the Moon (LROC) and Mars (Cushing et al. 2007).
+
+**Models**, named as models in the app: the pit-floor curve through the night (`pitModel` in `src/data/pit.ts`, a damped response to the outside air) and the lava-tube temperature profile (`src/data/field.ts`). Our own thermometer readings go in `LOG` in `src/data/pit.ts`.
 
 ## Run
 

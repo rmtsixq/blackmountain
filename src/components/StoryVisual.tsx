@@ -4,7 +4,7 @@ import { rankSites, SUN_ELEVATIONS } from '../lib/analysis'
 import { useT } from '../lib/i18n'
 import type { World } from '../lib/layers'
 import type { Visual } from '../lib/story'
-import { DayCurve } from './DayCurve'
+import { NightCurve } from './NightCurve'
 import { PitCatalogue } from './PitCatalogue'
 import { RockMatch } from './RockMatch'
 
@@ -49,20 +49,28 @@ const draw = {
 }
 
 function Year({ world }: { world: World }) {
-  const { t, num } = useT()
+  const { t, num, lang } = useT()
   const rows = world.manifest.lst_series
+  const W = 340
+  const H = 150
   const lo = -10
-  const hi = 58
+  const hi = 60
   const x = (i: number) => (i / (rows.length - 1)) * W
   const y = (v: number) => H - ((v - lo) / (hi - lo)) * H
-  const path = (key: 'field_day' | 'field_night') =>
-    rows.map((r, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(r[key] ?? 0).toFixed(1)}`).join(' ')
-  const end = rows[rows.length - 1]
+  const day = rows.map((r) => r.field_day ?? 0)
+  const night = rows.map((r) => r.field_night ?? 0)
+  const line = (values: number[]) => values.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ')
+  const band = `${line(day)} ${night.map((v, i) => `L${x(i).toFixed(1)},${y(v).toFixed(1)}`).reverse().join(' ')} Z`
+  const hot = day.indexOf(Math.max(...day))
+  const cold = night.indexOf(Math.min(...night))
+  const last = rows.length - 1
+  const month = (key: string) =>
+    new Date(2000, Number(key.slice(5)) - 1, 1).toLocaleString(lang === 'tr' ? 'tr-TR' : 'en-US', { month: 'short' })
 
   return (
     <figure>
-      <svg viewBox={`-30 -10 ${W + 80} ${H + 22}`} className="w-full max-w-[440px] overflow-visible">
-        {[0, 25, 50].map((v) => (
+      <svg viewBox={`-34 -12 ${W + 122} ${H + 34}`} className="w-full max-w-[480px] overflow-visible">
+        {[0, 20, 40, 60].map((v) => (
           <g key={v}>
             <line x1={0} x2={W} y1={y(v)} y2={y(v)} stroke="var(--rule)" />
             <text x={-8} y={y(v) + 4} textAnchor="end" className={tick}>
@@ -70,20 +78,47 @@ function Year({ world }: { world: World }) {
             </text>
           </g>
         ))}
-        <motion.path d={path('field_day')} fill="none" stroke="var(--ink)" strokeWidth={1.75} {...draw} />
-        <motion.path d={path('field_night')} fill="none" stroke="var(--ink-4)" strokeWidth={1.75} {...draw} />
-        <text x={W + 8} y={y(end.field_day ?? 0) + 4} className="fill-ink text-[11px]">
+        {rows.map((r, i) => (
+          <text key={r.month} x={x(i)} y={H + 16} textAnchor="middle" className="fill-ink-4 text-[10px]">
+            {month(r.month)}
+          </text>
+        ))}
+
+        {/* the day–night difference, month by month */}
+        <motion.path d={band} fill="color-mix(in srgb, var(--ink) 7%, transparent)" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.9 }} />
+        <motion.path d={line(day)} fill="none" stroke="var(--ink)" strokeWidth={1.75} {...draw} />
+        <motion.path d={line(night)} fill="none" stroke="var(--ink-4)" strokeWidth={1.75} {...draw} />
+        <text x={W + 8} y={y(day[last]) + 4} className="fill-ink text-[11px] font-medium">
           {t.yearDay}
         </text>
-        <text x={W + 8} y={y(end.field_night ?? 0) + 4} className={tick}>
+        <text x={W + 8} y={y(night[last]) + 4} className={tick}>
           {t.yearNight}
         </text>
-        {/* our own reading, in the first month of the series */}
-        <circle cx={x(0)} cy={y(MEASURED.inside)} r={5} fill="var(--field)" stroke="var(--ink)" strokeWidth={1.25} />
-        <text x={x(0) + 10} y={y(MEASURED.inside) - 9} className="fill-ink text-[11px] font-medium">
-          {t.yearPit(num(MEASURED.inside, 1))}
+
+        {/* the hottest month: the gap, bracketed and named */}
+        <path
+          d={`M${x(hot) - 4},${y(day[hot])} h8 m-4,0 V${y(night[hot])} m-4,0 h8`}
+          fill="none"
+          stroke="var(--ink-3)"
+          strokeWidth={1}
+        />
+        <text x={x(hot) - 9} y={(y(day[hot]) + y(night[hot])) / 2 + 4} textAnchor="end" className="fill-ink-2 text-[11px] font-medium">
+          {t.yearGap(num(day[hot] - night[hot]))}
         </text>
+        <text x={x(hot)} y={y(day[hot]) - 8} textAnchor="middle" className="fill-ink text-[11px] font-semibold">
+          {num(day[hot])} °C
+        </text>
+        <text x={x(cold)} y={y(night[cold]) - 7} textAnchor="middle" className={tick}>
+          {num(night[cold])} °C
+        </text>
+
+        {/* our own reading, set in its month */}
+        <circle cx={x(0)} cy={y(MEASURED.inside)} r={5} fill="var(--field)" stroke="var(--ink)" strokeWidth={1.25} />
       </svg>
+      <p className="mt-3 flex items-center gap-2 text-[13px] font-medium text-ink">
+        <span className="size-2.5 rounded-full border border-ink bg-field" />
+        {t.yearPit(num(MEASURED.inside, 1))}
+      </p>
       <figcaption className={caption}>{t.year}</figcaption>
     </figure>
   )
@@ -125,7 +160,7 @@ function Shadow({ world }: { world: World }) {
 export function StoryVisual({ kind, world }: { kind: Visual; world: World }) {
   if (kind === 'ranking') return <Ranking world={world} />
   if (kind === 'year') return <Year world={world} />
-  if (kind === 'day') return <DayCurve />
+  if (kind === 'night') return <NightCurve />
   if (kind === 'catalogue') return <PitCatalogue />
   if (kind === 'rock') return <RockMatch />
   return <Shadow world={world} />

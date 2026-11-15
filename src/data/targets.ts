@@ -42,6 +42,9 @@ export interface Target {
   id: TargetId
   body: 'Mars' | 'Moon'
   name: string
+  /** the name in a control, and what kind of place it is */
+  short: string
+  tag: string
   /** what the 62 km square shows */
   place: string
   coords: string
@@ -62,6 +65,8 @@ export const TARGETS: Target[] = [
     id: 'arsia',
     body: 'Mars',
     name: 'Arsia Mons',
+    short: 'Arsia Mons',
+    tag: 'Mars · shield volcano',
     place: 'north flank, Tharsis',
     coords: '6.3°S 240.0°E',
     summary:
@@ -88,6 +93,8 @@ export const TARGETS: Target[] = [
     id: 'tranq',
     body: 'Moon',
     name: 'Mare Tranquillitatis Pit',
+    short: 'Tranquillitatis',
+    tag: 'Moon · lava plain',
     place: 'lunar mare, near side',
     coords: '8.34°N 33.22°E',
     summary:
@@ -114,6 +121,8 @@ export const TARGETS: Target[] = [
     id: 'shackleton',
     body: 'Moon',
     name: 'Shackleton Connecting Ridge',
+    short: 'Shackleton',
+    tag: 'Moon · south pole',
     place: 'lunar south pole',
     coords: '89.45°S 222.69°E',
     summary:
@@ -159,7 +168,7 @@ export const EARTH_LIMITS = [
   },
   {
     title: 'Water and life',
-    text: 'Ovabağ tubes are humid and inhabited. Rain, soil and vegetation alter the basalt at rates unknown on either target.',
+    text: 'The Ovabağ pits are humid and inhabited. Rain, soil and vegetation alter the basalt at rates unknown on either target.',
   },
   {
     title: 'Sensors',

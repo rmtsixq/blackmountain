@@ -39,9 +39,6 @@ interface State {
   hour: number
   /** vertical exaggeration */
   exag: number
-  stationId: string | null
-  /** field stations drawn on the terrain */
-  stations: boolean
   probe: UV | null
   autoRotate: boolean
   tab: SidebarTab
@@ -60,8 +57,6 @@ interface State {
   setSide: (side: Side) => void
   setHour: (hour: number) => void
   setExag: (exag: number) => void
-  selectStation: (id: string | null) => void
-  setStations: (on: boolean) => void
   setProbe: (probe: UV | null) => void
   setAutoRotate: (on: boolean) => void
   setTab: (tab: SidebarTab) => void
@@ -94,8 +89,6 @@ export const useStore = create<State>((set) => ({
   side: 'earth',
   hour: initialHour >= 6.8 && initialHour <= 17.2 ? initialHour : 13.5,
   exag: 4,
-  stationId: null,
-  stations: initialMode === 'explore',
   probe: null,
   autoRotate: initialMode === 'explore',
   tab: 'fingerprint',
@@ -113,27 +106,23 @@ export const useStore = create<State>((set) => ({
             shot: null,
             plate: { kind: 'terrain' },
             twin: false,
-            stations: true,
             autoRotate: true,
             resetNonce: s.resetNonce + 1,
           }
-        : { mode, stationId: null, autoRotate: false },
+        : { mode, autoRotate: false },
     ),
   setChapter: (chapter) => set({ chapter }),
   setAutoplay: (autoplay) => set({ autoplay }),
   setLayer: (layer) => set({ layer }),
   setTarget: (target) => set({ target }),
-  setTwin: (twin) => set(twin ? { twin, stationId: null } : { twin }),
+  setTwin: (twin) => set({ twin }),
   setSide: (side) => set({ side, probe: null }),
   setHour: (hour) => set({ hour }),
   setExag: (exag) => set({ exag }),
-  selectStation: (stationId) =>
-    set(stationId ? { stationId, tab: 'field', autoRotate: false, twin: false } : { stationId }),
-  setStations: (stations) => set({ stations }),
   setProbe: (probe) => set({ probe }),
   setAutoRotate: (autoRotate) => set({ autoRotate }),
   setTab: (tab) => set({ tab }),
   setShot: (shot) => set({ shot }),
   resetView: () =>
-    set((s) => ({ resetNonce: s.resetNonce + 1, stationId: null, autoRotate: true })),
+    set((s) => ({ resetNonce: s.resetNonce + 1, autoRotate: true })),
 }))

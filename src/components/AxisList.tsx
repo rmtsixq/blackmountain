@@ -8,7 +8,6 @@ import { Panel } from './Panel'
 const STATUS: Record<AxisStatus, string> = {
   computed: 'computed from both',
   published: 'measured vs published',
-  placeholder: 'placeholder †',
 }
 
 export function AxisList({ world }: { world: World }) {
@@ -26,21 +25,20 @@ export function AxisList({ world }: { world: World }) {
       <ul className="space-y-7">
         {AXES.map((axis) => {
           const a = results[axis.id]
-          const soft = a.status === 'placeholder'
           return (
             <li key={axis.id}>
               <div className="flex items-baseline gap-3">
                 <span className="text-[14px] text-ink">{x(axis.label)}</span>
-                <span className={`flex-1 font-label text-[10px] ${soft ? 'text-ink-4' : 'text-ink-2'}`}>
+                <span className="flex-1 font-label text-[10px] text-ink-2">
                   {x(STATUS[a.status])}
                 </span>
-                <span className={`font-label text-[13px] tabular-nums ${soft ? 'text-ink-3' : 'text-ink'}`}>
+                <span className="font-label text-[13px] tabular-nums text-ink">
                   {a.score.toFixed(0)}
                 </span>
               </div>
               <div className="mt-2 h-px bg-ink/10">
                 <div
-                  className={`h-px transition-all duration-500 ${soft ? 'bg-ink-3' : 'bg-accent'}`}
+                  className="h-px bg-accent transition-all duration-500"
                   style={{ width: `${a.score}%` }}
                 />
               </div>

@@ -85,7 +85,6 @@ export function Story({ world }: { world: World }) {
     s.setTarget(scene.target)
     s.setTwin(scene.twin)
     s.setShot(scene.shot)
-    s.setStations(Boolean(scene.stations))
     const from = s.hour
     const start = performance.now()
     let raf = 0

@@ -66,7 +66,7 @@ export function LstYearChart({ world }: { world: World }) {
           </p>
           <p className="mt-4 border-l border-accent pl-3 text-[13px] leading-relaxed text-ink-2">
             {x(
-              'A press report puts these caves at 4–5 °C in summer (dashed line); we have not verified it. On 14 November we read {t} °C in an open collapse pit: {gap} K below this annual mean, and warmer than the air that afternoon. A pit open to the sky is not a closed tube, so the press figure is neither confirmed nor ruled out.',
+              'A press report puts these caves at 4–5 °C in summer (dashed line). On 14 November we read {t} °C in a partly roofed collapse pit: {gap} K below this annual mean, and warmer than the air outside at the same hour. A pit open to the sky is not a closed tube, so our reading neither confirms the press figure nor rules it out.',
               { t: MEASURED.inside.toFixed(1), gap: (mean - MEASURED.inside).toFixed(0) },
             )}
           </p>

@@ -10,7 +10,7 @@ import { ProbeReadout } from './ProbeReadout'
 import { Scene3D } from './Scene3D'
 import { Story } from './Story'
 import { SunControl } from './SunControl'
-import { TwinSwitch } from './TwinSwitch'
+import { WorldSwitch } from './WorldSwitch'
 import { ViewControls } from './ViewControls'
 
 const fade = {
@@ -69,16 +69,14 @@ export function MapView({ state }: { state: WorldState }) {
         <AnimatePresence>
           {world && !story && (
             <motion.div key="explore" {...fade}>
-              {/* keeps the layer list legible when tall terrain passes behind it */}
-              <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-80 bg-gradient-to-r from-paper/90 to-transparent" />
-              <div className="pointer-events-none absolute inset-x-5 top-5 z-30 flex items-start justify-between gap-6">
-                <div>
-                  <TwinSwitch />
-                  <div className="mt-7">
-                    <LayerPanel />
-                  </div>
+              {/* floating controls: which world, which layer, how it is viewed */}
+              <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-28 bg-gradient-to-b from-paper/85 to-transparent" />
+              <div className="pointer-events-none absolute inset-x-5 top-4 z-30 space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+                  <WorldSwitch />
+                  <ViewControls />
                 </div>
-                <ViewControls />
+                <LayerPanel />
               </div>
               <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-paper via-paper/80 to-transparent px-5 pb-5 pt-16">
                 <div className="grid items-end gap-x-10 gap-y-5 lg:grid-cols-[220px_1fr_200px]">

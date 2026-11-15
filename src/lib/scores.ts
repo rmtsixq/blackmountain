@@ -9,9 +9,8 @@ import type { World } from './layers'
 /**
  * computed    — both sides measured from real rasters in this app
  * published   — compared with a published value for the target
- * placeholder — not yet backed by data; marked † in the UI
  */
-export type AxisStatus = 'computed' | 'published' | 'placeholder'
+export type AxisStatus = 'computed' | 'published'
 
 export interface AxisResult {
   score: number

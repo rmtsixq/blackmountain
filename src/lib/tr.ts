@@ -10,6 +10,12 @@ export const TR: Record<string, string> = {
   'Mare Tranquillitatis Pit': 'Mare Tranquillitatis Çukuru',
   'Shackleton Connecting Ridge': 'Shackleton Bağlantı Sırtı',
   ' and ': ' ve ',
+  'Earth · Türkiye': 'Dünya · Türkiye',
+  'Mars · shield volcano': 'Mars · kalkan volkan',
+  'Moon · lava plain': 'Ay · lav düzlüğü',
+  'Moon · south pole': 'Ay · güney kutbu',
+  'World shown': 'Gösterilen yer',
+  'Compare Karacadağ with': 'Karacadağ’ın karşılaştırıldığı yer',
 
   'A basaltic shield flank in the area where candidate cave skylights were reported from orbit (Cushing et al. 2007). Same rock family and flow morphology as Karacadağ, at ten times the size.':
     'Bazaltik bir kalkan volkanın yamacı. Uydu görüntülerinde mağara girişi olabilecek deliklerin bildirildiği bölge burası (Cushing vd. 2007). Kayaç ailesi ve lav akıntılarının biçimi Karacadağ’la aynı; yalnızca on kat daha büyük.',
@@ -86,10 +92,9 @@ export const TR: Record<string, string> = {
   '{k} K day to night on the lava field': 'Lav alanında gündüzle gece arasında {k} K',
   'computed from both': 'iki tarafta da hesaplandı',
   'measured vs published': 'yayımlanmış değerle karşılaştırıldı',
-  'placeholder †': 'temsili †',
-  'Axis by axis': 'Eksen eksen',
+  'Axis by axis': 'Eksenlere göre karşılaştırma',
   'What we read on Earth, what is read on {body}, and where the comparison stops holding.':
-    'Dünya’da ne ölçtük, {body} için ne ölçülmüş ve karşılaştırma nerede geçerliliğini yitiriyor.',
+    'Dünya’da ölçtüğümüz değer, {body} için yayımlanmış değer ve karşılaştırmanın geçerliliğini yitirdiği nokta.',
 
   // what Earth cannot reproduce
   Gravity: 'Yerçekimi',
@@ -103,22 +108,22 @@ export const TR: Record<string, string> = {
     'Bir barlık hava gölgeleri aydınlatır, sıcaklık uçlarını törpüler ve nem taşır. Ay’da boşluk var; Mars’taki basınç bizimkinin yüzde birinden az.',
   'Our magnetosphere and atmosphere block the radiation that makes tubes attractive as shelters in the first place.':
     'Lav tüplerini sığınak olarak cazip kılan şey radyasyon; oysa Dünya’da manyetik alan ve atmosfer onu zaten kesiyor.',
-  'Ovabağ tubes are humid and inhabited. Rain, soil and vegetation alter the basalt at rates unknown on either target.':
-    'Ovabağ’daki boşluklar nemli ve içlerinde yaşam var. Yağmur, toprak ve bitkiler bazaltı, iki hedefte de görülmeyen bir hızla değiştiriyor.',
+  'The Ovabağ pits are humid and inhabited. Rain, soil and vegetation alter the basalt at rates unknown on either target.':
+    'Ovabağ’daki çukurlar nemlidir ve içlerinde canlı yaşamı vardır. Yağmur, toprak ve bitki örtüsü bazaltı iki hedefte de görülmeyen bir hızla değiştirir.',
   'The four elevation models differ in native resolution (Earth 30 m, Moon 118 m and 20 m, Mars 200 m). All statistics are taken at a 480 m baseline so none is flattered by detail.':
     'Dört yükseklik modelinin çözünürlüğü farklı (Dünya 30 m, Ay 118 m ve 20 m, Mars 200 m). Hiçbiri ayrıntı sayesinde öne geçmesin diye bütün istatistikler 480 m aralıkla alındı.',
-  'What Earth cannot reproduce': 'Dünya’nın taklit edemedikleri',
+  'What Earth cannot reproduce': 'Dünya’da yeniden üretilemeyen koşullar',
   'Stating the limits is part of the result. None of these change with more data.':
-    'Sınırları söylemek sonucun bir parçası. Bunların hiçbiri daha fazla veriyle değişmez.',
+    'Sınırların belirtilmesi sonucun bir parçasıdır. Aşağıdakiler daha fazla veriyle değişmez.',
   'The weakest measured axis for each target': 'Her hedef için en zayıf eksen',
-  'Where each comparison should not be trusted.': 'Karşılaştırmaya en az güvenilmesi gereken yerler.',
+  'Where each comparison should not be trusted.': 'Karşılaştırmanın en zayıf kaldığı noktalar.',
 
   // sidebar
   Fingerprint: 'Parmak izi',
   Field: 'Saha',
   Limits: 'Sınırlar',
-  "Elevation (Earth, Moon, Mars), VIIRS surface temperature, Sentinel-1 radar and the sun's position are real data; every terrain and light score is computed from them in the browser. Rock chemistry scores come from published analyses. † marks what is still a placeholder: the station readings, tube profile and rock counts awaiting the field campaign.":
-    'Yükseklik (Dünya, Ay, Mars), VIIRS yüzey sıcaklığı, Sentinel-1 radar görüntüsü ve güneşin konumu gerçek veri. Arazi ve ışık puanlarının hepsi bu verilerden, tarayıcının içinde hesaplanıyor. Kayaç kimyası puanları yayımlanmış analizlere dayanıyor. † işareti henüz temsili olan yerleri gösterir: istasyon ölçümleri, tüp sıcaklık profili ve kaya sayımları saha çalışmasını bekliyor.',
+  "Elevation (Earth, Moon, Mars), VIIRS surface temperature, Sentinel-1 radar and the sun's position are real data; every terrain and light score is computed from them in the browser. Rock chemistry scores come from published analyses. The pit scan and the thermometer readings are our own, from 14–15 November 2026; the night curve and the lava-tube profile are models and are named as such.":
+    'Yükseklik (Dünya, Ay, Mars), VIIRS yüzey sıcaklığı, Sentinel-1 radar görüntüsü ve güneşin konumu gerçek veridir. Arazi ve ışık puanlarının tamamı bu verilerden, tarayıcıda hesaplanır. Kayaç kimyası puanları yayımlanmış analizlere dayanır. Çukur taraması ve termometre ölçümleri 14–15 Kasım 2026’da tarafımızdan yapıldı; gece eğrisi ve lav tüpü profili modeldir ve model olarak adlandırılmıştır.',
   '% terrain match': 'arazi benzerliği (%)',
   'Karacadağ ranks {ord} of {n} Earth sites for the terrain of {name}':
     '{name} arazisine benzerlikte Karacadağ, {n} saha arasında {place}. sırada',
@@ -150,7 +155,7 @@ export const TR: Record<string, string> = {
   'California, USA': 'Kaliforniya, ABD',
 
   // slope and shadow
-  'How steep the ground is': 'Zemin ne kadar dik',
+  'How steep the ground is': 'Eğim dağılımı',
   'Share of each 62 km square at every slope, measured the same way ({m} m baseline) on Karacadağ and on {name}.':
     '62 km’lik karenin her eğim değerine düşen payı. Karacadağ’da ve {name} üzerinde aynı yöntemle ({m} m aralıkla) ölçüldü.',
   '{a} overlap in slope, {b} in roughness, {c} in relief.': 'Eğimde {a}, engebede {b}, yükselti farkında {c} örtüşme.',
@@ -191,85 +196,46 @@ export const TR: Record<string, string> = {
   'field, night': 'lav alanı, gece',
   summit: 'zirve',
   'reported in-tube': 'haberde geçen mağara sıcaklığı',
-  'A press report puts these caves at 4–5 °C in summer (dashed line); we have not verified it. On 14 November we read {t} °C in an open collapse pit: {gap} K below this annual mean, and warmer than the air that afternoon. A pit open to the sky is not a closed tube, so the press figure is neither confirmed nor ruled out.':
-    'Bir gazete haberi bu mağaralar için yazın 4–5 °C diyor (kesikli çizgi); biz doğrulamadık. 14 Kasım’da tavanı açık bir çukurda {t} °C ölçtük: yıllık ortalamanın {gap} K altında, o öğleden sonraki havadan ise daha sıcak. Üstü açık bir çukur kapalı bir tüp değildir; yani haberdeki değeri ne doğrulayabiliyoruz ne de yanlışlayabiliyoruz.',
+  'A press report puts these caves at 4–5 °C in summer (dashed line). On 14 November we read {t} °C in a partly roofed collapse pit: {gap} K below this annual mean, and warmer than the air outside at the same hour. A pit open to the sky is not a closed tube, so our reading neither confirms the press figure nor rules it out.':
+    'Basında bu mağaralar için yazın 4–5 °C değeri bildirilmiştir (kesikli çizgi). 14 Kasım’da tavanı kısmen açık bir çöküntü çukurunda {t} °C ölçtük: yıllık ortalamanın {gap} K altında, aynı saatteki dış havanın ise üzerinde. Üstü açık bir çukur kapalı bir tüple aynı koşullarda değildir; bu nedenle ölçümümüz basındaki değeri ne doğrular ne de çürütür.',
 
-  // stations (illustrative)
-  Stations: 'İstasyonlar',
-  'Pick one here or on the terrain; the camera follows.':
-    'Buradan ya da arazinin üzerinden bir istasyon seçin; kamera oraya gider.',
-  'No station selected': 'İstasyon seçilmedi',
-  'Readings for a station appear here.': 'Seçtiğiniz istasyonun ölçümleri burada görünür.',
-  surface: 'yüzey',
-  air: 'hava',
-  humidity: 'nem',
-  'rock cover': 'kaya örtüsü',
-  'Lava tube': 'Lav tüpü',
-  'Thermal point': 'Sıcaklık noktası',
-  'Rock quadrat': 'Kaya sayım alanı',
-  'Ovabağ tube · main entrance': 'Ovabağ tüpü · ana giriş',
-  'Ovabağ tube · east skylight': 'Ovabağ tüpü · doğu tavan deliği',
-  'Baruttepe cone flank': 'Baruttepe konisinin yamacı',
-  'Young ʻaʻā flow, sunlit': 'Genç ʻaʻā akıntısı, güneşte',
-  'Pāhoehoe ropes': 'Halat dokulu pāhoehoe',
-  'Soil-covered old flow': 'Toprakla örtülü eski akıntı',
-  'North-facing scarp': 'Kuzeye bakan sarplık',
-  'Flow margin': 'Akıntının kenarı',
-  'Quadrat · fresh flow': 'Sayım alanı · taze akıntı',
-  'Quadrat · flow levee': 'Sayım alanı · akıntı seti',
-  'Quadrat · tube roof': 'Sayım alanı · tüp tavanı',
-  'Quadrat · cone apron': 'Sayım alanı · koni eteği',
-  'Quadrat · weathered flow': 'Sayım alanı · aşınmış akıntı',
-  'Quadrat · field wall zone': 'Sayım alanı · tarla duvarları',
-  'Collapse skylight, roof ~4 m. Thermal profile stations at 0, 10 and 25 m.':
-    'Çökmeyle açılmış tavan deliği, tavan ~4 m. Sıcaklık profili için 0, 10 ve 25 m’de ölçüm noktaları.',
-  'Second opening ~2.5 km downflow. Draught felt at entrance.':
-    'Akıntı yönünde ~2,5 km ötede ikinci açıklık. Girişte hava akımı hissediliyor.',
-  'Fresh scoria, very dark. Hottest surface of the day.': 'Taze cüruf, çok koyu. Günün en sıcak yüzeyi.',
-  'Unweathered clinker surface.': 'Aşınmamış, cüruflu yüzey.',
-  'Flow wrinkles and lava toes; smooth crust.': 'Akıntı kırışıkları ve lav parmakları; kabuk pürüzsüz.',
-  'Weathered, grass cover. Control surface.': 'Aşınmış, otla kaplı. Karşılaştırma yüzeyi.',
-  'In shade most of the day in November.': 'Kasımda günün çoğunu gölgede geçiriyor.',
-  'Contact between young flow and farmland.': 'Genç akıntı ile tarım arazisinin sınırı.',
-  'Blocky ʻaʻā, clasts to 0.9 m.': 'Bloklu ʻaʻā, parçalar 0,9 m’ye kadar.',
-  'Levee rubble, angular.': 'Set molozu, köşeli.',
-  'Slabby pāhoehoe above TUBE-A.': 'TUBE-A’nın üzerinde levhalı pāhoehoe.',
-  'Scoria lapilli with bombs.': 'Cüruf lapillisi, arada volkan bombaları.',
-  'Rounded blocks in soil.': 'Toprağa gömülü, yuvarlanmış bloklar.',
-  'Cleared farmland, stones piled into walls.': 'Temizlenmiş tarla; taşlar duvar olarak dizilmiş.',
+  // what we measured on foot
+  'What we measured on foot': 'Sahada ölçtüklerimiz',
+  'Ovabağ lava field, 14–15 November 2026: a collapse pit scanned in three dimensions, with thermometers inside and outside it.':
+    'Ovabağ lav alanı, 14–15 Kasım 2026: üç boyutlu olarak taranan bir çöküntü çukuru ve çukurun içine ve dışına yerleştirilen termometreler.',
+  opening: 'açıklık',
+  depth: 'derinlik',
+  'still under the roof': 'tavanın örttüğü bölüm',
+  'points in the scan': 'taramadaki nokta sayısı',
+  'in the pit, 16:00': 'çukurda, 16.00',
+  'outside, 16:00': 'dışarıda, 16.00',
+  'Humidity in the pit was {h}. Dimensions are read from the scan, at the scale the scanning app exported.':
+    'Çukurdaki nem {h} olarak ölçüldü. Boyutlar, tarama uygulamasının verdiği ölçekle taramadan okundu.',
+  'The Ovabağ lava field': 'Ovabağ lav alanı',
+  'Looking down into the collapse pit': 'Çöküntü çukuruna yukarıdan bakış',
+  'The pit mouth under its overhang': 'Kaya saçağının altında çukurun ağzı',
+  'A crack in the lava': 'Lavda bir çatlak',
+  'A scoria cone on the field': 'Lav alanında bir cüruf konisi',
+  'Basalt blocks on the flows': 'Lav akıntılarında bazalt blokları',
+  'The night at the pit': 'Çukurda gece',
+  'The thermometers stayed in place from 16:00 on 14 November until 06:00 the next morning.':
+    'Termometreler 14 Kasım saat 16.00’dan ertesi sabah 06.00’ya kadar yerinde kaldı.',
 
-  // tube profile (illustrative)
-  'Inside the lava tube': 'Lav tüpünün içi',
-  'Temperature through the day, from sunlit basalt to 25 m inside. The vertical line is the sun slider.':
-    'Gün boyunca sıcaklık: güneşteki bazalttan 25 m içeriye kadar. Dikey çizgi, güneş kaydırıcısının gösterdiği saat.',
-  'No readings yet': 'Henüz ölçüm yok',
-  'The profile appears once the field sheet is loaded.': 'Saha formu yüklenince profil burada görünecek.',
-  '{a} of swing outside becomes {b} at 25 m.': 'Dışarıdaki {a} oynama, 25 m içeride {b} oluyor.',
+  // lava tube model
+  'A lava tube, modelled': 'Lav tüpü sıcaklık modeli',
+  'How a day of temperature fades with depth, from sunlit basalt to 25 m inside: a damped-wave model. The vertical line is the sun slider.':
+    'Gün içindeki sıcaklık değişiminin derinlikle nasıl söndüğünü gösteren model: güneş alan bazalttan 25 m içeriye kadar. Dikey çizgi, güneş kaydırıcısında seçili saattir.',
+  'In the model, {a} of swing outside becomes {b} at 25 m.': 'Modelde dışarıdaki {a} değişim, 25 m içeride {b} değerine iniyor.',
   '{h} solar time': 'güneş saatiyle {h}',
-  'Sunlit basalt': 'Güneşteki bazalt',
+  'Sunlit basalt': 'Güneş alan bazalt',
   Shade: 'Gölge',
   Entrance: 'Giriş',
   '10 m in': '10 m içeride',
   '25 m in': '25 m içeride',
-  'Lunar pits hold about 17 °C in shade while the surface runs from +127 °C to −173 °C (LRO Diviner). Measuring the same damping here is the next field task.':
-    'Ay’daki çukurlar gölgede 17 °C civarında kalırken yüzey +127 °C ile −173 °C arasında gidip geliyor (LRO Diviner). Aynı sönümlenmeyi burada ölçmek, sahadaki bir sonraki işimiz.',
-
-  // rocks (illustrative)
-  'Rocks, against the Mars landing model': 'Kaya dağılımı ve Mars iniş modeli',
-  'Share of ground covered by rocks larger than D. Dashed curves are the Golombek–Rapp model at 5, 10, 20 and 30% total abundance.':
-    'Zeminin, çapı D’den büyük kayalarla kaplı kısmı. Kesikli eğriler, toplam kaya oranı %5, 10, 20 ve 30 için Golombek–Rapp modeli.',
-  'model {p}%': 'model %{p}',
-  'QD-01 fresh flow': 'QD-01 taze akıntı',
-  'QD-05 weathered flow': 'QD-05 aşınmış akıntı',
-  'fresh ʻaʻā, QD-01': 'taze ʻaʻā, QD-01',
-  'weathered flow, QD-05': 'aşınmış akıntı, QD-05',
+  'Lunar pits hold about 17 °C in shade while the surface runs from +127 °C to −173 °C (LRO Diviner). The model shows the same damping at the scale of an Earth tube.':
+    'Ay’daki çukurlar gölgede 17 °C dolayında kalırken yüzey +127 °C ile −173 °C arasında değişir (LRO Diviner). Model, aynı sönümlenmeyi Dünya’daki bir tüpün ölçeğinde gösterir.',
 
   // terrain overlay
-  'Switch world (space)': 'Dünyayı değiştir (boşluk tuşu)',
-  '{coords} · {dem} · same 62 km square and vertical scale as Karacadağ':
-    '{coords} · {dem} · Karacadağ’la aynı 62 km’lik kare, aynı düşey ölçek',
-  'Press space to turn this mountain into its twin: real elevation, same scale.':
-    'Boşluk tuşuna basın, bu dağ ikizine dönüşsün: gerçek yükseklik verisi, aynı ölçek.',
   Elevation: 'Yükseklik',
   'Surface temperature, 13:30': 'Yüzey sıcaklığı, 13.30',
   'Day–night swing': 'Gündüz–gece farkı',
@@ -282,9 +248,10 @@ export const TR: Record<string, string> = {
   'Sentinel-1 C-band VV, Sep–Nov': 'Sentinel-1 C bandı VV, Eylül–Kasım',
   'Derived from elevation': 'Yükseklik verisinden hesaplandı',
   'Slope + roughness statistics vs target': 'Eğim ve engebe istatistikleri hedefle karşılaştırıldı',
-  'Not loaded for the twin terrain': 'İkiz arazi için bu katman yok',
+  'Not loaded for the twin terrain': 'Bu katman yalnızca Karacadağ için mevcut',
+  Layer: 'Katman',
   'LOLA / MOLA elevation': 'LOLA / MOLA yükseklik verisi',
-  'Move over the terrain to read it.': 'Değerleri okumak için arazinin üzerinde gezinin.',
+  'Move over the terrain to read it.': 'Değerleri görmek için imleci arazinin üzerinde gezdirin.',
   '{name}, {e} km E {s} km S': '{name}, {e} km D {s} km G',
   '{lat}°N {lon}°E': '{lat}°K {lon}°D',
   slope: 'eğim',
@@ -295,13 +262,12 @@ export const TR: Record<string, string> = {
   'grazing light': 'yatay ışık',
   'sun {e} above horizon, bearing {a}°': 'güneş ufuktan {e} yukarıda, yön {a}°',
   'Local solar time, 14 November': 'Yerel güneş saati, 14 Kasım',
-  relief: 'kabartma',
-  'Less relief': 'Kabartmayı azalt',
-  'More relief': 'Kabartmayı artır',
-  orbit: 'döndür',
-  reset: 'sıfırla',
+  Relief: 'Kabartma',
+  'Relief: how far heights are stretched': 'Kabartma: yüksekliklerin kaç kat büyütüldüğü',
+  'Rotate the view': 'Görünümü döndür',
+  'Reset the view': 'Görünümü sıfırla',
 
-  'closest terrain to {name} · {score}%': '{name} arazisine en çok benzeyen yer · %{score}',
+  'closest terrain to {name} · {score}%': '{name} arazisine en çok benzeyen bölge · %{score}',
 
   // loading
   'Fetching elevation, temperature and radar': 'Yükseklik, sıcaklık ve radar verisi alınıyor',

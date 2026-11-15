@@ -31,9 +31,7 @@ export function LimitsPanel({ world }: { world: World }) {
         <ul className="space-y-5">
           {TARGETS.map((t) => {
             const results = axisResults(t, world, x)
-            const worst = AXES.filter((a) => results[a.id].status !== 'placeholder').sort(
-              (a, b) => results[a.id].score - results[b.id].score,
-            )[0]
+            const worst = [...AXES].sort((a, b) => results[a.id].score - results[b.id].score)[0]
             const axis = results[worst.id]
             return (
               <li key={t.id}>

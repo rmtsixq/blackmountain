@@ -14,7 +14,6 @@ import { useT } from '../lib/i18n'
 import { rich } from '../lib/rich'
 import { formatHour } from '../lib/solar'
 import { useStore } from '../store'
-import { EmptyState } from './EmptyState'
 import { Panel } from './Panel'
 
 export function TubeProfileChart() {
@@ -23,16 +22,13 @@ export function TubeProfileChart() {
 
   return (
     <Panel
-      title={x('Inside the lava tube')}
-      hint={x('Temperature through the day, from sunlit basalt to 25 m inside. The vertical line is the sun slider.')}
-      demo
+      title={x('A lava tube, modelled')}
+      hint={x('How a day of temperature fades with depth, from sunlit basalt to 25 m inside: a damped-wave model. The vertical line is the sun slider.')}
     >
-      {TUBE_PROFILE.length === 0 ? (
-        <EmptyState title={x('No readings yet')} text={x('The profile appears once the field sheet is loaded.')} />
-      ) : (
+      {(
         <>
           <p className="mb-5 text-[15px] leading-snug text-ink">
-            {rich(x('{a} of swing outside becomes {b} at 25 m.'), {
+            {rich(x('In the model, {a} of swing outside becomes {b} at 25 m.'), {
               a: <span className="font-display text-[40px] leading-none">{TUBE_STATS.surfaceSwing.toFixed(0)} K</span>,
               b: (
                 <span className="font-display text-[40px] leading-none text-accent">
@@ -87,7 +83,7 @@ export function TubeProfileChart() {
           </p>
           <p className="mt-4 border-l border-accent pl-3 text-[13px] leading-relaxed text-ink-2">
             {x(
-              'Lunar pits hold about 17 °C in shade while the surface runs from +127 °C to −173 °C (LRO Diviner). Measuring the same damping here is the next field task.',
+              'Lunar pits hold about 17 °C in shade while the surface runs from +127 °C to −173 °C (LRO Diviner). The model shows the same damping at the scale of an Earth tube.',
             )}
           </p>
         </>

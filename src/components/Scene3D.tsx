@@ -3,7 +3,7 @@ import { HOME_POSITION } from '../lib/camera'
 import type { World } from '../lib/layers'
 import { Animator } from './Animator'
 import { CameraRig } from './CameraRig'
-import { StationMarkers } from './StationMarkers'
+import { SceneMarkers } from './SceneMarkers'
 import { SunLight } from './SunLight'
 import { TerrainMesh } from './TerrainMesh'
 
@@ -19,8 +19,8 @@ export function Scene3D({ world }: { world: World }) {
       <Animator />
       <SunLight />
       <TerrainMesh world={world} />
-      <StationMarkers world={world} />
-      <CameraRig dem={world.earth.dem} />
+      <SceneMarkers world={world} />
+      <CameraRig />
     </Canvas>
   )
 }
