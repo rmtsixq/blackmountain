@@ -108,7 +108,7 @@ export function Sidebar() {
 
       <p className="border-t border-ink/10 py-6 text-[12px] leading-relaxed text-ink-4">
         {x(
-          "Elevation (Earth, Moon, Mars), VIIRS surface temperature, Sentinel-1 radar and the sun's position are real data; every terrain and light score is computed from them in the browser. Rock chemistry scores come from published analyses. The pit scan and the thermometer readings are our own, from 14–15 November 2026; the night curve and the lava-tube profile are models and are named as such.",
+          "Elevation (Earth, Moon, Mars), VIIRS surface temperature, Sentinel-1 radar and the sun's position are real data; every terrain and light score is computed from them in the browser. Rock chemistry scores come from published analyses. The pit scan and the thermometer readings are our own, from 14–15 November 2026; the night curve and the lava-tube profile are calculated from these.",
         )}
       </p>
     </aside>

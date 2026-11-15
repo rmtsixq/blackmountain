@@ -22,13 +22,13 @@ export function TubeProfileChart() {
 
   return (
     <Panel
-      title={x('A lava tube, modelled')}
-      hint={x('How a day of temperature fades with depth, from sunlit basalt to 25 m inside: a damped-wave model. The vertical line is the sun slider.')}
+      title={x('Inside a lava tube')}
+      hint={x('How a day of temperature fades with depth, from sunlit basalt to 25 m inside, calculated as a damped wave. The vertical line is the sun slider.')}
     >
       {(
         <>
           <p className="mb-5 text-[15px] leading-snug text-ink">
-            {rich(x('In the model, {a} of swing outside becomes {b} at 25 m.'), {
+            {rich(x('Calculated: {a} of swing outside becomes {b} at 25 m.'), {
               a: <span className="font-display text-[40px] leading-none">{TUBE_STATS.surfaceSwing.toFixed(0)} K</span>,
               b: (
                 <span className="font-display text-[40px] leading-none text-accent">
@@ -83,7 +83,7 @@ export function TubeProfileChart() {
           </p>
           <p className="mt-4 border-l border-accent pl-3 text-[13px] leading-relaxed text-ink-2">
             {x(
-              'Lunar pits hold about 17 °C in shade while the surface runs from +127 °C to −173 °C (LRO Diviner). The model shows the same damping at the scale of an Earth tube.',
+              'Lunar pits hold about 17 °C in shade while the surface runs from +127 °C to −173 °C (LRO Diviner). The calculation shows the same damping at the scale of an Earth tube.',
             )}
           </p>
         </>

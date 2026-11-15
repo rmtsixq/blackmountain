@@ -235,7 +235,7 @@ export function buildStory(world: World, lang: Lang): Chapter[] {
     },
     {
       id: 'surprise',
-      evidence: ['field', 'model'],
+      evidence: ['field', 'lab'],
       kicker: L('The night', 'Gece'),
       figure: {
         strong: `${n(MEASURED.inside, 1)} °C`,

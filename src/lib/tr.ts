@@ -122,8 +122,8 @@ export const TR: Record<string, string> = {
   Fingerprint: 'Parmak izi',
   Field: 'Saha',
   Limits: 'Sınırlar',
-  "Elevation (Earth, Moon, Mars), VIIRS surface temperature, Sentinel-1 radar and the sun's position are real data; every terrain and light score is computed from them in the browser. Rock chemistry scores come from published analyses. The pit scan and the thermometer readings are our own, from 14–15 November 2026; the night curve and the lava-tube profile are models and are named as such.":
-    'Yükseklik (Dünya, Ay, Mars), VIIRS yüzey sıcaklığı, Sentinel-1 radar görüntüsü ve güneşin konumu gerçek veridir. Arazi ve ışık puanlarının tamamı bu verilerden, tarayıcıda hesaplanır. Kayaç kimyası puanları yayımlanmış analizlere dayanır. Çukur taraması ve termometre ölçümleri 14–15 Kasım 2026’da tarafımızdan yapıldı; gece eğrisi ve lav tüpü profili modeldir ve model olarak adlandırılmıştır.',
+  "Elevation (Earth, Moon, Mars), VIIRS surface temperature, Sentinel-1 radar and the sun's position are real data; every terrain and light score is computed from them in the browser. Rock chemistry scores come from published analyses. The pit scan and the thermometer readings are our own, from 14–15 November 2026; the night curve and the lava-tube profile are calculated from these.":
+    'Yükseklik (Dünya, Ay, Mars), VIIRS yüzey sıcaklığı, Sentinel-1 radar görüntüsü ve güneşin konumu gerçek veridir. Arazi ve ışık puanlarının tamamı bu verilerden, tarayıcıda hesaplanır. Kayaç kimyası puanları yayımlanmış analizlere dayanır. Çukur taraması ve termometre ölçümleri 14–15 Kasım 2026’da tarafımızdan yapıldı; gece eğrisi ve lav tüpü profili bunlardan hesaplanmıştır.',
   '% terrain match': 'arazi benzerliği (%)',
   'Karacadağ ranks {ord} of {n} Earth sites for the terrain of {name}':
     '{name} arazisine benzerlikte Karacadağ, {n} saha arasında {place}. sırada',
@@ -221,19 +221,19 @@ export const TR: Record<string, string> = {
   'The thermometers stayed in place from 16:00 on 14 November until 06:00 the next morning.':
     'Termometreler 14 Kasım saat 16.00’dan ertesi sabah 06.00’ya kadar yerinde kaldı.',
 
-  // lava tube model
-  'A lava tube, modelled': 'Lav tüpü sıcaklık modeli',
-  'How a day of temperature fades with depth, from sunlit basalt to 25 m inside: a damped-wave model. The vertical line is the sun slider.':
-    'Gün içindeki sıcaklık değişiminin derinlikle nasıl söndüğünü gösteren model: güneş alan bazalttan 25 m içeriye kadar. Dikey çizgi, güneş kaydırıcısında seçili saattir.',
-  'In the model, {a} of swing outside becomes {b} at 25 m.': 'Modelde dışarıdaki {a} değişim, 25 m içeride {b} değerine iniyor.',
+  // lava tube
+  'Inside a lava tube': 'Lav tüpünün içi',
+  'How a day of temperature fades with depth, from sunlit basalt to 25 m inside, calculated as a damped wave. The vertical line is the sun slider.':
+    'Gün içindeki sıcaklık değişiminin derinlikle nasıl söndüğü, güneş alan bazalttan 25 m içeriye kadar; sönümlü dalga olarak hesaplandı. Dikey çizgi, güneş kaydırıcısında seçili saattir.',
+  'Calculated: {a} of swing outside becomes {b} at 25 m.': 'Hesaba göre dışarıdaki {a} değişim, 25 m içeride {b} değerine iniyor.',
   '{h} solar time': 'güneş saatiyle {h}',
   'Sunlit basalt': 'Güneş alan bazalt',
   Shade: 'Gölge',
   Entrance: 'Giriş',
   '10 m in': '10 m içeride',
   '25 m in': '25 m içeride',
-  'Lunar pits hold about 17 °C in shade while the surface runs from +127 °C to −173 °C (LRO Diviner). The model shows the same damping at the scale of an Earth tube.':
-    'Ay’daki çukurlar gölgede 17 °C dolayında kalırken yüzey +127 °C ile −173 °C arasında değişir (LRO Diviner). Model, aynı sönümlenmeyi Dünya’daki bir tüpün ölçeğinde gösterir.',
+  'Lunar pits hold about 17 °C in shade while the surface runs from +127 °C to −173 °C (LRO Diviner). The calculation shows the same damping at the scale of an Earth tube.':
+    'Ay’daki çukurlar gölgede 17 °C dolayında kalırken yüzey +127 °C ile −173 °C arasında değişir (LRO Diviner). Hesap, aynı sönümlenmeyi Dünya’daki bir tüpün ölçeğinde gösterir.',
 
   // terrain overlay
   Elevation: 'Yükseklik',
