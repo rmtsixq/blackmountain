@@ -27,6 +27,8 @@ import sys
 import urllib.request
 
 import numpy as np
+
+from pack import pack_raster
 import rasterio
 from PIL import Image
 from rasterio.enums import Resampling
@@ -72,10 +74,13 @@ def load_manifest():
 def save(manifest, name, arr, **meta):
     arr = np.asarray(arr, dtype="<f4")
     assert arr.shape == (N, N), arr.shape
-    arr.tofile(os.path.join(OUT, f"{name}.bin"))
+    packed, scale = pack_raster(arr)
+    with open(os.path.join(OUT, f"{name}.r16"), "wb") as f:
+        f.write(packed)
     valid = arr[np.isfinite(arr)]
     manifest["rasters"][name] = {
-        "file": f"{name}.bin",
+        "file": f"{name}.r16",
+        "scale": scale,
         "min": round(float(valid.min()), 3),
         "max": round(float(valid.max()), 3),
         "mean": round(float(valid.mean()), 3),

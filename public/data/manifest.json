@@ -3,7 +3,7 @@
   "extent_km": 61.955,
   "rasters": {
     "lst_day": {
-      "file": "lst_day.bin",
+      "file": "lst_day.r16",
       "min": 21.35,
       "max": 33.603,
       "mean": 28.818,
@@ -11,10 +11,14 @@
       "unit": "\u00b0C",
       "source": "VIIRS S-NPP monthly LST (VNP21), NASA GIBS",
       "date": "2026-10",
-      "resolution_m": 1000
+      "resolution_m": 1000,
+      "scale": [
+        21.350000381469727,
+        33.603126525878906
+      ]
     },
     "lst_night": {
-      "file": "lst_night.bin",
+      "file": "lst_night.r16",
       "min": 4.55,
       "max": 12.95,
       "mean": 10.108,
@@ -22,10 +26,14 @@
       "unit": "\u00b0C",
       "source": "VIIRS S-NPP monthly LST (VNP21), NASA GIBS",
       "date": "2026-10",
-      "resolution_m": 1000
+      "resolution_m": 1000,
+      "scale": [
+        4.550012111663818,
+        12.950006484985352
+      ]
     },
     "lst_swing": {
-      "file": "lst_swing.bin",
+      "file": "lst_swing.r16",
       "min": 15.0,
       "max": 24.0,
       "mean": 18.711,
@@ -33,20 +41,28 @@
       "unit": "K",
       "source": "VIIRS S-NPP monthly LST (VNP21), NASA GIBS",
       "date": "2026-10",
-      "resolution_m": 1000
+      "resolution_m": 1000,
+      "scale": [
+        15.0,
+        24.0
+      ]
     },
     "s1_vv": {
-      "file": "s1_vv.bin",
+      "file": "s1_vv.r16",
       "min": -22.467,
       "max": 11.547,
       "mean": -8.898,
       "valid": 1.0,
       "unit": "dB",
       "source": "Sentinel-1 C-band VV gamma0, Sep-Nov median (Copernicus / Earth Big Data, AWS Open Data)",
-      "resolution_m": 90
+      "resolution_m": 90,
+      "scale": [
+        -22.466739654541016,
+        11.547160148620605
+      ]
     },
     "arsia": {
-      "file": "arsia.bin",
+      "file": "arsia.r16",
       "min": 8790.0,
       "max": 12870.0,
       "mean": 10535.896,
@@ -56,10 +72,14 @@
       "lat": -6.3,
       "lon": 240.0,
       "resolution_m": 200,
-      "source": "MGS MOLA + Mars Express HRSC blended DEM v2 (USGS Astrogeology)"
+      "source": "MGS MOLA + Mars Express HRSC blended DEM v2 (USGS Astrogeology)",
+      "scale": [
+        8790.0,
+        12870.0
+      ]
     },
     "tranq": {
-      "file": "tranq.bin",
+      "file": "tranq.r16",
       "min": -1688.0,
       "max": -628.0,
       "mean": -798.908,
@@ -69,10 +89,14 @@
       "lat": 8.335,
       "lon": 33.222,
       "resolution_m": 118,
-      "source": "LRO LOLA global DEM 118 m (USGS Astrogeology)"
+      "source": "LRO LOLA global DEM 118 m (USGS Astrogeology)",
+      "scale": [
+        -1688.0,
+        -628.0
+      ]
     },
     "shackleton": {
-      "file": "shackleton.bin",
+      "file": "shackleton.r16",
       "min": -2980.579,
       "max": 1956.651,
       "mean": -506.95,
@@ -82,10 +106,14 @@
       "lat": -89.45,
       "lon": 222.69,
       "resolution_m": 20,
-      "source": "LRO LOLA south pole DEM 20 m (NASA PGDA, Barker et al. 2021)"
+      "source": "LRO LOLA south pole DEM 20 m (NASA PGDA, Barker et al. 2021)",
+      "scale": [
+        -2980.578857421875,
+        1956.6512451171875
+      ]
     },
     "site_craters": {
-      "file": "site_craters.bin",
+      "file": "site_craters.r16",
       "min": 1296.017,
       "max": 2563.276,
       "mean": 1524.109,
@@ -94,10 +122,14 @@
       "lat": 43.2,
       "lon": -113.5,
       "resolution_m": 56,
-      "source": "AWS Terrain Tiles (SRTM / national DEMs)"
+      "source": "AWS Terrain Tiles (SRTM / national DEMs)",
+      "scale": [
+        1296.016845703125,
+        2563.276123046875
+      ]
     },
     "site_maunaloa": {
-      "file": "site_maunaloa.bin",
+      "file": "site_maunaloa.r16",
       "min": 17.955,
       "max": 4179.34,
       "mean": 1991.117,
@@ -106,10 +138,14 @@
       "lat": 19.55,
       "lon": -155.55,
       "resolution_m": 72,
-      "source": "AWS Terrain Tiles (SRTM / national DEMs)"
+      "source": "AWS Terrain Tiles (SRTM / national DEMs)",
+      "scale": [
+        17.954599380493164,
+        4179.33984375
+      ]
     },
     "site_askja": {
-      "file": "site_askja.bin",
+      "file": "site_askja.r16",
       "min": 344.541,
       "max": 1623.887,
       "mean": 721.847,
@@ -118,10 +154,14 @@
       "lat": 65.05,
       "lon": -16.75,
       "resolution_m": 64,
-      "source": "AWS Terrain Tiles (SRTM / national DEMs)"
+      "source": "AWS Terrain Tiles (SRTM / national DEMs)",
+      "scale": [
+        344.54071044921875,
+        1623.88720703125
+      ]
     },
     "site_sfvf": {
-      "file": "site_sfvf.bin",
+      "file": "site_sfvf.r16",
       "min": 1279.389,
       "max": 3826.088,
       "mean": 1969.151,
@@ -130,10 +170,14 @@
       "lat": 35.45,
       "lon": -111.6,
       "resolution_m": 62,
-      "source": "AWS Terrain Tiles (SRTM / national DEMs)"
+      "source": "AWS Terrain Tiles (SRTM / national DEMs)",
+      "scale": [
+        1279.3885498046875,
+        3826.087646484375
+      ]
     },
     "site_atacama": {
-      "file": "site_atacama.bin",
+      "file": "site_atacama.r16",
       "min": 674.479,
       "max": 2608.212,
       "mean": 1187.99,
@@ -142,10 +186,14 @@
       "lat": -24.08,
       "lon": -69.92,
       "resolution_m": 70,
-      "source": "AWS Terrain Tiles (SRTM / national DEMs)"
+      "source": "AWS Terrain Tiles (SRTM / national DEMs)",
+      "scale": [
+        674.4791259765625,
+        2608.2119140625
+      ]
     },
     "site_haughton": {
-      "file": "site_haughton.bin",
+      "file": "site_haughton.r16",
       "min": -3.265,
       "max": 454.881,
       "mean": 240.848,
@@ -154,10 +202,14 @@
       "lat": 75.38,
       "lon": -89.67,
       "resolution_m": 39,
-      "source": "AWS Terrain Tiles (SRTM / national DEMs)"
+      "source": "AWS Terrain Tiles (SRTM / national DEMs)",
+      "scale": [
+        -3.2646443843841553,
+        454.8805847167969
+      ]
     },
     "site_deathvalley": {
-      "file": "site_deathvalley.bin",
+      "file": "site_deathvalley.r16",
       "min": -141.409,
       "max": 3340.81,
       "mean": 795.462,
@@ -166,7 +218,11 @@
       "lat": 36.4,
       "lon": -116.9,
       "resolution_m": 62,
-      "source": "AWS Terrain Tiles (SRTM / national DEMs)"
+      "source": "AWS Terrain Tiles (SRTM / national DEMs)",
+      "scale": [
+        -141.4085235595703,
+        3340.81005859375
+      ]
     }
   },
   "lst_series": [

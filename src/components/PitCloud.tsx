@@ -4,6 +4,7 @@ import { Canvas } from '@react-three/fiber'
 import * as THREE from 'three'
 import { PIT_SCAN } from '../data/pitScan'
 import { useT } from '../lib/i18n'
+import { CLOUD_LEVELS, fetchPacked, unpackCloud } from '../lib/pack'
 
 const { count, min, max, floor_centre: floor, rim_y: rim } = PIT_SCAN
 const CENTRE: [number, number, number] = [floor[0], (rim + floor[1]) / 2, floor[2]]
@@ -16,14 +17,12 @@ const LINEAR = Float32Array.from({ length: 256 }, (_, i) => {
 })
 
 function decode(buffer: ArrayBuffer) {
-  if (buffer.byteLength !== count * 9) throw new Error('Unexpected scan size')
-  const q = new Uint16Array(buffer, 0, count * 3)
-  const rgb = new Uint8Array(buffer, count * 6, count * 3)
+  const { positions: q, colours: rgb } = unpackCloud(buffer, count)
   const positions = new Float32Array(count * 3)
   const colors = new Float32Array(count * 3)
   for (let i = 0; i < count * 3; i++) {
     const axis = i % 3
-    positions[i] = min[axis] + (q[i] / 65535) * (max[axis] - min[axis])
+    positions[i] = min[axis] + (q[i] / CLOUD_LEVELS) * (max[axis] - min[axis])
     colors[i] = LINEAR[rgb[i]]
   }
   const geometry = new THREE.BufferGeometry()
@@ -41,11 +40,7 @@ export function PitCloud() {
 
   useEffect(() => {
     let alive = true
-    fetch('/data/pit.bin')
-      .then((r) => {
-        if (!r.ok) throw new Error(String(r.status))
-        return r.arrayBuffer()
-      })
+    fetchPacked(`${import.meta.env.BASE_URL}data/pit.p16`)
       .then((buffer) => alive && setGeometry(decode(buffer)))
       .catch(() => alive && setFailed(true))
     return () => {

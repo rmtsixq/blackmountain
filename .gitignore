@@ -26,4 +26,7 @@ dist-ssr
 .env
 .env.*
 !.env.example
-*.ply
+
+# the raw scan stays local: too large to push
+/*.ply
+/scan/

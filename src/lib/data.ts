@@ -1,7 +1,10 @@
+import { fetchPacked, unpackRaster } from './pack'
 // Rasters written by scripts/ingest.py into /public/data.
 
 export interface RasterMeta {
   file: string
+  /** value range of a packed raster (scripts/pack.py) */
+  scale: [number, number]
   min: number
   max: number
   mean: number
@@ -64,10 +67,7 @@ export async function loadData(onProgress?: (p: number) => void): Promise<SceneD
     names.map(async (name) => {
       const meta = manifest.rasters[name]
       if (!meta) throw new Error(`Raster "${name}" missing from manifest`)
-      const r = await fetch(base + meta.file)
-      if (!r.ok) throw new Error(`Failed to load ${meta.file}`)
-      const grid = new Float32Array(await r.arrayBuffer())
-      if (grid.length !== manifest.size ** 2) throw new Error(`${meta.file} has the wrong size`)
+      const grid = unpackRaster(await fetchPacked(base + meta.file), manifest.size, meta.scale)
       onProgress?.(++done / names.length)
       return [name, grid] as const
     }),

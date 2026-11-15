@@ -17,7 +17,7 @@ _Add screenshots here._
 - **Light.** Real solar geometry on the terrain, and shadow curves ray-traced on each elevation model with planetary curvature — the lunar south pole never sees the sun above about 1.5°.
 - **Heat and radar.** VIIRS surface temperature (day, night, a full year) and Sentinel-1 backscatter draped on the terrain. The radar layer is Karacadağ's own image only; no radar score is claimed, because no comparable surface radar exists for Mars or the Moon.
 - **Rock chemistry.** Ten major oxides of an Ovabağ lava sample compared with Spirit rover basalts and Apollo samples, all from published analyses (`src/data/rock.ts`).
-- **The pit.** Our own scan of a collapse pit, about 11 m across and 6 m deep, drawn as a point cloud (`python scripts/scan.py <export.ply>`), with the temperature we read there.
+- **The pit.** Our own scan of a collapse pit, about 11 m across and 6 m deep, drawn as a point cloud (`python scripts/scan.py scan/pit-scan.ply`; the full 3.1 million point scan is 47 MB and is kept out of the repository), with the temperature we read there.
 - **Limits.** Where each analogy breaks, stated next to every score.
 - **Findings.** After a language choice (Türkçe / English) the app opens on eleven findings, one per screen, each beside its evidence: the terrain, a field photograph or the scan. Every finding is tagged by where its evidence comes from: measured on foot, measured from orbit, or published data. Arrow keys or autoplay step through them (use autoplay for the demo video). **Data** opens every instrument. Both views are in Turkish and English.
 
@@ -50,11 +50,15 @@ Field, 14 November 2026: a collapse pit about 11 m across and 6 m deep with a th
 | Mars elevation | MOLA + HRSC blended DEM, 200 m (USGS Astrogeology) |
 | Moon elevation | LRO LOLA 118 m global (USGS) and 20 m south-pole model (NASA PGDA) |
 
-`python scripts/ingest.py` fetches all of it into `public/data` (`pip install -r scripts/requirements.txt`).
+`python scripts/ingest.py` fetches all of it into `public/data` (`pip install -r scripts/requirements.txt`). The grids and the scan are stored packed (`scripts/pack.py`: 16-bit deltas under gzip, read back in `src/lib/pack.ts`), so the whole data folder is under 6 MB.
 
 Also in `src/data/pit.ts`: hourly air temperature for the field night (Open-Meteo) and published pit dimensions for the Moon (LROC) and Mars (Cushing et al. 2007).
 
 **Calculated, not measured** (each caption says so): the pit-floor curve through the night (`pitModel` in `src/data/pit.ts`, a damped response to the outside air) and the lava-tube temperature profile (`src/data/field.ts`). Our own thermometer readings go in `LOG` in `src/data/pit.ts`.
+
+## Deploy
+
+A static Vite build: on Vercel, import the repository and keep the defaults (build `npm run build`, output `dist`). The site ships about 12 MB in total; `.vercelignore` keeps the Python scripts out of the upload.
 
 ## Run
 

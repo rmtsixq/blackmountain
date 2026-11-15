@@ -18,6 +18,8 @@ from pathlib import Path
 
 import numpy as np
 
+from pack import pack_cloud
+
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "public" / "data"
 META = ROOT / "src" / "data" / "pitScan.ts"
@@ -28,15 +30,22 @@ CELL = 0.10  # m, plan-view grid used for the measurements
 
 
 def read_ply(path: Path) -> np.ndarray:
+    """x y z r g b per point, from an ASCII PLY or the binary one pack.py writes."""
     with open(path, "rb") as f:
         count = 0
+        binary = False
         while True:
             line = f.readline().decode("latin1").strip()
+            if line.startswith("format binary_little_endian"):
+                binary = True
             if line.startswith("element vertex"):
                 count = int(line.split()[-1])
             if line == "end_header":
                 break
-        return np.loadtxt(f, max_rows=count, dtype=np.float32)
+        if not binary:
+            return np.loadtxt(f, max_rows=count, dtype=np.float32)
+        vertex = np.frombuffer(f.read(count * 15), dtype=[("xyz", "<f4", 3), ("rgb", "u1", 3)])
+        return np.hstack([vertex["xyz"], vertex["rgb"].astype(np.float32)])
 
 
 def voxel_keys(xyz: np.ndarray, size: float) -> np.ndarray:
@@ -122,14 +131,9 @@ def main() -> None:
     pos /= counts[:, None]
     col /= counts[:, None]
 
-    lo, hi = pos.min(0), pos.max(0)
-    q = np.round((pos - lo) / (hi - lo) * 65535).astype("<u2")
-    c = np.clip(np.round(col), 0, 255).astype(np.uint8)
-
+    packed, lo, hi = pack_cloud(pos, col)
     OUT.mkdir(parents=True, exist_ok=True)
-    with open(OUT / "pit.bin", "wb") as f:
-        f.write(q.tobytes())
-        f.write(c.tobytes())
+    (OUT / "pit.p16").write_bytes(packed)
     meta = {
         "count": n,
         "raw_points": raw,
@@ -146,7 +150,7 @@ def main() -> None:
         encoding="utf-8",
     )
     print(body)
-    print(f"pit.bin {(OUT / 'pit.bin').stat().st_size / 1e6:.1f} MB")
+    print(f"pit.p16 {len(packed) / 1e6:.1f} MB")
 
 
 if __name__ == "__main__":
