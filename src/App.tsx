@@ -1,5 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { AnimatePresence, MotionConfig } from 'framer-motion'
+import { FullscreenHint } from './components/FullscreenHint'
 import { Header } from './components/Header'
 import { LanguageGate } from './components/LanguageGate'
 import { MapView } from './components/MapView'
@@ -11,6 +12,8 @@ function App() {
   const state = useWorld()
   const mode = useStore((s) => s.mode)
   const lang = useStore((s) => s.lang)
+  // the hint follows the language screen only, not a deep link with ?lang=
+  const [gated] = useState(() => lang === null)
 
   useEffect(() => {
     if (lang) document.documentElement.lang = lang
@@ -27,6 +30,7 @@ function App() {
       </div>
       {/* the data loads behind the choice */}
       <AnimatePresence>{lang === null && <LanguageGate />}</AnimatePresence>
+      {gated && lang !== null && <FullscreenHint lang={lang} />}
     </MotionConfig>
   )
 }
