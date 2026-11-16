@@ -15,8 +15,13 @@ export interface WorldState {
   retry: () => void
 }
 
+// Yields so the progress text can paint. A background tab gets no animation
+// frames, so a timeout keeps the load going there too.
 const nextFrame = () =>
-  new Promise<void>((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)))
+  new Promise<void>((resolve) => {
+    requestAnimationFrame(() => setTimeout(resolve, 0))
+    setTimeout(resolve, 60)
+  })
 
 /** Load every raster, then run the terrain comparison once. */
 export function useWorld(): WorldState {

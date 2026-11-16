@@ -29,7 +29,7 @@ Terrain match of Karacadağ, and its rank among eight Earth sites:
 
 | Target | Match | Rank | Leader |
 |---|---|---|---|
-| Arsia Mons, Mars | 60% | 6th | Mauna Loa |
+| Arsia Mons, Mars | 63% | 6th | Mauna Loa |
 | Mare Tranquillitatis pit region, Moon | 63% | 3rd | Craters of the Moon |
 | Shackleton connecting ridge, Moon | 46% | 6th | Mauna Loa |
 
@@ -38,7 +38,7 @@ The scores describe one 62 km window per site and terrain only.
 
 Rock chemistry match of Ovabağ lava (ten major oxides, 100 = identical): Mars basalt (Spirit, Gusev) 65, lunar mare basalt (Apollo 11) 54, lunar highland soil (Apollo 16) 39. For scale, Mars basalt against lunar mare basalt scores 56. The Mars rocks are from Gusev crater, not Arsia Mons.
 
-Field, 14 November 2026: a collapse pit about 11 m across and 6 m deep with a third of its roof standing (scale not yet tape-checked); 13.0 °C in the pit against 10.3 °C outside at about 15:00, 75% humidity.
+Field, 14 November 2026: a collapse pit about 11 m across and 6 m deep with a third of its roof standing (scale not yet tape-checked); 13.0 °C in the pit against 10.3 °C outside at 16:00, 75% humidity; the thermometers then stayed in place until 06:00.
 
 ## Data
 
@@ -58,7 +58,7 @@ Also in `src/data/pit.ts`: hourly air temperature for the field night (Open-Mete
 
 ## Deploy
 
-A static Vite build: on Vercel, import the repository and keep the defaults (build `npm run build`, output `dist`). The site ships about 12 MB in total; `.vercelignore` keeps the Python scripts out of the upload.
+A static Vite build. `vercel.json` pins the build (`npm run build:vercel`), which writes Vercel's build output directly, so the project deploys with no dashboard settings. The site ships about 12 MB in total; `.vercelignore` keeps the Python scripts out of the upload.
 
 ## Run
 
