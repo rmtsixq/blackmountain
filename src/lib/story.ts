@@ -303,8 +303,8 @@ export function buildStory(world: World, lang: Lang): Chapter[] {
         'Ay üssü için seçilen bölge burası. Güneş ufuktan en fazla 1,5° yükseliyor.',
       ),
       body: L(
-        `At that angle ${pct(a.twins.shackleton.shadow[low])} of the Shackleton ridge is in shadow, and ${pct(a.earth.shadow[low])} of Karacadağ. At Karacadağ the sun sits that low for about 8 minutes at every sunrise and every sunset, all year: short, daily windows to rehearse work under a grazing sun, with the difference measured.`,
-        `Güneş bu yükseklikteyken Shackleton sırtının ${pct(a.twins.shackleton.shadow[low])} kadarı, Karacadağ’ın ise ${pct(a.earth.shadow[low])} kadarı gölgede kalıyor. Karacadağ’da güneş bu kadar alçakta yılın her günü, gün doğumunda ve gün batımında yaklaşık 8’er dakika kalıyor. Bu kısa ama her gün tekrarlanan aralıklar, yatay ışık altında deneme yapmaya imkân veriyor; iki saha arasındaki fark da ölçülmüş durumda.`,
+        `At that angle ${pct(a.twins.shackleton.shadow[low])} of the Shackleton ridge is in shadow, and ${pct(a.earth.shadow[low])} of Karacadağ. Our sunrise and sunset keep the sun below 4° for about 40 minutes every day, enough to rehearse work under a low sun, with the difference measured.`,
+        `Güneş bu yükseklikteyken Shackleton sırtının ${pct(a.twins.shackleton.shadow[low])} kadarı, Karacadağ’ın ise ${pct(a.earth.shadow[low])} kadarı gölgede kalıyor. Karacadağ’da güneş, gün doğumu ve gün batımında her gün yaklaşık 40 dakika boyunca 4°’nin altında kalıyor. Bu süre, alçak güneş altında yapılacak denemeler için yeterli; iki saha arasındaki fark da ölçülmüş durumda.`,
       ),
       source: L(
         'Shackleton ridge, LRO LOLA 20 m polar elevation · horizons traced with lunar curvature',
