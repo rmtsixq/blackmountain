@@ -96,7 +96,16 @@ function Key({ label, delay }: { label: string; delay: number }) {
         transition={{ duration: 1.9, delay, times: [0, 0.68, 0.76, 1] }}
         className="pointer-events-none absolute -inset-6 rounded-[48px] bg-white/30 blur-3xl"
       />
-      <Keycap label={label} />
+      {label === 'F11' ? (
+        <img
+          src="/ui/f11.png"
+          alt=""
+          draggable={false}
+          className="relative h-56 w-56 select-none drop-shadow-[0_22px_36px_rgba(0,0,0,0.6)]"
+        />
+      ) : (
+        <Keycap label={label} />
+      )}
     </motion.div>
   )
 }
@@ -140,7 +149,7 @@ export function FullscreenHint({ lang }: { lang: Lang }) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9, ease: EASE }}
-            className="mt-16 font-display text-[44px] leading-none tracking-tight text-white"
+            className="mt-14 font-display text-[68px] leading-none font-semibold tracking-tight text-white"
           >
             {t.title}
           </motion.p>
@@ -148,7 +157,7 @@ export function FullscreenHint({ lang }: { lang: Lang }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 1.2, ease: EASE }}
-            className="mt-4 text-[17px] text-white/55"
+            className="mt-5 text-[26px] text-white/60"
           >
             {t.note}
           </motion.p>
