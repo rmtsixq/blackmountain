@@ -144,7 +144,7 @@ export const TARGETS: Target[] = [
     },
     notes: {
       topo: 'A ridge between impact craters, not a volcanic flank. Crater walls here are steeper than almost anything on a basalt shield.',
-      illumination: 'Karacadağ gets about 40 minutes a day with the sun below 4°. At the pole the sun circles the horizon for months and never climbs above about 1.5°.',
+      illumination: 'Karacadağ gets about 40 minutes of grazing light a day. At the pole the sun circles the horizon for months and never climbs above about 1.5°.',
       thermal: 'Nothing on Earth approaches cryogenic cold-trap temperatures. Only the trapping mechanism compares, not the numbers.',
       composition: 'Apollo 16 highland soil stands in for the pole, where nothing has been sampled. Wrong rock entirely: bright feldspar-rich crust against dark iron-rich basalt.',
     },

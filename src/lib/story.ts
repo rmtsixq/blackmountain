@@ -303,8 +303,8 @@ export function buildStory(world: World, lang: Lang): Chapter[] {
         'Ay üssü için seçilen bölge burası. Güneş ufuktan en fazla 1,5° yükseliyor.',
       ),
       body: L(
-        `At that angle ${pct(a.twins.shackleton.shadow[low])} of the Shackleton ridge is in shadow, and ${pct(a.earth.shadow[low])} of Karacadağ. Our sunrise and sunset keep the sun below 4° for about 40 minutes every day, enough to rehearse work under a low sun, with the difference measured.`,
-        `Güneş bu yükseklikteyken Shackleton sırtının ${pct(a.twins.shackleton.shadow[low])} kadarı, Karacadağ’ın ise ${pct(a.earth.shadow[low])} kadarı gölgede kalıyor. Karacadağ’da güneş, gün doğumu ve gün batımında her gün yaklaşık 40 dakika boyunca 4°’nin altında kalıyor. Bu süre, alçak güneş altında yapılacak denemeler için yeterli; iki saha arasındaki fark da ölçülmüş durumda.`,
+        `At that angle ${pct(a.twins.shackleton.shadow[low])} of the Shackleton ridge is in shadow, and ${pct(a.earth.shadow[low])} of Karacadağ. Our sunset gives about 40 minutes of the same light every day, enough to rehearse work under a low sun, with the difference measured.`,
+        `Güneş bu yükseklikteyken Shackleton sırtının ${pct(a.twins.shackleton.shadow[low])} kadarı, Karacadağ’ın ise ${pct(a.earth.shadow[low])} kadarı gölgede kalıyor. Karacadağ’da benzer bir ışık her gün, gün batımından önce yaklaşık 40 dakika boyunca oluşuyor. Bu süre, alçak güneş altında yapılacak denemeler için yeterli; iki saha arasındaki fark da ölçülmüş durumda.`,
       ),
       source: L(
         'Shackleton ridge, LRO LOLA 20 m polar elevation · horizons traced with lunar curvature',
@@ -328,8 +328,8 @@ export function buildStory(world: World, lang: Lang): Chapter[] {
         `Halkayla işaretlenen yaklaşık 3 km’lik bölge (${n(where.lat, 3)}°K ${n(where.lon, 3)}°D), Arsia yamacına dağın genelinden belirgin biçimde daha çok benziyor: benzerlik karenin tamamında ${whole}, bu bölgede ${here}. Haritada açık renkler yüksek benzerliği gösteriyor. Saha çalışmaları için önerdiğimiz konum burasıdır.`,
       ),
       source: L(
-        'Local slope and roughness statistics against Arsia Mons elevation',
-        'Her noktanın eğim ve pürüzlülük istatistikleri Arsia Mons yükseklik verisiyle karşılaştırıldı',
+        'Local slope and roughness statistics against the Arsia Mons model',
+        'Her noktanın eğim ve pürüzlülük istatistikleri Arsia Mons modeliyle karşılaştırıldı',
       ),
       plate: TERRAIN,
       scene: { layer: 'score', target: 'arsia', twin: false, hour: 13.5, shot: PATCH },

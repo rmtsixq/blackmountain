@@ -66,8 +66,8 @@ export const TR: Record<string, string> = {
     'Örnek çukurdan değil, yaklaşık 380 km ötedeki Apollo 11 iniş bölgesinden. İkisi de bazalt; ama Ay lavları kuru ve titanyumca zengin: sulu mineral de organik madde de yok.',
   'A ridge between impact craters, not a volcanic flank. Crater walls here are steeper than almost anything on a basalt shield.':
     'Burası bir volkan yamacı değil, çarpma kraterleri arasında bir sırt. Krater duvarları, bazalt bir kalkan volkandaki hemen her yerden daha dik.',
-  'Karacadağ gets about 40 minutes a day with the sun below 4°. At the pole the sun circles the horizon for months and never climbs above about 1.5°.':
-    'Karacadağ’da güneş her gün yaklaşık 40 dakika 4°’nin altında kalıyor. Kutupta ise güneş aylarca ufukta dolanır ve 1,5°’nin üzerine pek çıkmaz.',
+  'Karacadağ gets about 40 minutes of grazing light a day. At the pole the sun circles the horizon for months and never climbs above about 1.5°.':
+    'Karacadağ günde yaklaşık 40 dakika yatay ışık alıyor. Kutupta ise güneş aylarca ufukta dolanır ve 1,5°’nin üzerine pek çıkmaz.',
   'Nothing on Earth approaches cryogenic cold-trap temperatures. Only the trapping mechanism compares, not the numbers.':
     'Dünya’da hiçbir yer oradaki soğuk tuzakların sıcaklığına yaklaşamaz. Karşılaştırılabilen yalnızca mekanizma; sayılar değil.',
   'Apollo 16 highland soil stands in for the pole, where nothing has been sampled. Wrong rock entirely: bright feldspar-rich crust against dark iron-rich basalt.':
